@@ -30,6 +30,9 @@
 # Visual Studio cache directory
 .vs/
 
+# VS Code
+.vscode/
+
 # Gradle cache directory
 .gradle/
 
@@ -75,3 +78,9 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Directory configuration file
+.directory
+
+# Kate text editor configuration file
+.kateproject
