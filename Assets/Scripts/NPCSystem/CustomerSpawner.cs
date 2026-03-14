@@ -13,19 +13,20 @@ public class CustomerSpawner
         _factory = new CustomersFactory();
     }
     
-    public void Spawn(Transform spawnPoint)
+    public Customer Spawn(Transform spawnPoint)
     {
         var customerData = _factory.CreateCustomer();
         var customer = Object.Instantiate(_customerPrefab, spawnPoint.position, spawnPoint.rotation);
         customer.Init(customerData);
         Debug.Log("Spawn Customer");
+        return customer;
     }
 
-    public void SpawnOnRandom(Transform[] spawnPoints)
+    public Customer SpawnOnRandom(Transform[] spawnPoints)
     {
         var random = Random.Range(0, spawnPoints.Length);
         var spawnPoint = spawnPoints[random];
-        Spawn(spawnPoint);
+        return Spawn(spawnPoint);
     }
 
 }
