@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using Components.ScenarioSteps;
+using Core;
 using Core.Interfaces;
+using Cysharp.Threading.Tasks;
 
 namespace Controllers
 {
@@ -9,28 +12,36 @@ namespace Controllers
         private readonly List<BaseStep> scenarioSteps;
 
         private int currentStepIndex;
+        private CancellationTokenSource scenarioCts;
 
-        public ScenarioController(List<BaseStep> scenarioSteps)
+        public ScenarioController(List<BaseStep> scenarioSteps, ServiceContainer serviceContainer)
         {
             this.scenarioSteps = scenarioSteps;
+
+            InitializeAllSteps(serviceContainer);
         }
 
         public void StartScenario()
         {
-            StartNextStep();
+            scenarioCts?.Cancel();
+            scenarioCts = new CancellationTokenSource();
+            CompleteScenarioAsync(scenarioCts.Token).Forget();
         }
 
-        private void StartNextStep()
+        private async UniTask CompleteScenarioAsync(CancellationToken ct)
         {
-            scenarioSteps[currentStepIndex].StepCompleted += OnStepCompleted;
-            scenarioSteps[currentStepIndex].BeginStep();
-            currentStepIndex++;
+            foreach (var scenarioStep in scenarioSteps)
+            {
+                await scenarioStep.PerformStepAsync(ct);
+            }
         }
 
-        private void OnStepCompleted(BaseStep baseStep)
+        private void InitializeAllSteps(ServiceContainer serviceContainer)
         {
-            baseStep.StepCompleted -= OnStepCompleted;
-            StartNextStep();
+            foreach (var scenarioStep in scenarioSteps)
+            {
+                scenarioStep.Initialize(serviceContainer);
+            }
         }
 
         public void Dispose()

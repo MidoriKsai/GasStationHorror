@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Threading;
+using Core;
+using Cysharp.Threading.Tasks;
+using Services.Interfaces;
+using UnityEngine;
 
 namespace Components.ScenarioSteps
 {
@@ -7,16 +11,18 @@ namespace Components.ScenarioSteps
         [SerializeField]
         private Transform teleportPoint;
 
-        [SerializeField]
-        private Transform playerTransform;
+        private IPlayerService playerService;
 
-        protected override void OnBeginStep()
+        public override void Initialize(ServiceContainer serviceContainer)
         {
-            // Screen fade in.
-            playerTransform.position = teleportPoint.position;
-            // Screen fade out.
+            playerService = serviceContainer.Resolve<IPlayerService>();
+        }
 
-            base.BeginStep();
+        public override async UniTask PerformStepAsync(CancellationToken ct)
+        {
+            await playerService.FadeInAsync(ct);
+            playerService.GetPlayerTransform().position = teleportPoint.position;
+            await playerService.FadeOutAsync(ct);
         }
     }
 }
