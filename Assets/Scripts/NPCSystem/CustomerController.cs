@@ -1,31 +1,85 @@
 using System.Collections.Generic;
 using Core.Interfaces;
+using NPCSystem;
 using UnityEngine;
 
 public class CustomerController : IController
 {
     private readonly CustomerSpawner _customerSpawner;
-    private readonly List<Transform> _spawnPoints;
-    private readonly CustomerPath _customerPath;
-    private Customer _currentCustomer;
-    private bool _isMoving;
+    private readonly CarSpawner _carSpawner;
 
-    public CustomerController(Customer customerPrefab, List<Transform> spawnPoint, List<Transform> pathPoints)
+    private readonly Transform _customerSpawnPoint;
+    private readonly Transform _carSpawnPoint;
+
+    private readonly CustomerPath _customerPath;
+    private readonly CarPath _carArrivePath;
+    private readonly CarPath _carLeavePath;
+
+    private Customer _currentCustomer;
+    private Car _currentCar;
+
+    public CustomerController(
+        Customer customerPrefab,
+        Car carPrefab,
+        Transform customerSpawnPoint,
+        Transform carSpawnPoint,
+        List<Transform> customerPathPoints,
+        List<Transform> carArrivePathPoints,
+        List<Transform> carLeavePathPoints)
     {
-        _spawnPoints = spawnPoint;
+        Debug.Log("CustomerController created");
         _customerSpawner = new CustomerSpawner(customerPrefab);
-        _customerPath = new CustomerPath(pathPoints.ToArray());
+        _carSpawner = new CarSpawner(carPrefab);
+
+        _customerSpawnPoint = customerSpawnPoint;
+        _carSpawnPoint = carSpawnPoint;
+
+        _customerPath = new CustomerPath(customerPathPoints.ToArray());
+        _carArrivePath = new CarPath(carArrivePathPoints.ToArray());
+        _carLeavePath = new CarPath(carLeavePathPoints.ToArray());
 
         OnGameStart();
     }
 
     private void OnGameStart()
     {
-        var customer = _customerSpawner.SpawnOnRandom(_spawnPoints.ToArray());
-        customer.StartPath(_customerPath);
+        SpawnCarAndStartArrival();
+    }
+
+    private void SpawnCarAndStartArrival()
+    {
+        _currentCar = _carSpawner.Spawn(_carSpawnPoint);
+        _currentCar.StartPath(_carArrivePath, OnCarArrived);
+    }
+
+    private void OnCarArrived()
+    {
+        _currentCustomer = _customerSpawner.Spawn(_customerSpawnPoint);
+        _currentCustomer.StartPath(_customerPath, OnCustomerFinished);
+    }
+
+    private void OnCustomerFinished()
+    {
+        if (_currentCustomer != null)
+            Object.Destroy(_currentCustomer.gameObject);
+        
+        _currentCar.StartPath(_carLeavePath, OnCarLeft);
+    }
+
+    private void OnCarLeft()
+    {
+        
+
+        if (_currentCar != null)
+            Object.Destroy(_currentCar.gameObject);
     }
 
     public void Dispose()
     {
+        if (_currentCustomer != null)
+            Object.Destroy(_currentCustomer.gameObject);
+
+        if (_currentCar != null)
+            Object.Destroy(_currentCar.gameObject);
     }
 }
