@@ -2,20 +2,34 @@ using UnityEngine;
 
 public class Zoom : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private float zoomFOV;
+    [SerializeField] private float zoomAnimationSpeed;
+    private float defaultFOV;
+    private Camera camera;
+
+    private bool zoomed;
+
     void Start()
     {
-        
+        camera = transform.GetComponentInChildren<Camera>();
+        zoomed = false;
+        defaultFOV = camera.fieldOfView;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (MouseRightButtonPressed())
+            zoomed = !zoomed;
+
+        float targetFOV = zoomed ? zoomFOV : defaultFOV;
+
+        camera.fieldOfView = Mathf.Lerp(
+            camera.fieldOfView, 
+            targetFOV, 
+            zoomAnimationSpeed * Time.deltaTime
+        );
     }
 
-    void FixedUpdate()
-    {
-
-    }
+    private bool MouseRightButtonPressed()
+        => Input.GetMouseButtonDown(1);
 }
