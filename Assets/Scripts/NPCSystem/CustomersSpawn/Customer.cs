@@ -23,26 +23,21 @@ public class Customer : MonoBehaviour
         Debug.Log(_customerData.customerId);
     }
     
-    public void StartPath(CustomerPath path)
+    public void StartPath(CustomerPath path, System.Action onCompleted)
     {
-        Debug.Log("StartPath started");
-        StartCoroutine(FollowPath(path));
+        StopAllCoroutines();
+        path.Reset();
+        StartCoroutine(FollowPath(path, onCompleted));
     }
-    
 
-    private IEnumerator FollowPath(CustomerPath path)
+    private IEnumerator FollowPath(CustomerPath path, System.Action onCompleted)
     {
         _agent.isStopped = false;
 
-        while (true)
+        while (path.HasNext())
         {
             Vector3 nextPoint = path.GetNextPosition();
-            Debug.Log("Go to: " + nextPoint);
-            
             _agent.SetDestination(nextPoint);
-            
-
-            yield return null;
 
             while (_agent.pathPending)
                 yield return null;
@@ -50,6 +45,8 @@ public class Customer : MonoBehaviour
             while (_agent.remainingDistance > _agent.stoppingDistance || _agent.velocity.sqrMagnitude > 0.01f)
                 yield return null;
         }
+
+        onCompleted?.Invoke();
     }
     
 }
