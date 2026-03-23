@@ -200,8 +200,13 @@ GameObject:
   m_Component:
   - component: {fileID: 869526290222615492}
   - component: {fileID: 3672925841809071759}
-  - component: {fileID: 5952066194606986775}
   - component: {fileID: 6981330241508193247}
+  - component: {fileID: 5417385239108577988}
+  - component: {fileID: 4123869668253060557}
+  - component: {fileID: 933431967269206269}
+  - component: {fileID: 5848905461399557706}
+  - component: {fileID: 1365155330136213497}
+  - component: {fileID: 4487145135244114302}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -254,19 +259,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &5952066194606986775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6500795869398152761}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a99a3cb9907b907f3967fc21780484e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Movement
-  playerRigidbody: {fileID: 3672925841809071759}
 --- !u!114 &6981330241508193247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,6 +273,90 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player.PlayerDataHandler
   playerTransform: {fileID: 869526290222615492}
   faderCanvasGroup: {fileID: 7775608080280454145}
+  mainCamera: {fileID: 3453395513717824436}
+--- !u!114 &5417385239108577988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6500795869398152761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf68b81557dc4ffeb4b4267fa68ecc5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player.InteractionRaycastComponent
+  playerDataHandler: {fileID: 6981330241508193247}
+  interactionDistance: 3
+  interactableLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
+--- !u!114 &4123869668253060557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6500795869398152761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d9e4f452d3c4fb4918ed65ba07ad853, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player.PlayerInteractionController
+  interactionRaycastComponent: {fileID: 5417385239108577988}
+--- !u!114 &933431967269206269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6500795869398152761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a99a3cb9907b907f3967fc21780484e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  playerRigidbody: {fileID: 3672925841809071759}
+  MovementSpeed: 5
+--- !u!114 &5848905461399557706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6500795869398152761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9384e335dd3da637965a22afb09757f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Zoom
+  zoomFOV: 30
+  zoomAnimationSpeed: 20
+--- !u!114 &1365155330136213497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6500795869398152761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f599f35b0c293c0ab807cf95dfbb54d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InputHandler
+--- !u!114 &4487145135244114302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6500795869398152761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc32a8373a74f88d096ade625b25c9d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraLook
+  sensitivity: 80
 --- !u!1 &6769294824273966416
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,7 +369,6 @@ GameObject:
   - component: {fileID: 3453395513717824436}
   - component: {fileID: 4349013325676837915}
   - component: {fileID: 2894520945375055996}
-  - component: {fileID: 2510303499296525150}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -419,20 +494,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!114 &2510303499296525150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6769294824273966416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90eea182988a6bf02adb7015471f9301, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MouseLook
-  sensitivity: 200
-  playerBody: {fileID: 869526290222615492}
 --- !u!1 &8259211115809469215
 GameObject:
   m_ObjectHideFlags: 0
@@ -522,7 +583,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!136 &7341145945125810992
 CapsuleCollider:
