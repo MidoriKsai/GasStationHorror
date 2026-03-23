@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 935917061062232667}
   - component: {fileID: 488718507015196630}
   - component: {fileID: 375538137938698925}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: InteractableSampleCube
-  m_TagString: Interactable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -91,6 +91,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &935917061062232667
 BoxCollider:
@@ -125,6 +126,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5163f53fabdf32e2a09092e5dd58dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Grabbable
+  rigidbody: {fileID: 375538137938698925}
+  collider: {fileID: 935917061062232667}
 --- !u!54 &375538137938698925
 Rigidbody:
   m_ObjectHideFlags: 0

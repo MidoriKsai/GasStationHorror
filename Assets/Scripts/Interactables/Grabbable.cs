@@ -1,23 +1,22 @@
 using UnityEngine;
-using Core;
-using Services;
 using Interactables.Interface;
 
-class Grabbable : MonoBehaviour, IGrabbable
+public class Grabbable : MonoBehaviour, IInteractable
 {
-    // [SerializeField] Transform playerTransform;
-    private bool grabbed = false;
-    // private InputHandler playerInputHandler;
+    [SerializeField]
     private Rigidbody rigidbody;
+
+    [SerializeField]
+    private Collider collider;
+
+    private bool grabbed = false;
     private Transform holdingPoint;
-    private Transform InteractablesObject;
+    private Transform interactablesContainer;
 
-    void Start()
+    public void Initialize(Transform holdingPoint, Transform interactablesContainer)
     {
-        rigidbody = transform.GetComponent<Rigidbody>();
-        holdingPoint = GameObject.FindGameObjectWithTag("Player").transform.Find("HoldingPoint").transform;
-        InteractablesObject = transform.parent.gameObject.transform;
-
+        this.holdingPoint = holdingPoint;
+        this.interactablesContainer = interactablesContainer;
     }
 
     public void Interact()
@@ -34,6 +33,7 @@ class Grabbable : MonoBehaviour, IGrabbable
     {
         Debug.Log("Object grabbed!");
 
+        collider.enabled = false;
         rigidbody.isKinematic = true;
         rigidbody.angularVelocity = Vector3.zero;
         rigidbody.linearVelocity = Vector3.zero;
@@ -51,9 +51,12 @@ class Grabbable : MonoBehaviour, IGrabbable
     {
         Debug.Log("Object dropped!");
 
+        transform.SetParent(interactablesContainer);
+
         rigidbody.isKinematic = false;
+        collider.enabled = true;
+
         Vector3 throwForce = transform.parent.forward;
-        transform.SetParent(InteractablesObject);
-        rigidbody.AddForce(throwForce * 50f, ForceMode.Force);
+        rigidbody.AddRelativeForce(throwForce * 50f, ForceMode.Impulse);
     }
 }
