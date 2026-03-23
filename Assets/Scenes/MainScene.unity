@@ -860,20 +860,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 6981330241508193247, guid: 89b81e74ff4f1e1a08e69e41db1daf07, type: 3}
-      propertyPath: mainCamera
-      value: 
-      objectReference: {fileID: 1131458671}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6500795869398152761, guid: 89b81e74ff4f1e1a08e69e41db1daf07, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1131458673}
-    - targetCorrespondingSourceObject: {fileID: 6500795869398152761, guid: 89b81e74ff4f1e1a08e69e41db1daf07, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1131458672}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89b81e74ff4f1e1a08e69e41db1daf07, type: 3}
 --- !u!4 &1131458668 stripped
 Transform:
@@ -885,52 +875,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6981330241508193247, guid: 89b81e74ff4f1e1a08e69e41db1daf07, type: 3}
   m_PrefabInstance: {fileID: 1131458667}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1131458670}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 522c6a4cddd8468aa830e3415e1ebbe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player.PlayerDataHandler
---- !u!1 &1131458670 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6500795869398152761, guid: 89b81e74ff4f1e1a08e69e41db1daf07, type: 3}
-  m_PrefabInstance: {fileID: 1131458667}
-  m_PrefabAsset: {fileID: 0}
---- !u!20 &1131458671 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 3453395513717824436, guid: 89b81e74ff4f1e1a08e69e41db1daf07, type: 3}
-  m_PrefabInstance: {fileID: 1131458667}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1131458672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1131458670}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d9e4f452d3c4fb4918ed65ba07ad853, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Player.PlayerInteractionController
-  interactionRaycastComponent: {fileID: 1131458673}
---- !u!114 &1131458673
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1131458670}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf68b81557dc4ffeb4b4267fa68ecc5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Player.InteractionRaycastComponent
-  playerDataHandler: {fileID: 1131458669}
-  interactionDistance: 3
-  interactableLayerMask:
-    serializedVersion: 2
-    m_Bits: 8
 --- !u!1 &1251806245
 GameObject:
   m_ObjectHideFlags: 0
