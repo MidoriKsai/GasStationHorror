@@ -18,6 +18,9 @@ namespace Contexts
         [SerializeField]
         private CustomersComponent customersComponent;
 
+        [SerializeField]
+        private GrabbablesComponent grabbablesComponent;
+
         private CustomerController customerController;
         private ScenarioController scenarioController;
 
@@ -29,6 +32,8 @@ namespace Contexts
             scenarioComponent.Initialize(serviceContainer);
             scenarioController = scenarioComponent.CreateController();
             customerController = customersComponent.CreateController();
+
+            grabbablesComponent.Initialize(playerDataHandler);
 
             scenarioController.StartScenario();
         }

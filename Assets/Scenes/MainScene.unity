@@ -1687,6 +1687,10 @@ PrefabInstance:
       propertyPath: playerDataHandler
       value: 
       objectReference: {fileID: 1131458669}
+    - target: {fileID: 1793300427472834566, guid: 2ca3cbbb8ac3f1142a0fa3a4ac46dee3, type: 3}
+      propertyPath: grabbablesComponent
+      value: 
+      objectReference: {fileID: 8559800282055990426}
     - target: {fileID: 2723103881902009731, guid: 2ca3cbbb8ac3f1142a0fa3a4ac46dee3, type: 3}
       propertyPath: teleportPoint
       value: 
@@ -1835,8 +1839,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    - target: {fileID: 5950618067734208478, guid: 2ca3cbbb8ac3f1142a0fa3a4ac46dee3, type: 3}
+      propertyPath: interactablesContainer
+      value: 
+      objectReference: {fileID: 8559800282055990424}
+    - target: {fileID: 5950618067734208478, guid: 2ca3cbbb8ac3f1142a0fa3a4ac46dee3, type: 3}
+      propertyPath: grabbablesList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5950618067734208478, guid: 2ca3cbbb8ac3f1142a0fa3a4ac46dee3, type: 3}
+      propertyPath: 'grabbablesList.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8559800282055990425}
+    m_RemovedComponents:
+    - {fileID: 5950618067734208478, guid: 2ca3cbbb8ac3f1142a0fa3a4ac46dee3, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 1997433791650122890, guid: 2ca3cbbb8ac3f1142a0fa3a4ac46dee3, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ca3cbbb8ac3f1142a0fa3a4ac46dee3, type: 3}
@@ -1954,6 +1972,33 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 134a020e63e8a45419c00077dc096287, type: 3}
+--- !u!4 &8559800282055990424 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2327025762051914211, guid: 134a020e63e8a45419c00077dc096287, type: 3}
+  m_PrefabInstance: {fileID: 8559800282055990423}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8559800282055990425 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6654079626756352852, guid: 134a020e63e8a45419c00077dc096287, type: 3}
+  m_PrefabInstance: {fileID: 8559800282055990423}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5163f53fabdf32e2a09092e5dd58dd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Grabbable
+--- !u!114 &8559800282055990426 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5315581013182833316, guid: 134a020e63e8a45419c00077dc096287, type: 3}
+  m_PrefabInstance: {fileID: 8559800282055990423}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1c429f85b444e09a849f5fbdc0c055f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Components.GrabbablesComponent
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
