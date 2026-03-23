@@ -1,7 +1,9 @@
-using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Interactables.Interface;
 using UnityEngine;
+using Utils;
 
 namespace Interactables
 {
@@ -12,16 +14,16 @@ namespace Interactables
         [SerializeField] private Vector3 openedRotation;
         [SerializeField] private float rotateDuration = 0.5f;
         [SerializeField] private Ease rotateEase = Ease.InOutSine;
-
-        private readonly HashSet<Component> _activeUsers = new();
+        [SerializeField] private Collider doorCollider;
 
         private bool _isOpened;
         private bool _isAnimating;
-        private Tween _rotateTween;
+
+        private CancellationTokenSource _animationCts;
 
         private void Start()
         {
-            if (doorTransform == null) 
+            if (doorTransform == null)
                 return;
 
 
@@ -36,74 +38,60 @@ namespace Interactables
 
         public void Interact()
         {
-            if (_activeUsers.Count > 0)
-                return;
-
             if (_isOpened)
-                CloseDoor();
+                TryCloseDoor();
             else
-                OpenDoor();
+                TryOpenDoor();
         }
 
-        public void RegisterUser(Component user)
+        public void TryOpenDoor()
         {
-            if (user == null)
+            if(_isOpened)
                 return;
 
-            bool wasAdded = _activeUsers.Add(user);
-
-            if (!wasAdded)
-                return;
-
-            if (!_isOpened || _isAnimating)
-                OpenDoor();
+            _animationCts = new CancellationTokenSource();
+            _animationCts?.Cancel();
+            OpenDoorAsync(_animationCts.Token).Forget();
         }
 
-        public void UnregisterUser(Component user)
+        public void TryCloseDoor()
         {
-            if (user == null)
+            if (!_isOpened)
                 return;
 
-            _activeUsers.Remove(user);
-
-            if (_activeUsers.Count == 0)
-                CloseDoor();
+            _animationCts?.Cancel();
+            _animationCts = new CancellationTokenSource();
+            CloseDoorAsync(_animationCts.Token).Forget();
         }
 
-        private void OpenDoor()
+        private async UniTask OpenDoorAsync(CancellationToken ct)
         {
-            _rotateTween?.Kill();
-
+            doorCollider.enabled = false;
             _isAnimating = true;
             _isOpened = true;
 
-            _rotateTween = doorTransform
+            await doorTransform
                 .DOLocalRotate(openedRotation, rotateDuration)
                 .SetEase(rotateEase)
-                .OnComplete(OnTweenCompleted);
-        }
+                .AwaitAsync(ct);
 
-        private void CloseDoor()
-        {
-            _rotateTween?.Kill();
-
-            _isAnimating = true;
-            _isOpened = false;
-
-            _rotateTween = doorTransform
-                .DOLocalRotate(closedRotation, rotateDuration)
-                .SetEase(rotateEase)
-                .OnComplete(OnTweenCompleted);
-        }
-
-        private void OnTweenCompleted()
-        {
+            doorCollider.enabled = true;
             _isAnimating = false;
         }
 
-        private void OnDestroy()
+        private async UniTask CloseDoorAsync(CancellationToken ct)
         {
-            _rotateTween?.Kill();
+            doorCollider.enabled = false;
+            _isAnimating = true;
+            _isOpened = false;
+
+            await doorTransform
+                .DOLocalRotate(closedRotation, rotateDuration)
+                .SetEase(rotateEase)
+                .AwaitAsync(ct);
+
+            _isAnimating = false;
+            doorCollider.enabled = true;
         }
     }
 }
