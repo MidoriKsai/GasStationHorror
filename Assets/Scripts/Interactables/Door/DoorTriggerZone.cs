@@ -11,13 +11,13 @@ namespace Interactables
             Debug.Log(other.gameObject.name);
             if (!other.TryGetComponent<Customer>(out var customer))
                 return;
-            
+
             Debug.Log("Customer enter door trigger");
-            
+
             if (customer == null)
                 return;
 
-            doorInteractable.RegisterUser(customer);
+            doorInteractable.TryOpenDoor();
         }
 
         private void OnTriggerExit(Collider other)
@@ -29,7 +29,7 @@ namespace Interactables
             if (customer == null)
                 return;
             Debug.Log("Customer exited door trigger");
-            doorInteractable.UnregisterUser(customer);
+            doorInteractable.TryCloseDoor();
         }
     }
 }
