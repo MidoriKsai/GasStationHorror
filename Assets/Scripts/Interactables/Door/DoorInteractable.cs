@@ -49,8 +49,8 @@ namespace Interactables
             if(_isOpened)
                 return;
 
-            _animationCts = new CancellationTokenSource();
             _animationCts?.Cancel();
+            _animationCts = new CancellationTokenSource();
             OpenDoorAsync(_animationCts.Token).Forget();
         }
 

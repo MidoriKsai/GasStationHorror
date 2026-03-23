@@ -15,7 +15,6 @@ namespace Player
 
         private void HandleInteraction()
         {
-            
             if (!Input.GetKeyDown(KeyCode.E))
                 return;
 
@@ -30,7 +29,7 @@ namespace Player
             {
                 return;
             }
-            
+
             interactable.Interact();
         }
     }
