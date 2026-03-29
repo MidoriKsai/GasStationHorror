@@ -23,6 +23,7 @@ namespace Contexts
 
         private CustomerController customerController;
         private ScenarioController scenarioController;
+        private GrabbablesController grabbablesController;
 
         protected override void Initialize(ServiceContainer serviceContainer)
         {
@@ -32,7 +33,7 @@ namespace Contexts
             scenarioComponent.Initialize(serviceContainer);
             scenarioController = scenarioComponent.CreateController();
             customerController = customersComponent.CreateController();
-
+            grabbablesController = grabbablesComponent.CreateController();
             grabbablesComponent.Initialize(playerDataHandler);
 
             scenarioController.StartScenario();

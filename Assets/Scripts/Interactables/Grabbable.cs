@@ -1,8 +1,12 @@
 using UnityEngine;
 using Interactables.Interface;
+using System;
 
 public class Grabbable : MonoBehaviour, IInteractable
 {
+    public event EventHandler GrabbedEvent;
+    public event EventHandler DroppedEvent;
+
     [SerializeField]
     private Rigidbody rigidbody;
 
@@ -42,6 +46,8 @@ public class Grabbable : MonoBehaviour, IInteractable
 
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
+
+        GrabbedEvent?.Invoke(this, EventArgs.Empty);
     }
 
     public bool CanInteract()
@@ -58,5 +64,7 @@ public class Grabbable : MonoBehaviour, IInteractable
 
         Vector3 throwForce = transform.parent.forward;
         rigidbody.AddRelativeForce(throwForce * 50f, ForceMode.Impulse);
+
+        DroppedEvent?.Invoke(this, EventArgs.Empty);
     }
 }
