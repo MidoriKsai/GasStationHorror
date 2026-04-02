@@ -2,17 +2,21 @@ using UnityEngine;
 using Services.Interfaces;
 using Services.Implementations;
 using Core;
-
+using Components;
 
 namespace Player
 {
     class PlayerInventoryController : MonoBehaviour
     {
-        IInventoryService inventoryService;
+        [SerializeField]
+        private PlayerComponent playerComponent;
+        private IInventoryService inventoryService;
 
         void Start()
         {
-            // inventoryService = serviceContainer.Resolve<IInventoryService>();
+            inventoryService = playerComponent.GetInventoryService;
+            if (inventoryService == null)
+                Debug.Log("ERROR: inventoryService is not found!");
         }
 
         void Update()

@@ -19,6 +19,9 @@ namespace Contexts
         private CustomersComponent customersComponent;
 
         [SerializeField]
+        private PlayerComponent playerComponent;
+
+        [SerializeField]
         private GrabbablesComponent grabbablesComponent;
 
         private CustomerController customerController;
@@ -29,12 +32,19 @@ namespace Contexts
         {
             var playerService = serviceContainer.Resolve<IPlayerService>();
             playerService.Initialize(playerDataHandler);
+            playerComponent.SetServiceContainer(serviceContainer);
+
+            grabbablesController = grabbablesComponent.CreateController();
+            grabbablesComponent.Initialize(serviceContainer);
+
+
+            IInventoryService inventoryService = serviceContainer.Resolve<IInventoryService>();
+            inventoryService.Initialize(grabbablesController);
 
             scenarioComponent.Initialize(serviceContainer);
             scenarioController = scenarioComponent.CreateController();
             customerController = customersComponent.CreateController();
-            grabbablesController = grabbablesComponent.CreateController();
-            grabbablesComponent.Initialize(playerDataHandler);
+
 
             scenarioController.StartScenario();
         }

@@ -13,6 +13,7 @@ namespace Services.Implementations
 
         public void Initialize(GrabbablesController grabbablesController)
         {
+            Debug.Log($"Grabbable controller accessability TEST: " + (grabbablesController != null ? "controller exists" : "controller NOT exists"));
             this.grabbablesController = grabbablesController;
         }
 
@@ -28,7 +29,7 @@ namespace Services.Implementations
 
         public Grabbable GetGrabbableInInventory()
         {
-            return grabbablesController.GrabbableInInventory;
+            return grabbablesController.GetGrabbableInInventory;
         }
     }
 }

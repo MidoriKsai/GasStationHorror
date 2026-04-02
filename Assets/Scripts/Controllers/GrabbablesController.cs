@@ -5,16 +5,30 @@ using System.Collections.Generic;
 
 namespace Controllers
 {
-    public class GrabbablesController : MonoBehaviour, IController
+    public class GrabbablesController : IController
     {
         private Grabbable grabbableInInventory;
+        private List<Grabbable> grabbables;
 
-        public Grabbable GrabbableInInventory => grabbableInInventory;
+        public Grabbable GetGrabbableInInventory => grabbableInInventory;
+
+        public GrabbablesController(List<Grabbable> grabbables)
+        {
+            this.grabbables = grabbables;
+
+            SubscribeOnEvents(grabbables);
+        }
 
         public void Drop()
         {
-            grabbableInInventory.Drop();
-            grabbableInInventory = null;
+            if (grabbableInInventory != null)
+            {
+                grabbableInInventory.Drop();
+                Debug.Log("Grabbable dropped");
+                grabbableInInventory = null;
+            }
+            else
+                Debug.Log("Grabbable slot is empty");
         }
 
         public void Add(Grabbable grabbable)
@@ -22,7 +36,7 @@ namespace Controllers
             grabbableInInventory = grabbable;
         }
 
-        public void Initializeaaaaaaaa(List<Grabbable> grabbables)
+        public void SubscribeOnEvents(List<Grabbable> grabbables)
         {
             foreach(Grabbable grabbable in grabbables)
             {
@@ -31,14 +45,15 @@ namespace Controllers
             }
         }
 
-        private void OnGrabbedEvent(object sender, System.EventArgs e)
+        private void OnGrabbedEvent(Grabbable sender, System.EventArgs e)
         {
-            Debug.Log("EVENT HAPPENED");
+            grabbableInInventory = sender;
+            Debug.Log("YOU GOT GRABBABLE");
         }
 
         private void OnDroppedEvent(object sender, System.EventArgs e)
         {
-            Debug.Log("EVENT HAPPENED");
+            Debug.Log("YOU DROPPED GRABBABLE");
         }
 
         public void Dispose()

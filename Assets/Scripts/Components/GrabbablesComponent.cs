@@ -2,10 +2,13 @@
 using Player;
 using UnityEngine;
 using Controllers;
+using Services.Interfaces;
+using Core;
+using Core.Interfaces;
 
 namespace Components
 {
-    public class GrabbablesComponent : MonoBehaviour
+    public class GrabbablesComponent : MonoBehaviour, IComponent<GrabbablesController>
     {
         [SerializeField]
         private List<Grabbable> grabbablesList = new();
@@ -13,20 +16,26 @@ namespace Components
         [SerializeField]
         private Transform interactablesContainer;
 
-        [SerializeField]
-        private Transform grabbablesControllerobj;
+        // [SerializeField]
+        // private Transform grabbablesControllerОbject;
 
-        public void Initialize(PlayerDataHandler playerDataHandler)
+        private IPlayerService playerService;
+
+        public void Initialize(ServiceContainer serviceContainer)
         {
+            playerService = serviceContainer.Resolve<IPlayerService>();
+
             foreach (var grabbable in grabbablesList)
             {
-                grabbable.Initialize(playerDataHandler.HoldingPoint, interactablesContainer);
+                Transform holdingPoint = playerService.GetGrabbablesHoldingPoint();
+                grabbable.Initialize(holdingPoint, interactablesContainer);
+                grabbable.transform.SetParent(interactablesContainer);
             }
         }
 
         public GrabbablesController CreateController()
         {
-            return new GrabbablesController();
+            return new GrabbablesController(grabbablesList);
         }
     }
 }

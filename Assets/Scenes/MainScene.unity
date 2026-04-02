@@ -855,10 +855,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5417385239108577988, guid: 89b81e74ff4f1e1a08e69e41db1daf07, type: 3}
-      propertyPath: interactableLayerMask.m_Bits
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6500795869398152761, guid: 89b81e74ff4f1e1a08e69e41db1daf07, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1504,6 +1500,17 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1995159652 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 127084818815832097, guid: 89b81e74ff4f1e1a08e69e41db1daf07, type: 3}
+  m_PrefabInstance: {fileID: 1131458667}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdca20fed6db068ce981d1ad98eb5e7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Components.PlayerComponent
 --- !u!1 &2037191516
 GameObject:
   m_ObjectHideFlags: 0
@@ -1684,6 +1691,10 @@ PrefabInstance:
       value: Logic
       objectReference: {fileID: 0}
     - target: {fileID: 1793300427472834566, guid: 2ca3cbbb8ac3f1142a0fa3a4ac46dee3, type: 3}
+      propertyPath: playerComponent
+      value: 
+      objectReference: {fileID: 1995159652}
+    - target: {fileID: 1793300427472834566, guid: 2ca3cbbb8ac3f1142a0fa3a4ac46dee3, type: 3}
       propertyPath: playerDataHandler
       value: 
       objectReference: {fileID: 1131458669}
@@ -1855,6 +1866,7 @@ PrefabInstance:
     - {fileID: 5950618067734208478, guid: 2ca3cbbb8ac3f1142a0fa3a4ac46dee3, type: 3}
     m_RemovedGameObjects:
     - {fileID: 1997433791650122890, guid: 2ca3cbbb8ac3f1142a0fa3a4ac46dee3, type: 3}
+    - {fileID: -7795925066828406912, guid: 2ca3cbbb8ac3f1142a0fa3a4ac46dee3, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ca3cbbb8ac3f1142a0fa3a4ac46dee3, type: 3}

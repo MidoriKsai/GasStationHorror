@@ -4,8 +4,10 @@ using System;
 
 public class Grabbable : MonoBehaviour, IInteractable
 {
-    public event EventHandler GrabbedEvent;
-    public event EventHandler DroppedEvent;
+    public delegate void GrabbableEventHandler(Grabbable sender, EventArgs args);
+
+    public event GrabbableEventHandler GrabbedEvent;
+    public event GrabbableEventHandler DroppedEvent;
 
     [SerializeField]
     private Rigidbody rigidbody;
@@ -55,15 +57,15 @@ public class Grabbable : MonoBehaviour, IInteractable
 
     public void Drop()
     {
-        Debug.Log("Object dropped!");
-
-        transform.SetParent(interactablesContainer);
+        Vector3 throwDirection = Camera.main.transform.forward;
+        // NOTE: Помещение в контейнер с объектами ломает направление выкидывания Grabbable-объекта по взгляду игрока
+        transform.SetParent(null);
 
         rigidbody.isKinematic = false;
+        rigidbody.velocity = Vector3.zero;
         collider.enabled = true;
 
-        Vector3 throwForce = transform.parent.forward;
-        rigidbody.AddRelativeForce(throwForce * 50f, ForceMode.Impulse);
+        rigidbody.AddForce(throwDirection * 10f, ForceMode.Impulse);
 
         DroppedEvent?.Invoke(this, EventArgs.Empty);
     }
