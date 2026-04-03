@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2555386070009494602}
   - component: {fileID: 1906944536444822828}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Door_Interactable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65,7 +65,7 @@ GameObject:
   - component: {fileID: 868057643999526684}
   - component: {fileID: 1442990913910566688}
   - component: {fileID: 1636969568769998195}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: TriggerZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 3168795273171842753}
   - component: {fileID: 3040385026307382153}
   - component: {fileID: 4971807887381737614}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Door_Model
   m_TagString: Interactable
   m_Icon: {fileID: 0}
@@ -243,7 +243,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5733910088247819955}
   - component: {fileID: 6167045526261917891}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -10,6 +10,9 @@ namespace Contexts
     public class MainSceneContext : BaseContext
     {
         [SerializeField]
+        private InputHandler inputHandler;
+
+        [SerializeField]
         private PlayerDataHandler playerDataHandler;
 
         [SerializeField]
@@ -23,17 +26,19 @@ namespace Contexts
 
         private CustomerController customerController;
         private ScenarioController scenarioController;
+        private GrabbablesController grabbablesController;
 
         protected override void Initialize(ServiceContainer serviceContainer)
         {
             var playerService = serviceContainer.Resolve<IPlayerService>();
             playerService.Initialize(playerDataHandler);
 
+            grabbablesComponent.Initialize(serviceContainer, inputHandler);
+            grabbablesController = grabbablesComponent.CreateController();
+
             scenarioComponent.Initialize(serviceContainer);
             scenarioController = scenarioComponent.CreateController();
             customerController = customersComponent.CreateController();
-
-            grabbablesComponent.Initialize(playerDataHandler);
 
             scenarioController.StartScenario();
         }
@@ -41,6 +46,7 @@ namespace Contexts
         protected override void Deinitialize()
         {
             customerController.Dispose();
+            grabbablesController.Dispose();
         }
     }
 }
