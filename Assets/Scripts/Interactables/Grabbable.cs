@@ -62,7 +62,7 @@ public class Grabbable : MonoBehaviour, IInteractable
         transform.SetParent(null);
 
         rigidbody.isKinematic = false;
-        rigidbody.velocity = Vector3.zero;
+        rigidbody.linearVelocity = Vector3.zero;
         collider.enabled = true;
 
         rigidbody.AddForce(throwDirection * 10f, ForceMode.Impulse);
