@@ -1,4 +1,5 @@
 ﻿using Components;
+using Components.ScenarioSteps;
 using Controllers;
 using Core;
 using Player;
@@ -20,7 +21,17 @@ namespace Contexts
 
         [SerializeField]
         private GrabbablesComponent grabbablesComponent;
+        
+        [SerializeField]
+        private DialogueSystemComponent dialogueSystemComponent;
+        
+        [SerializeField] 
+        private CustomerStepHandler customerStepHandler;
+        
 
+        
+
+        private DialogueSystemController dialogueSystemController;
         private CustomerController customerController;
         private ScenarioController scenarioController;
 
@@ -29,18 +40,28 @@ namespace Contexts
             var playerService = serviceContainer.Resolve<IPlayerService>();
             playerService.Initialize(playerDataHandler);
 
+            dialogueSystemComponent.Initialize(serviceContainer);
+            dialogueSystemController = dialogueSystemComponent.CreateController();
+            serviceContainer.Register(dialogueSystemController);
+
+            customerController = customersComponent.CreateController();
+            serviceContainer.Register(customerController);
+            
+            serviceContainer.Register(customerStepHandler);
+            
+            grabbablesComponent.Initialize(playerDataHandler);
+
             scenarioComponent.Initialize(serviceContainer);
             scenarioController = scenarioComponent.CreateController();
-            customerController = customersComponent.CreateController();
-
-            grabbablesComponent.Initialize(playerDataHandler);
 
             scenarioController.StartScenario();
         }
 
         protected override void Deinitialize()
         {
+            scenarioController.Dispose();
             customerController.Dispose();
+            dialogueSystemController.Dispose();
         }
     }
 }

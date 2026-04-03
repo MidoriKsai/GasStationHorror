@@ -16,7 +16,10 @@ namespace Player
         private void HandleInteraction()
         {
             if (!Input.GetKeyDown(KeyCode.E))
+            {
                 return;
+            }
+
 
             IInteractable interactable = interactionRaycastComponent.CurrentInteractable;
 

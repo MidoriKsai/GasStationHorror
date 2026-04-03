@@ -32,6 +32,7 @@ namespace Core
         private void InitializeServices(ServiceContainer serviceContainer)
         {
             serviceContainer.Register<IPlayerService>(new PlayerService());
+            serviceContainer.Register<IXMLParserService>(new XMLParserService());
         }
     }
 }
