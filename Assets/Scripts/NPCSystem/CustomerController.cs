@@ -9,12 +9,7 @@ public class CustomerController : IController
     private readonly CustomerSpawner _customerSpawner;
     private readonly CarSpawner _carSpawner;
 
-    private readonly Transform _customerSpawnPoint;
-    private readonly Transform _carSpawnPoint;
-
-    private readonly CustomerPath _customerPath;
-    private readonly CarPath _carArrivePath;
-    private readonly CarPath _carLeavePath;
+    private readonly PointsHandler pointsHandler;
 
     private Customer _currentCustomer;
     private Car _currentCar;
@@ -24,26 +19,17 @@ public class CustomerController : IController
     private UniTaskCompletionSource _carLeftTcs;
 
     public CustomerController(
+        PointsHandler pointsHandler,
         Customer customerPrefab,
-        Car carPrefab,
-        Transform customerSpawnPoint,
-        Transform carSpawnPoint,
-        List<Transform> customerPathPoints,
-        List<Transform> carArrivePathPoints,
-        List<Transform> carLeavePathPoints)
+        Car carPrefab)
     {
         _customerSpawner = new CustomerSpawner(customerPrefab);
         _carSpawner = new CarSpawner(carPrefab);
 
-        _customerSpawnPoint = customerSpawnPoint;
-        _carSpawnPoint = carSpawnPoint;
-
-        _customerPath = new CustomerPath(customerPathPoints.ToArray());
-        _carArrivePath = new CarPath(carArrivePathPoints.ToArray());
-        _carLeavePath = new CarPath(carLeavePathPoints.ToArray());
+        this.pointsHandler = pointsHandler;
     }
 
-    public async UniTask SpawnCustomerSequenceAsync()
+    public async UniTask WaitForCustomerArriveAsync()
     {
         await SpawnCarAsync();
         await SpawnCustomerAsync();
@@ -53,8 +39,8 @@ public class CustomerController : IController
     {
         _carArrivedTcs = new UniTaskCompletionSource();
 
-        _currentCar = _carSpawner.Spawn(_carSpawnPoint);
-        _currentCar.StartPath(_carArrivePath, OnCarArrived);
+        _currentCar = _carSpawner.Spawn(pointsHandler.CarSpawnPoint);
+        _currentCar.StartPath(new AgentPath(pointsHandler.GasStationPoint), OnCarArrived);
 
         await _carArrivedTcs.Task;
     }
@@ -68,8 +54,8 @@ public class CustomerController : IController
     {
         _customerArrivedTcs = new UniTaskCompletionSource();
 
-        _currentCustomer = _customerSpawner.Spawn(_customerSpawnPoint);
-        _currentCustomer.StartPath(_customerPath, OnCustomerArrived);
+        _currentCustomer = _customerSpawner.Spawn(_currentCar.GetCustomerSpawnPoint());
+        _currentCustomer.StartPath(new AgentPath(pointsHandler.CashDeskPoint), OnCustomerArrived);
 
         await _customerArrivedTcs.Task;
     }
@@ -83,6 +69,7 @@ public class CustomerController : IController
     {
         _carLeftTcs = new UniTaskCompletionSource();
 
+        // TODO: Customer go to car.
         if (_currentCustomer != null)
         {
             Object.Destroy(_currentCustomer.gameObject);
@@ -91,7 +78,7 @@ public class CustomerController : IController
 
         if (_currentCar != null)
         {
-            _currentCar.StartPath(_carLeavePath, OnCarLeft);
+            _currentCar.StartPath(new AgentPath(pointsHandler.CarLeavePoint), OnCarLeft);
             await _carLeftTcs.Task;
         }
     }
@@ -105,11 +92,6 @@ public class CustomerController : IController
         }
 
         _carLeftTcs?.TrySetResult();
-    }
-
-    public Customer GetCurrentCustomer()
-    {
-        return _currentCustomer;
     }
 
     public void Dispose()

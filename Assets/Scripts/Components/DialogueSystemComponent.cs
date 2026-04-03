@@ -11,7 +11,7 @@ namespace Components
     public class DialogueSystemComponent : MonoBehaviour, IComponent<DialogueSystemController>
     {
         [SerializeField]
-        private MonoBehaviour _dialogueView;
+        private DialogueView _dialogueView;
 
         private ServiceContainer _serviceContainer;
 

@@ -10,26 +10,22 @@ namespace Components.ScenarioSteps
     {
         private CustomerController customer;
         private DialogueSystemController dialogue;
-        private CashTriggerZone trigger;
-        private CustomerStepHandler customerStepHandler;
 
         [SerializeField] private MoneyView moneyPrefab;
         [SerializeField] private Transform moneySpawnPoint;
-
+        [SerializeField] private CashTriggerZone cashTriggerZone;
 
         public override void Initialize(ServiceContainer container)
         {
             customer = container.Resolve<CustomerController>();
             dialogue = container.Resolve<DialogueSystemController>();
-            customerStepHandler = container.Resolve<CustomerStepHandler>();
-            trigger = customerStepHandler.CashTriggerZone;
         }
 
         public override async UniTask PerformStepAsync(CancellationToken ct)
         {
-            await customer.SpawnCustomerSequenceAsync();
+            await customer.WaitForCustomerArriveAsync();
 
-            await trigger.WaitPlayerEnter();
+            await cashTriggerZone.WaitPlayerEnter();
 
             await dialogue.StartDialogueAsync("customer_intro", ct);
 

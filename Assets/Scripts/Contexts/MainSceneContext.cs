@@ -21,15 +21,12 @@ namespace Contexts
 
         [SerializeField]
         private GrabbablesComponent grabbablesComponent;
-        
+
         [SerializeField]
         private DialogueSystemComponent dialogueSystemComponent;
-        
-        [SerializeField] 
-        private CustomerStepHandler customerStepHandler;
-        
 
-        
+        [SerializeField]
+        private PointsHandler pointsHandler;
 
         private DialogueSystemController dialogueSystemController;
         private CustomerController customerController;
@@ -44,11 +41,10 @@ namespace Contexts
             dialogueSystemController = dialogueSystemComponent.CreateController();
             serviceContainer.Register(dialogueSystemController);
 
+            customersComponent.Initialize(pointsHandler);
             customerController = customersComponent.CreateController();
             serviceContainer.Register(customerController);
-            
-            serviceContainer.Register(customerStepHandler);
-            
+
             grabbablesComponent.Initialize(playerDataHandler);
 
             scenarioComponent.Initialize(serviceContainer);

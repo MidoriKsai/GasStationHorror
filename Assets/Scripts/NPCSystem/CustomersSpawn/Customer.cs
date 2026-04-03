@@ -16,21 +16,21 @@ public class Customer : MonoBehaviour
             Debug.Log("No NavMeshAgent found");
         }
     }
-    
+
     public void Init(CustomerData customerData)
     {
         _customerData = customerData;
         Debug.Log(_customerData.customerId);
     }
-    
-    public void StartPath(CustomerPath path, System.Action onCompleted)
+
+    public void StartPath(AgentPath path, System.Action onCompleted)
     {
         StopAllCoroutines();
         path.Reset();
         StartCoroutine(FollowPath(path, onCompleted));
     }
 
-    private IEnumerator FollowPath(CustomerPath path, System.Action onCompleted)
+    private IEnumerator FollowPath(AgentPath path, System.Action onCompleted)
     {
         _agent.isStopped = false;
 
@@ -48,5 +48,5 @@ public class Customer : MonoBehaviour
 
         onCompleted?.Invoke();
     }
-    
+
 }
