@@ -13,29 +13,26 @@ namespace Components
         [SerializeField]
         private List<Grabbable> grabbablesList = new();
 
-        [SerializeField]
-        private Transform interactablesContainer;
-
-        // [SerializeField]
-        // private Transform grabbablesControllerОbject;
-
         private IPlayerService playerService;
+        private IInventoryService inventoryService;
+        private InputHandler inputHandler;
 
-        public void Initialize(ServiceContainer serviceContainer)
+        public void Initialize(ServiceContainer serviceContainer, InputHandler inputHandler)
         {
             playerService = serviceContainer.Resolve<IPlayerService>();
+            inventoryService = serviceContainer.Resolve<IInventoryService>();
+            this.inputHandler = inputHandler;
 
             foreach (var grabbable in grabbablesList)
             {
                 Transform holdingPoint = playerService.GetGrabbablesHoldingPoint();
-                grabbable.Initialize(holdingPoint, interactablesContainer);
-                grabbable.transform.SetParent(interactablesContainer);
+                grabbable.Initialize(holdingPoint);
             }
         }
 
         public GrabbablesController CreateController()
         {
-            return new GrabbablesController(grabbablesList);
+            return new GrabbablesController(grabbablesList, inventoryService, inputHandler);
         }
     }
 }

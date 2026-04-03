@@ -1,64 +1,59 @@
-using UnityEngine;
 using Core.Interfaces;
-using Interactables;
 using System.Collections.Generic;
+using Services.Interfaces;
 
 namespace Controllers
 {
     public class GrabbablesController : IController
     {
-        private Grabbable grabbableInInventory;
         private List<Grabbable> grabbables;
+        private readonly IInventoryService inventoryService;
+        private readonly InputHandler inputHandler;
 
-        public Grabbable GetGrabbableInInventory => grabbableInInventory;
-
-        public GrabbablesController(List<Grabbable> grabbables)
+        public GrabbablesController(
+            List<Grabbable> grabbables,
+            IInventoryService inventoryService,
+            InputHandler inputHandler)
         {
             this.grabbables = grabbables;
+            this.inventoryService = inventoryService;
+            this.inputHandler = inputHandler;
+
+            this.inputHandler.ItemDropActionTriggered += OnItemDropActionTriggered;
 
             SubscribeOnEvents(grabbables);
         }
 
-        public void Drop()
+        private void SubscribeOnEvents(List<Grabbable> grabbables)
         {
-            if (grabbableInInventory != null)
+            foreach (Grabbable grabbable in grabbables)
             {
-                grabbableInInventory.Drop();
-                Debug.Log("Grabbable dropped");
-                grabbableInInventory = null;
-            }
-            else
-                Debug.Log("Grabbable slot is empty");
-        }
-
-        public void Add(Grabbable grabbable)
-        {
-            grabbableInInventory = grabbable;
-        }
-
-        public void SubscribeOnEvents(List<Grabbable> grabbables)
-        {
-            foreach(Grabbable grabbable in grabbables)
-            {
-                grabbable.GrabbedEvent += OnGrabbedEvent;
-                grabbable.DroppedEvent += OnDroppedEvent;
+                grabbable.TryGrabbedEvent += OnTryGrabbedEvent;
             }
         }
 
-        private void OnGrabbedEvent(Grabbable sender, System.EventArgs e)
+        private void OnItemDropActionTriggered()
         {
-            grabbableInInventory = sender;
-            Debug.Log("YOU GOT GRABBABLE");
+            inventoryService.RemoveItem();
         }
 
-        private void OnDroppedEvent(object sender, System.EventArgs e)
+        private void OnTryGrabbedEvent(Grabbable grabbable)
         {
-            Debug.Log("YOU DROPPED GRABBABLE");
+            if (inventoryService.IsInventoryEmpty())
+            {
+                inventoryService.AddItem(grabbable);
+                grabbable.Grab();
+            }
         }
 
         public void Dispose()
         {
+            foreach(Grabbable grabbable in grabbables)
+            {
+                grabbable.TryGrabbedEvent -= OnTryGrabbedEvent;
+            }
 
+            inputHandler.ItemDropActionTriggered -= OnItemDropActionTriggered;
         }
     }
 }

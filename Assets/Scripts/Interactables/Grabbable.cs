@@ -4,10 +4,7 @@ using System;
 
 public class Grabbable : MonoBehaviour, IInteractable
 {
-    public delegate void GrabbableEventHandler(Grabbable sender, EventArgs args);
-
-    public event GrabbableEventHandler GrabbedEvent;
-    public event GrabbableEventHandler DroppedEvent;
+    public event Action<Grabbable> TryGrabbedEvent;
 
     [SerializeField]
     private Rigidbody rigidbody;
@@ -17,28 +14,24 @@ public class Grabbable : MonoBehaviour, IInteractable
 
     private bool grabbed = false;
     private Transform holdingPoint;
-    private Transform interactablesContainer;
 
-    public void Initialize(Transform holdingPoint, Transform interactablesContainer)
+    public void Initialize(Transform holdingPoint)
     {
         this.holdingPoint = holdingPoint;
-        this.interactablesContainer = interactablesContainer;
     }
 
     public void Interact()
     {
-        if (!grabbed)
-            Grab();
-        else
-            Drop();
+        TryGrab();
+    }
 
-        grabbed = !grabbed;
+    public void TryGrab()
+    {
+        TryGrabbedEvent?.Invoke(this);
     }
 
     public void Grab()
     {
-        Debug.Log("Object grabbed!");
-
         collider.enabled = false;
         rigidbody.isKinematic = true;
         rigidbody.angularVelocity = Vector3.zero;
@@ -48,8 +41,6 @@ public class Grabbable : MonoBehaviour, IInteractable
 
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
-
-        GrabbedEvent?.Invoke(this, EventArgs.Empty);
     }
 
     public bool CanInteract()
@@ -66,7 +57,5 @@ public class Grabbable : MonoBehaviour, IInteractable
         collider.enabled = true;
 
         rigidbody.AddForce(throwDirection * 10f, ForceMode.Impulse);
-
-        DroppedEvent?.Invoke(this, EventArgs.Empty);
     }
 }

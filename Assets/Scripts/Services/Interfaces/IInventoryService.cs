@@ -6,10 +6,9 @@ namespace Services.Interfaces
 {
     public interface IInventoryService
     {
-        void Initialize(GrabbablesController grabbablesController);
-
         void AddItem(Grabbable grabbable);
         void RemoveItem();
         Grabbable GetGrabbableInInventory();
+        bool IsInventoryEmpty();
     }
 }
