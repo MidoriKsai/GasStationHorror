@@ -217,6 +217,63 @@ Transform:
   - {fileID: 1283776763}
   m_Father: {fileID: 1537981477}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &200685698
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2220940215776874696, guid: 754b86deae8f3c3988bf8d62a3b3bc67, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6.61801
+      objectReference: {fileID: 0}
+    - target: {fileID: 2220940215776874696, guid: 754b86deae8f3c3988bf8d62a3b3bc67, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2220940215776874696, guid: 754b86deae8f3c3988bf8d62a3b3bc67, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -18.44367
+      objectReference: {fileID: 0}
+    - target: {fileID: 2220940215776874696, guid: 754b86deae8f3c3988bf8d62a3b3bc67, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2220940215776874696, guid: 754b86deae8f3c3988bf8d62a3b3bc67, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2220940215776874696, guid: 754b86deae8f3c3988bf8d62a3b3bc67, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2220940215776874696, guid: 754b86deae8f3c3988bf8d62a3b3bc67, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2220940215776874696, guid: 754b86deae8f3c3988bf8d62a3b3bc67, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2220940215776874696, guid: 754b86deae8f3c3988bf8d62a3b3bc67, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2220940215776874696, guid: 754b86deae8f3c3988bf8d62a3b3bc67, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660333294031653390, guid: 754b86deae8f3c3988bf8d62a3b3bc67, type: 3}
+      propertyPath: m_Name
+      value: Global Volume
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 754b86deae8f3c3988bf8d62a3b3bc67, type: 3}
 --- !u!1 &366027974
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,14 +458,14 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 737498814}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
-  m_CookieSize2D: {x: 10, y: 10}
+  m_CookieSize: 10
   m_Shadows:
     m_Type: 2
     m_Resolution: -1
@@ -582,7 +639,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &941347445
 MeshFilter:
@@ -856,6 +912,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2894520945375055996, guid: 89b81e74ff4f1e1a08e69e41db1daf07, type: 3}
+      propertyPath: m_RenderPostProcessing
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6500795869398152761, guid: 89b81e74ff4f1e1a08e69e41db1daf07, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1054,7 +1114,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1374024876
 MeshFilter:
@@ -1144,7 +1203,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1391160224
 MeshFilter:
@@ -1605,7 +1663,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &2037191519
 MeshFilter:
@@ -2045,3 +2102,4 @@ SceneRoots:
   - {fileID: 1020791504}
   - {fileID: 1537981477}
   - {fileID: 8559800282055990423}
+  - {fileID: 200685698}
