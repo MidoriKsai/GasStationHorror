@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 935917061062232667}
   - component: {fileID: 488718507015196630}
   - component: {fileID: 375538137938698925}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: InteractableSampleCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &935917061062232667
 BoxCollider:
