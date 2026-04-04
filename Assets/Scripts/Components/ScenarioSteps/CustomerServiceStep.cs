@@ -23,9 +23,15 @@ namespace Components.ScenarioSteps
             _customer = container.Resolve<CustomerController>();
             _dialogue = container.Resolve<DialogueSystemController>();
             
-            var player = GameObject.FindWithTag("Player");
+            var player = GameObject.FindWithTag("PlayerParent");
             if (player != null)
                 Debug.Log("Player finded");
+            var components = player.GetComponents<Component>();
+
+            foreach (var component in components)
+            {
+                Debug.Log(component.GetType().Name);
+            }
             _playerMovement = player.GetComponent<PlayerMovement>();
             _cameraLook = player.GetComponent<CameraLook>();
         }

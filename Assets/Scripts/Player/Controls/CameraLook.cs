@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class CameraLook : MonoBehaviour
@@ -39,22 +40,9 @@ public class CameraLook : MonoBehaviour
 
     public void SnapToTarget(Transform target)
     {
-        Vector3 direction = target.position - camera.position;
-        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        var direction = target.position - camera.position;
+        var targetRotation = Quaternion.LookRotation(direction);
 
-        Vector3 euler = lookRotation.eulerAngles;
-
-        float yaw = euler.y;
-        float pitch = euler.x;
-
-        if (pitch > 180f)
-            pitch -= 360f;
-
-        pitch = Mathf.Clamp(pitch, -90f, 90f);
-
-        xRotation = pitch;
-
-        transform.rotation = Quaternion.Euler(0f, yaw, 0f);
-        camera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        camera.DORotateQuaternion(targetRotation, 0.5f);
     }
 }
