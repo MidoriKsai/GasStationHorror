@@ -23,6 +23,8 @@ namespace DialogueSystem
                 return UniTask.FromResult(cached);
 
             var file = Resources.Load<TextAsset>($"Dialogues/{id}");
+            
+            Debug.Log(file);
 
             if (file == null)
                 throw new System.Exception($"Dialogue {id} not found");

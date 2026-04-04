@@ -27,7 +27,9 @@ namespace Components
             var xmlParser = _serviceContainer.Resolve<IXMLParserService>();
 
             var parser = new Parser(xmlParser);
+            Debug.Log("Parser created");
             var storage = new DialogueStorage(parser);
+            Debug.Log("Storage created");
 
             return new DialogueSystemController(view, storage);
         }

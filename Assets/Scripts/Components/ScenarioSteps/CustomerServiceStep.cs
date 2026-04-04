@@ -8,32 +8,50 @@ namespace Components.ScenarioSteps
 {
     public class CustomerStep : BaseStep
     {
-        private CustomerController customer;
-        private DialogueSystemController dialogue;
+        private CustomerController _customer;
+        private DialogueSystemController _dialogue;
+        private PlayerMovement _playerMovement;
+        private CameraLook _cameraLook;
 
         [SerializeField] private MoneyView moneyPrefab;
         [SerializeField] private Transform moneySpawnPoint;
         [SerializeField] private CashTriggerZone cashTriggerZone;
+        [SerializeField] private Transform _dialogueLookTarget;
 
         public override void Initialize(ServiceContainer container)
         {
-            customer = container.Resolve<CustomerController>();
-            dialogue = container.Resolve<DialogueSystemController>();
+            _customer = container.Resolve<CustomerController>();
+            _dialogue = container.Resolve<DialogueSystemController>();
+            
+            var player = GameObject.FindWithTag("Player");
+            if (player != null)
+                Debug.Log("Player finded");
+            _playerMovement = player.GetComponent<PlayerMovement>();
+            _cameraLook = player.GetComponent<CameraLook>();
         }
 
         public override async UniTask PerformStepAsync(CancellationToken ct)
         {
-            await customer.WaitForCustomerArriveAsync();
+            await _customer.WaitForCustomerArriveAsync();
 
             await cashTriggerZone.WaitPlayerEnter();
+            
+            Debug.Log(_playerMovement == null ? "PlayerMovement not found" : "PlayerMovement found");
+            Debug.Log(_cameraLook == null ? "CameraLook not found" : "CameraLook found");
+            _playerMovement.SetMovementEnabled(false);
+            _cameraLook.SnapToTarget(_dialogueLookTarget);
+            _cameraLook.SetLookEnabled(false);
 
-            await dialogue.StartDialogueAsync("customer_intro", ct);
+            await _dialogue.StartDialogueAsync("customer_intro", ct);
+            
+            _playerMovement.SetMovementEnabled(true);
+            _cameraLook.SetLookEnabled(true);
 
             await ScanItems();
 
             await WaitPayment();
 
-            await customer.CustomerLeaveAsync();
+            await _customer.CustomerLeaveAsync();
         }
 
         private async UniTask ScanItems()
@@ -47,11 +65,14 @@ namespace Components.ScenarioSteps
 
             var money = Object.Instantiate(moneyPrefab, moneySpawnPoint);
 
-            money.Clicked += () =>
+            void OnClicked()
             {
+                money.Clicked -= OnClicked;
                 Object.Destroy(money.gameObject);
                 tcs.TrySetResult();
-            };
+            }
+
+            money.Clicked += OnClicked;
 
             await tcs.Task;
         }

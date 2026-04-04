@@ -1,6 +1,7 @@
 using DialogueSystem;
 using DialogueSystem.Interfaces;
 using Services.Interfaces;
+using UnityEngine;
 
 namespace DialogueSystem
 {
@@ -48,6 +49,11 @@ namespace DialogueSystem
 
                 dialogue.Lines.Add(line);
             }
+            
+            Debug.Log(dialogue);
+            
+            if (dialogue.Lines.Count == 0)
+                Debug.Log("dialogue not found");
 
             return dialogue;
         }

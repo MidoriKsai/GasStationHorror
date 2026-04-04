@@ -261,6 +261,7 @@ MonoBehaviour:
   moneyPrefab: {fileID: 9034912030792317626, guid: ca7e4a7b74c679b49ae03dba7bb2cf61, type: 3}
   moneySpawnPoint: {fileID: 364338335}
   cashTriggerZone: {fileID: 5349249734611163462}
+  _dialogueLookTarget: {fileID: 1558775650}
 --- !u!1 &412752689
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,7 +357,6 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
-  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 10
   m_lineSpacingMax: 0
@@ -570,14 +570,14 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 737498814}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
-  m_CookieSize2D: {x: 10, y: 10}
+  m_CookieSize: 10
   m_Shadows:
     m_Type: 2
     m_Resolution: -1
@@ -703,10 +703,10 @@ RectTransform:
   - {fileID: 1658871890}
   m_Father: {fileID: 1866306526}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.074}
-  m_AnchorMax: {x: 0.64900005, y: 0.344}
-  m_AnchoredPosition: {x: 0, y: -80.5}
-  m_SizeDelta: {x: -1010, y: -159}
+  m_AnchorMin: {x: 0.049503, y: 0.074}
+  m_AnchorMax: {x: 0.64900005, y: 0.3615129}
+  m_AnchoredPosition: {x: -33, y: -88}
+  m_SizeDelta: {x: -944, y: -174}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &773551579
 MonoBehaviour:
@@ -1212,7 +1212,6 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
-  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 10
   m_lineSpacingMax: 0
@@ -1254,6 +1253,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1550844424}
   m_CullTransparentMesh: 1
+--- !u!1 &1558775649
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1558775650}
+  m_Layer: 0
+  m_Name: CustomerPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1558775650
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558775649}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.007, y: 2.079, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4145784394584869328}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1564573615
 GameObject:
   m_ObjectHideFlags: 0
@@ -1425,7 +1455,7 @@ Transform:
   m_GameObject: {fileID: 1658871889}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 45, y: 40, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1707,7 +1737,6 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
-  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1844,7 +1873,6 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
-  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 10
   m_lineSpacingMax: 0
@@ -2062,7 +2090,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 125.94238, y: 36.34974}
+  m_AnchoredPosition: {x: 125.94238, y: 67}
   m_SizeDelta: {x: 11.069, y: 17.2699}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2054661185
@@ -2472,7 +2500,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7342506922718904047, guid: 3ed991b651384a14f9d37b1d14b8bfb0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1558775650}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ed991b651384a14f9d37b1d14b8bfb0, type: 3}
 --- !u!114 &4145784394584869327 stripped
@@ -2486,6 +2517,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a3d6b93fba07fc4f983ec8c59f0e63f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PointsHandler
+--- !u!4 &4145784394584869328 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7342506922718904047, guid: 3ed991b651384a14f9d37b1d14b8bfb0, type: 3}
+  m_PrefabInstance: {fileID: 4145784394584869326}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5349249734611163461
 PrefabInstance:
   m_ObjectHideFlags: 0
