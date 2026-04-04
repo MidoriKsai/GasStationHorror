@@ -16,5 +16,7 @@ namespace Services.Interfaces
         UniTask FadeInAsync(CancellationToken ct);
 
         UniTask FadeOutAsync(CancellationToken ct);
+        void FocusPlayerToDialogue(Transform dialogTarget);
+        void UnfocusPlayerFromDialogue();
     }
 }

@@ -1,4 +1,5 @@
 using Interactables.Interface;
+using TMPro;
 using UnityEngine;
 
 namespace Player
@@ -8,6 +9,7 @@ namespace Player
         [SerializeField] private PlayerDataHandler playerDataHandler;
         [SerializeField] private float interactionDistance = 3f;
         [SerializeField] private LayerMask interactableLayerMask;
+        [SerializeField] private TMP_Text interactionHelpText;
 
         private Camera _camera;
 
@@ -21,12 +23,12 @@ namespace Player
         private void Update()
         {
             UpdateCurrentInteractable();
-            
         }
 
         private void UpdateCurrentInteractable()
         {
             CurrentInteractable = null;
+            interactionHelpText.enabled = false;
 
             Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
 
@@ -34,6 +36,7 @@ namespace Player
             {
                 Debug.Log("Raycast hit " + hit.collider.name);
                 CurrentInteractable = hit.collider.GetComponentInParent<IInteractable>();
+                interactionHelpText.enabled = true;
             }
         }
     }

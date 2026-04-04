@@ -175,8 +175,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1291879425945048122}
+  m_Children: []
   m_Father: {fileID: 2327025762051914211}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5315581013182833316
@@ -191,9 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1c429f85b444e09a849f5fbdc0c055f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Components.GrabbablesComponent
-  grabbablesList:
-  - {fileID: 6654079626756352852}
-  interactablesContainer: {fileID: 2327025762051914211}
+  grabbablesList: []
 --- !u!1001 &3234200449264274164
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -256,76 +253,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5733910088247819955, guid: d1d50707525268349bc5fc26728d206a, type: 3}
   m_PrefabInstance: {fileID: 3234200449264274164}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &6525800311569065090
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 3345472889309394010}
-    m_Modifications:
-    - target: {fileID: 3388691319563338654, guid: 14a542e778d3ca73491efb67acb201ee, type: 3}
-      propertyPath: m_Name
-      value: InteractableSampleCube
-      objectReference: {fileID: 0}
-    - target: {fileID: 5439752073684070584, guid: 14a542e778d3ca73491efb67acb201ee, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 11.29446
-      objectReference: {fileID: 0}
-    - target: {fileID: 5439752073684070584, guid: 14a542e778d3ca73491efb67acb201ee, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.58
-      objectReference: {fileID: 0}
-    - target: {fileID: 5439752073684070584, guid: 14a542e778d3ca73491efb67acb201ee, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -15.82145
-      objectReference: {fileID: 0}
-    - target: {fileID: 5439752073684070584, guid: 14a542e778d3ca73491efb67acb201ee, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5439752073684070584, guid: 14a542e778d3ca73491efb67acb201ee, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5439752073684070584, guid: 14a542e778d3ca73491efb67acb201ee, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5439752073684070584, guid: 14a542e778d3ca73491efb67acb201ee, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5439752073684070584, guid: 14a542e778d3ca73491efb67acb201ee, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5439752073684070584, guid: 14a542e778d3ca73491efb67acb201ee, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5439752073684070584, guid: 14a542e778d3ca73491efb67acb201ee, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 14a542e778d3ca73491efb67acb201ee, type: 3}
---- !u!4 &1291879425945048122 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5439752073684070584, guid: 14a542e778d3ca73491efb67acb201ee, type: 3}
-  m_PrefabInstance: {fileID: 6525800311569065090}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6654079626756352852 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 488718507015196630, guid: 14a542e778d3ca73491efb67acb201ee, type: 3}
-  m_PrefabInstance: {fileID: 6525800311569065090}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5163f53fabdf32e2a09092e5dd58dd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Grabbable

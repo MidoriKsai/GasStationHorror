@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 375538137938698925}
   m_Layer: 3
   m_Name: InteractableSampleCube
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

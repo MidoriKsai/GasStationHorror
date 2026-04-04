@@ -24,6 +24,13 @@ namespace Contexts
         [SerializeField]
         private GrabbablesComponent grabbablesComponent;
 
+        [SerializeField]
+        private DialogueSystemComponent dialogueSystemComponent;
+
+        [SerializeField]
+        private PointsHandler pointsHandler;
+
+        private DialogueSystemController dialogueSystemController;
         private CustomerController customerController;
         private ScenarioController scenarioController;
         private GrabbablesController grabbablesController;
@@ -33,19 +40,28 @@ namespace Contexts
             var playerService = serviceContainer.Resolve<IPlayerService>();
             playerService.Initialize(playerDataHandler);
 
+            dialogueSystemComponent.Initialize(serviceContainer);
+            dialogueSystemController = dialogueSystemComponent.CreateController();
+            serviceContainer.Register(dialogueSystemController);
+
             grabbablesComponent.Initialize(serviceContainer, inputHandler);
             grabbablesController = grabbablesComponent.CreateController();
 
+            customersComponent.Initialize(pointsHandler);
+            customerController = customersComponent.CreateController();
+            serviceContainer.Register(customerController);
+
             scenarioComponent.Initialize(serviceContainer);
             scenarioController = scenarioComponent.CreateController();
-            customerController = customersComponent.CreateController();
 
             scenarioController.StartScenario();
         }
 
         protected override void Deinitialize()
         {
+            scenarioController.Dispose();
             customerController.Dispose();
+            dialogueSystemController.Dispose();
             grabbablesController.Dispose();
         }
     }
