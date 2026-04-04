@@ -6,6 +6,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float MovementSpeed;
     private InputHandler inputHandler;
     private Vector3 moveDirection;
+    
+    private bool _isMovementEnabled = true;
 
     void Start()
     {
@@ -14,6 +16,12 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (!_isMovementEnabled)
+        {
+            moveDirection = Vector3.zero;
+            return;
+        }
+        
         float horizontal = inputHandler.horizontalInput;
         float vertical = inputHandler.verticalInput;
 
@@ -25,5 +33,14 @@ public class PlayerMovement : MonoBehaviour
         playerRigidbody.linearVelocity = moveDirection * MovementSpeed;
     }
 
+    public void SetMovementEnabled(bool isEnabled)
+    {
+        _isMovementEnabled = isEnabled;
 
+        if (!isEnabled)
+        {
+            moveDirection = Vector3.zero;
+            playerRigidbody.linearVelocity = new Vector3(0f, playerRigidbody.linearVelocity.y, 0f);
+        }
+    }
 }

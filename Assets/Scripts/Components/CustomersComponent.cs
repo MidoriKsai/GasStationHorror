@@ -9,29 +9,21 @@ namespace Components
         [Header("Prefabs")]
         [SerializeField] private Customer customerPrefab;
         [SerializeField] private NPCSystem.Car carPrefab;
-    
-        [Header("Spawn Points")]
-        [SerializeField] private Transform customerSpawnPoint;
-        [SerializeField] private Transform carSpawnPoint;
-    
-        [Header("Paths")]
-        [SerializeField] private List<Transform> customerPathPoints;
-        [SerializeField] private List<Transform> carArrivePathPoints;
-        [SerializeField] private List<Transform> carLeavePathPoints;
-    
+
         private CustomerController _controller;
-        
-    
+        private PointsHandler pointsHandler;
+
+        public void Initialize(PointsHandler pointsHandler)
+        {
+            this.pointsHandler = pointsHandler;
+        }
+
         public CustomerController CreateController()
         {
             return new CustomerController(
+                pointsHandler,
                 customerPrefab,
-                carPrefab,
-                customerSpawnPoint,
-                carSpawnPoint,
-                customerPathPoints,
-                carArrivePathPoints,
-                carLeavePathPoints
+                carPrefab
             );
         }
     }
