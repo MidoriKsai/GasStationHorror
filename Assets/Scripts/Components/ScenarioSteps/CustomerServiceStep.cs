@@ -2,6 +2,7 @@ using System.Threading;
 using Controllers;
 using Core;
 using Cysharp.Threading.Tasks;
+using Services.Interfaces;
 using UnityEngine;
 
 namespace Components.ScenarioSteps
@@ -10,30 +11,19 @@ namespace Components.ScenarioSteps
     {
         private CustomerController _customer;
         private DialogueSystemController _dialogue;
-        private PlayerMovement _playerMovement;
-        private CameraLook _cameraLook;
 
         [SerializeField] private MoneyView moneyPrefab;
         [SerializeField] private Transform moneySpawnPoint;
         [SerializeField] private CashTriggerZone cashTriggerZone;
         [SerializeField] private Transform _dialogueLookTarget;
 
+        private IPlayerService _playerService;
+
         public override void Initialize(ServiceContainer container)
         {
             _customer = container.Resolve<CustomerController>();
             _dialogue = container.Resolve<DialogueSystemController>();
-            
-            var player = GameObject.FindWithTag("PlayerParent");
-            if (player != null)
-                Debug.Log("Player finded");
-            var components = player.GetComponents<Component>();
-
-            foreach (var component in components)
-            {
-                Debug.Log(component.GetType().Name);
-            }
-            _playerMovement = player.GetComponent<PlayerMovement>();
-            _cameraLook = player.GetComponent<CameraLook>();
+            _playerService = container.Resolve<IPlayerService>();
         }
 
         public override async UniTask PerformStepAsync(CancellationToken ct)
@@ -41,23 +31,18 @@ namespace Components.ScenarioSteps
             await _customer.WaitForCustomerArriveAsync();
 
             await cashTriggerZone.WaitPlayerEnter();
-            
-            Debug.Log(_playerMovement == null ? "PlayerMovement not found" : "PlayerMovement found");
-            Debug.Log(_cameraLook == null ? "CameraLook not found" : "CameraLook found");
-            _playerMovement.SetMovementEnabled(false);
-            _cameraLook.SnapToTarget(_dialogueLookTarget);
-            _cameraLook.SetLookEnabled(false);
+
+            _playerService.FocusPlayerToDialogue(_dialogueLookTarget);
 
             await _dialogue.StartDialogueAsync("customer_intro", ct);
-            
-            _playerMovement.SetMovementEnabled(true);
-            _cameraLook.SetLookEnabled(true);
+
+            _playerService.UnfocusPlayerFromDialogue();
 
             await ScanItems();
 
             await WaitPayment();
 
-            await _customer.CustomerLeaveAsync();
+            await _customer.WaitForCustomerLeaveAsync();
         }
 
         private async UniTask ScanItems()

@@ -3,46 +3,95 @@ using UnityEngine;
 
 public class CameraLook : MonoBehaviour
 {
-    [SerializeField] private float sensitivity = 2f;
-    private InputHandler inputHandler;
-    private Transform camera;
-    private float xRotation = 0f;
-    
+    [Header("Configuration")]
+    [SerializeField] private float lookSensitivity = 2f;
+
+    private Transform playerTransform;
+    private InputHandler _inputHandler;
+    private Transform _cameraTransform;
+    private float _cameraPitch;
+
     private bool _isLookEnabled = true;
+
+    private void Awake()
+    {
+        _inputHandler = GetComponent<InputHandler>();
+
+        if (Camera.main != null)
+        {
+            _cameraTransform = Camera.main.transform;
+        }
+        else
+        {
+            Debug.LogError("Main camera not found. Make sure you have a camera tagged as 'MainCamera' in your scene.");
+        }
+
+        if (playerTransform == null)
+        {
+            playerTransform = transform;
+        }
+    }
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked; 
-        inputHandler = GetComponent<InputHandler>();
-        camera = Camera.main.transform;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        _cameraPitch = 0f;
     }
 
     void Update()
     {
-        if (!_isLookEnabled)
-            return;
-        
-        float mouseX = inputHandler.rotationX * sensitivity * Time.deltaTime;
-        float mouseY = inputHandler.rotationY * sensitivity * Time.deltaTime;
-
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-
-        camera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        
-        transform.Rotate(Vector3.up * mouseX);
+        if (_isLookEnabled)
+        {
+            HandleMouseLook();
+        }
     }
-    
+
+    private void HandleMouseLook()
+    {
+        float mouseX = _inputHandler.rotationX * lookSensitivity * Time.deltaTime;
+        float mouseY = _inputHandler.rotationY * lookSensitivity * Time.deltaTime;
+
+        _cameraPitch -= mouseY;
+        _cameraPitch = Mathf.Clamp(_cameraPitch, -90f, 90f);
+
+        _cameraTransform.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
+
+        playerTransform.Rotate(Vector3.up * mouseX);
+    }
+
+    /// <summary>
+    /// Enables or disables the camera look functionality.
+    /// </summary>
     public void SetLookEnabled(bool isEnabled)
     {
         _isLookEnabled = isEnabled;
     }
 
+    /// <summary>
+    /// Smoothly rotates the camera to look at a specific target.
+    /// </summary>
+    /// <param name="target">The transform of the target to look at.</param>
     public void SnapToTarget(Transform target)
     {
-        var direction = target.position - camera.position;
-        var targetRotation = Quaternion.LookRotation(direction);
+        // --- Player Rotation (Yaw) ---
+        var playerDirection = target.position - playerTransform.position;
+        playerDirection.y = 0; // We only want to rotate on the Y-axis
+        var playerTargetRotation = Quaternion.LookRotation(playerDirection);
+        playerTransform.DORotateQuaternion(playerTargetRotation, 0.5f);
 
-        camera.DORotateQuaternion(targetRotation, 0.5f);
+        // --- Camera Rotation (Pitch) ---
+        var cameraDirection = target.position - _cameraTransform.position;
+        var cameraTargetRotation = Quaternion.LookRotation(cameraDirection);
+
+        // Extract the pitch and update our internal state
+        _cameraPitch = cameraTargetRotation.eulerAngles.x;
+
+        // Clamp the pitch to prevent looking too far up or down
+        if (_cameraPitch > 180) _cameraPitch -= 360;
+        _cameraPitch = Mathf.Clamp(_cameraPitch, -90f, 90f);
+
+        // Apply the pitch rotation locally to the camera
+        _cameraTransform.DOLocalRotate(new Vector3(_cameraPitch, 0, 0), 0.5f);
     }
 }

@@ -31,5 +31,18 @@ namespace Services.Implementations
         {
             await playerDataHandler.FaderCanvasGroup.DOFade(0f, 0.5f).AwaitAsync(ct);
         }
+
+        public void FocusPlayerToDialogue(Transform dialogTarget)
+        {
+            playerDataHandler.PlayerMovement.SetMovementEnabled(false);
+            playerDataHandler.CameraLook.SnapToTarget(dialogTarget);
+            playerDataHandler.CameraLook.SetLookEnabled(false);
+        }
+
+        public void UnfocusPlayerFromDialogue()
+        {
+            playerDataHandler.PlayerMovement.SetMovementEnabled(true);
+            playerDataHandler.CameraLook.SetLookEnabled(true);
+        }
     }
 }

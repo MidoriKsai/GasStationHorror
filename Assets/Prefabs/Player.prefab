@@ -306,6 +306,8 @@ MonoBehaviour:
   faderCanvasGroup: {fileID: 7775608080280454145}
   mainCamera: {fileID: 3453395513717824436}
   holdingPoint: {fileID: 6857597699935923626}
+  playerMovement: {fileID: 933431967269206269}
+  cameraLook: {fileID: 4487145135244114302}
 --- !u!114 &5417385239108577988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -388,7 +390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc32a8373a74f88d096ade625b25c9d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraLook
-  sensitivity: 80
+  lookSensitivity: 75
 --- !u!1 &6769294824273966416
 GameObject:
   m_ObjectHideFlags: 0

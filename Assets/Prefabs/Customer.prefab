@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3985674962573626829}
   - component: {fileID: -4475745524008829069}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: Customer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,6 +92,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!136 &967153654583143891
 CapsuleCollider:
@@ -125,7 +126,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 4850688399635303389}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.50000006
+  m_Radius: 1
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50

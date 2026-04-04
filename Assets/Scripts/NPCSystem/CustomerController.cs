@@ -14,9 +14,8 @@ public class CustomerController : IController
     private Customer _currentCustomer;
     private Car _currentCar;
 
-    private UniTaskCompletionSource _carArrivedTcs;
-    private UniTaskCompletionSource _customerArrivedTcs;
-    private UniTaskCompletionSource _carLeftTcs;
+    private UniTaskCompletionSource _carTcs;
+    private UniTaskCompletionSource _customerTcs;
 
     public CustomerController(
         PointsHandler pointsHandler,
@@ -31,67 +30,51 @@ public class CustomerController : IController
 
     public async UniTask WaitForCustomerArriveAsync()
     {
-        await SpawnCarAsync();
-        await SpawnCustomerAsync();
-    }
-
-    private async UniTask SpawnCarAsync()
-    {
-        _carArrivedTcs = new UniTaskCompletionSource();
-
         _currentCar = _carSpawner.Spawn(pointsHandler.CarSpawnPoint);
-        _currentCar.StartPath(new AgentPath(pointsHandler.GasStationPoint), OnCarArrived);
 
-        await _carArrivedTcs.Task;
-    }
-
-    private void OnCarArrived()
-    {
-        _carArrivedTcs?.TrySetResult();
-    }
-
-    private async UniTask SpawnCustomerAsync()
-    {
-        _customerArrivedTcs = new UniTaskCompletionSource();
+        await WaitForCarPathAsync(pointsHandler.GasStationPoint);
 
         _currentCustomer = _customerSpawner.Spawn(_currentCar.GetCustomerSpawnPoint());
-        _currentCustomer.StartPath(new AgentPath(pointsHandler.CashDeskPoint), OnCustomerArrived);
 
-        await _customerArrivedTcs.Task;
+        await WaitForCustomerPathAsync(pointsHandler.CashDeskPoint);
     }
 
-    private void OnCustomerArrived()
+    public async UniTask WaitForCustomerLeaveAsync()
     {
-        _customerArrivedTcs?.TrySetResult();
-    }
+        await WaitForCustomerPathAsync(_currentCar.GetCustomerSpawnPoint());
 
-    public async UniTask CustomerLeaveAsync()
-    {
-        _carLeftTcs = new UniTaskCompletionSource();
-
-        // TODO: Customer go to car.
         if (_currentCustomer != null)
         {
             Object.Destroy(_currentCustomer.gameObject);
             _currentCustomer = null;
         }
 
-        if (_currentCar != null)
-        {
-            _currentCar.StartPath(new AgentPath(pointsHandler.CarLeavePoint), OnCarLeft);
-            await _carLeftTcs.Task;
-        }
-    }
+        await WaitForCarPathAsync(pointsHandler.CarLeavePoint);
 
-    private void OnCarLeft()
-    {
         if (_currentCar != null)
         {
             Object.Destroy(_currentCar.gameObject);
             _currentCar = null;
         }
+    }
 
-        _carLeftTcs?.TrySetResult();
+    private async UniTask WaitForCarPathAsync(Transform targetPoint)
+    {
+        _carTcs = new UniTaskCompletionSource();
+        _currentCar.StartPath(new AgentPath(targetPoint), () => OnPathFinished(_carTcs));
+        await _carTcs.Task;
+    }
+
+    private async UniTask WaitForCustomerPathAsync(Transform targetPoint)
+    {
+        _customerTcs = new UniTaskCompletionSource();
+        _currentCustomer.StartPath(new AgentPath(targetPoint), () => OnPathFinished(_customerTcs));
+        await _customerTcs.Task;
+    }
+
+    private void OnPathFinished(UniTaskCompletionSource tcs)
+    {
+        tcs?.TrySetResult();
     }
 
     public void Dispose()
