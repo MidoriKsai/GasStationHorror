@@ -11,6 +11,8 @@ namespace Services.Interfaces
 
         Transform GetPlayerTransform();
 
+        Transform GetGrabbablesHoldingPoint();
+
         UniTask FadeInAsync(CancellationToken ct);
 
         UniTask FadeOutAsync(CancellationToken ct);

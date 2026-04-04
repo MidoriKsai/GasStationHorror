@@ -11,6 +11,9 @@ namespace Contexts
     public class MainSceneContext : BaseContext
     {
         [SerializeField]
+        private InputHandler inputHandler;
+
+        [SerializeField]
         private PlayerDataHandler playerDataHandler;
 
         [SerializeField]
@@ -31,6 +34,7 @@ namespace Contexts
         private DialogueSystemController dialogueSystemController;
         private CustomerController customerController;
         private ScenarioController scenarioController;
+        private GrabbablesController grabbablesController;
 
         protected override void Initialize(ServiceContainer serviceContainer)
         {
@@ -42,10 +46,13 @@ namespace Contexts
             serviceContainer.Register(dialogueSystemController);
 
             customersComponent.Initialize(pointsHandler);
+            grabbablesComponent.Initialize(serviceContainer, inputHandler);
+            grabbablesController = grabbablesComponent.CreateController();
+
+            scenarioComponent.Initialize(serviceContainer);
+            scenarioController = scenarioComponent.CreateController();
             customerController = customersComponent.CreateController();
             serviceContainer.Register(customerController);
-
-            grabbablesComponent.Initialize(playerDataHandler);
 
             scenarioComponent.Initialize(serviceContainer);
             scenarioController = scenarioComponent.CreateController();
@@ -58,6 +65,9 @@ namespace Contexts
             scenarioController.Dispose();
             customerController.Dispose();
             dialogueSystemController.Dispose();
+            grabbablesController.Dispose();
         }
+    }
+}        }
     }
 }

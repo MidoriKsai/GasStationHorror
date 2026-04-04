@@ -32,6 +32,6 @@ namespace Player
 
         public Camera  MainCamera => mainCamera;
 
-        public Transform HoldingPoint => holdingPoint;
+        public Transform GetHoldingPoint => holdingPoint;
     }
 }

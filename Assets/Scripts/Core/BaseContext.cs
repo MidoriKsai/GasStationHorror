@@ -33,6 +33,7 @@ namespace Core
         {
             serviceContainer.Register<IPlayerService>(new PlayerService());
             serviceContainer.Register<IXMLParserService>(new XMLParserService());
+            serviceContainer.Register<IInventoryService>(new InventoryService());
         }
     }
 }

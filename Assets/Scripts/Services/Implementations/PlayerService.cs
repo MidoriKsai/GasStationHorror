@@ -22,6 +22,11 @@ namespace Services.Implementations
             return playerDataHandler.PlayerTransform;
         }
 
+        public Transform GetGrabbablesHoldingPoint()
+        {
+            return playerDataHandler.GetHoldingPoint;
+        }
+
         public async UniTask FadeInAsync(CancellationToken ct)
         {
             await playerDataHandler.FaderCanvasGroup.DOFade(1f, 0.5f).AwaitAsync(ct);
