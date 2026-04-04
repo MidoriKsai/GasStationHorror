@@ -4,6 +4,9 @@ using System.Collections;
 
 public class Customer : MonoBehaviour
 {
+    [SerializeField]
+    private Transform _dialogPoint;
+
     private CustomerData _customerData;
     private NavMeshAgent _agent;
 
@@ -22,6 +25,8 @@ public class Customer : MonoBehaviour
         _customerData = customerData;
         Debug.Log(_customerData.customerId);
     }
+
+    public Transform GetDialogPoint() => _dialogPoint;
 
     public void StartPath(AgentPath path, System.Action onCompleted)
     {

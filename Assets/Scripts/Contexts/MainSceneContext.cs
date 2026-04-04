@@ -1,5 +1,4 @@
 ﻿using Components;
-using Components.ScenarioSteps;
 using Controllers;
 using Core;
 using Player;
@@ -45,12 +44,10 @@ namespace Contexts
             dialogueSystemController = dialogueSystemComponent.CreateController();
             serviceContainer.Register(dialogueSystemController);
 
-            customersComponent.Initialize(pointsHandler);
             grabbablesComponent.Initialize(serviceContainer, inputHandler);
             grabbablesController = grabbablesComponent.CreateController();
 
-            scenarioComponent.Initialize(serviceContainer);
-            scenarioController = scenarioComponent.CreateController();
+            customersComponent.Initialize(pointsHandler);
             customerController = customersComponent.CreateController();
             serviceContainer.Register(customerController);
 
@@ -67,7 +64,5 @@ namespace Contexts
             dialogueSystemController.Dispose();
             grabbablesController.Dispose();
         }
-    }
-}        }
     }
 }

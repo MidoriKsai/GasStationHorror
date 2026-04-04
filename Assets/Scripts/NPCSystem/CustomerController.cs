@@ -28,6 +28,16 @@ public class CustomerController : IController
         this.pointsHandler = pointsHandler;
     }
 
+    public Transform GetCustomerDialogPoint()
+    {
+        if (_currentCustomer != null)
+        {
+            return _currentCustomer.GetDialogPoint();
+        }
+
+        return null;
+    }
+
     public async UniTask WaitForCustomerArriveAsync()
     {
         _currentCar = _carSpawner.Spawn(pointsHandler.CarSpawnPoint);

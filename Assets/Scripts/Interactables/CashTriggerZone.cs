@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Player;
 using UnityEngine;
 
 public class CashTriggerZone : MonoBehaviour
@@ -17,7 +18,7 @@ public class CashTriggerZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player"))
+        if (!other.TryGetComponent<PlayerDataHandler>(out _))
             return;
 
         Debug.Log("Player enter cash trigger");
@@ -28,7 +29,7 @@ public class CashTriggerZone : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (!other.CompareTag("Player"))
+        if (!other.TryGetComponent<PlayerDataHandler>(out _))
             return;
 
         Debug.Log("Player exit cash trigger");
