@@ -16,12 +16,22 @@ namespace Player
         [SerializeField]
         private Transform holdingPoint;
 
+        [SerializeField]
+        private PlayerMovement playerMovement;
+
+        [SerializeField]
+        private CameraLook cameraLook;
+
+        public PlayerMovement PlayerMovement => playerMovement;
+
+        public CameraLook CameraLook => cameraLook;
+
         public Transform PlayerTransform => playerTransform;
 
         public CanvasGroup FaderCanvasGroup => faderCanvasGroup;
 
         public Camera  MainCamera => mainCamera;
 
-        public Transform HoldingPoint => holdingPoint;
+        public Transform GetHoldingPoint => holdingPoint;
     }
 }

@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
-class InputHandler : MonoBehaviour
+public class InputHandler : MonoBehaviour
 {
+    public event Action ItemDropActionTriggered;
+
     private KeyboardInput keyboardInput;
     private MouseInput mouseInput;
 
@@ -11,12 +14,21 @@ class InputHandler : MonoBehaviour
     public float horizontalInput => keyboardInput.GetHorizontalInput;
     public float verticalInput => keyboardInput.GetVerticalInput;
 
-
-    void Start()
+    private void Awake()
     {
         keyboardInput = gameObject.AddComponent<KeyboardInput>();
         mouseInput = gameObject.AddComponent<MouseInput>();
 
-        Debug.Log("KeyboardInput and MouseInput was instantiated!");
+        keyboardInput.ItemDropActionTriggered += OnItemDropActionTriggered;
+    }
+
+    private void OnItemDropActionTriggered()
+    {
+        ItemDropActionTriggered?.Invoke();
+    }
+
+    private void OnDestroy()
+    {
+        keyboardInput.ItemDropActionTriggered -= OnItemDropActionTriggered;
     }
 }

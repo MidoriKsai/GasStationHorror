@@ -1,13 +1,19 @@
 using UnityEngine;
 
-public class CarPath
+public class AgentPath
 {
     private readonly Transform[] _pathPoints;
     private int _index;
 
-    public CarPath(Transform[] pathPoints)
+    public AgentPath(Transform[] pathPoints)
     {
         _pathPoints = pathPoints;
+        Reset();
+    }
+
+    public AgentPath(Transform destinationPoint)
+    {
+        _pathPoints = new[] { destinationPoint };
         Reset();
     }
 

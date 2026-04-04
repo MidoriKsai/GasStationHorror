@@ -6,11 +6,12 @@ TagManager:
   tags:
   - Obstacle
   - Points
+  - Interactable
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Interactables
   - Water
   - UI
   - 

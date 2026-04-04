@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Core.Interfaces;
+using Cysharp.Threading.Tasks;
 using NPCSystem;
 using UnityEngine;
 
@@ -8,78 +9,96 @@ public class CustomerController : IController
     private readonly CustomerSpawner _customerSpawner;
     private readonly CarSpawner _carSpawner;
 
-    private readonly Transform _customerSpawnPoint;
-    private readonly Transform _carSpawnPoint;
-
-    private readonly CustomerPath _customerPath;
-    private readonly CarPath _carArrivePath;
-    private readonly CarPath _carLeavePath;
+    private readonly PointsHandler pointsHandler;
 
     private Customer _currentCustomer;
     private Car _currentCar;
 
+    private UniTaskCompletionSource _carTcs;
+    private UniTaskCompletionSource _customerTcs;
+
     public CustomerController(
+        PointsHandler pointsHandler,
         Customer customerPrefab,
-        Car carPrefab,
-        Transform customerSpawnPoint,
-        Transform carSpawnPoint,
-        List<Transform> customerPathPoints,
-        List<Transform> carArrivePathPoints,
-        List<Transform> carLeavePathPoints)
+        Car carPrefab)
     {
-        Debug.Log("CustomerController created");
         _customerSpawner = new CustomerSpawner(customerPrefab);
         _carSpawner = new CarSpawner(carPrefab);
 
-        _customerSpawnPoint = customerSpawnPoint;
-        _carSpawnPoint = carSpawnPoint;
-
-        _customerPath = new CustomerPath(customerPathPoints.ToArray());
-        _carArrivePath = new CarPath(carArrivePathPoints.ToArray());
-        _carLeavePath = new CarPath(carLeavePathPoints.ToArray());
-
-        OnGameStart();
+        this.pointsHandler = pointsHandler;
     }
 
-    private void OnGameStart()
-    {
-        SpawnCarAndStartArrival();
-    }
-
-    private void SpawnCarAndStartArrival()
-    {
-        _currentCar = _carSpawner.Spawn(_carSpawnPoint);
-        _currentCar.StartPath(_carArrivePath, OnCarArrived);
-    }
-
-    private void OnCarArrived()
-    {
-        _currentCustomer = _customerSpawner.Spawn(_customerSpawnPoint);
-        _currentCustomer.StartPath(_customerPath, OnCustomerFinished);
-    }
-
-    private void OnCustomerFinished()
+    public Transform GetCustomerDialogPoint()
     {
         if (_currentCustomer != null)
-            Object.Destroy(_currentCustomer.gameObject);
-        
-        _currentCar.StartPath(_carLeavePath, OnCarLeft);
+        {
+            return _currentCustomer.GetDialogPoint();
+        }
+
+        return null;
     }
 
-    private void OnCarLeft()
+    public async UniTask WaitForCustomerArriveAsync()
     {
-        
+        _currentCar = _carSpawner.Spawn(pointsHandler.CarSpawnPoint);
+
+        await WaitForCarPathAsync(pointsHandler.GasStationPoint);
+
+        _currentCustomer = _customerSpawner.Spawn(_currentCar.GetCustomerSpawnPoint());
+
+        await WaitForCustomerPathAsync(pointsHandler.CashDeskPoint);
+    }
+
+    public async UniTask WaitForCustomerLeaveAsync()
+    {
+        await WaitForCustomerPathAsync(_currentCar.GetCustomerSpawnPoint());
+
+        if (_currentCustomer != null)
+        {
+            Object.Destroy(_currentCustomer.gameObject);
+            _currentCustomer = null;
+        }
+
+        await WaitForCarPathAsync(pointsHandler.CarLeavePoint);
 
         if (_currentCar != null)
+        {
             Object.Destroy(_currentCar.gameObject);
+            _currentCar = null;
+        }
+    }
+
+    private async UniTask WaitForCarPathAsync(Transform targetPoint)
+    {
+        _carTcs = new UniTaskCompletionSource();
+        _currentCar.StartPath(new AgentPath(targetPoint), () => OnPathFinished(_carTcs));
+        await _carTcs.Task;
+    }
+
+    private async UniTask WaitForCustomerPathAsync(Transform targetPoint)
+    {
+        _customerTcs = new UniTaskCompletionSource();
+        _currentCustomer.StartPath(new AgentPath(targetPoint), () => OnPathFinished(_customerTcs));
+        await _customerTcs.Task;
+    }
+
+    private void OnPathFinished(UniTaskCompletionSource tcs)
+    {
+        tcs?.TrySetResult();
     }
 
     public void Dispose()
     {
         if (_currentCustomer != null)
+        {
             Object.Destroy(_currentCustomer.gameObject);
+            _currentCustomer = null;
+        }
 
         if (_currentCar != null)
+        {
             Object.Destroy(_currentCar.gameObject);
+            _currentCar = null;
+        }
     }
 }
