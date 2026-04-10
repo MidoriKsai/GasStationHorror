@@ -1,0 +1,16 @@
+<dialogue id="boss_intro">
+
+	<line>
+		<text>Привет. Ты сегодня рано.</text>
+	</line>
+
+	<line>
+		<text>Готов начать?</text>
+		<answers>
+			<answer>Да</answer>
+			<answer>Не совсем</answer>
+			<answer>Что нужно делать?</answer>
+		</answers>
+	</line>
+
+</dialogue>

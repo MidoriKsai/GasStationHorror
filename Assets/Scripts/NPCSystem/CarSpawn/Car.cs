@@ -7,6 +7,9 @@ namespace NPCSystem
 {
     public class Car : MonoBehaviour
     {
+        [SerializeField]
+        private Transform customerSpawnPoint;
+
         private CustomerData _customerData;
         private NavMeshAgent _agent;
         private Coroutine _moveRoutine;
@@ -24,7 +27,9 @@ namespace NPCSystem
             _customerData = customerData;
         }
 
-        public void StartPath(CarPath path, Action onCompleted)
+        public Transform GetCustomerSpawnPoint() => customerSpawnPoint;
+
+        public void StartPath(AgentPath path, Action onCompleted)
         {
             if (_moveRoutine != null)
                 StopCoroutine(_moveRoutine);
@@ -33,7 +38,7 @@ namespace NPCSystem
             _moveRoutine = StartCoroutine(FollowPath(path, onCompleted));
         }
 
-        private IEnumerator FollowPath(CarPath path, Action onCompleted)
+        private IEnumerator FollowPath(AgentPath path, Action onCompleted)
         {
             _agent.isStopped = false;
 

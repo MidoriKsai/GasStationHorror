@@ -1,8 +1,11 @@
 using UnityEngine;
 using Interactables.Interface;
+using System;
 
 public class Grabbable : MonoBehaviour, IInteractable
 {
+    public event Action<Grabbable> TryGrabbedEvent;
+
     [SerializeField]
     private Rigidbody rigidbody;
 
@@ -11,28 +14,24 @@ public class Grabbable : MonoBehaviour, IInteractable
 
     private bool grabbed = false;
     private Transform holdingPoint;
-    private Transform interactablesContainer;
 
-    public void Initialize(Transform holdingPoint, Transform interactablesContainer)
+    public void Initialize(Transform holdingPoint)
     {
         this.holdingPoint = holdingPoint;
-        this.interactablesContainer = interactablesContainer;
     }
 
     public void Interact()
     {
-        if (!grabbed)
-            Grab();
-        else
-            Drop();
+        TryGrab();
+    }
 
-        grabbed = !grabbed;
+    public void TryGrab()
+    {
+        TryGrabbedEvent?.Invoke(this);
     }
 
     public void Grab()
     {
-        Debug.Log("Object grabbed!");
-
         collider.enabled = false;
         rigidbody.isKinematic = true;
         rigidbody.angularVelocity = Vector3.zero;
@@ -49,14 +48,14 @@ public class Grabbable : MonoBehaviour, IInteractable
 
     public void Drop()
     {
-        Debug.Log("Object dropped!");
-
-        transform.SetParent(interactablesContainer);
+        Vector3 throwDirection = Camera.main.transform.forward;
+        // NOTE: Помещение в контейнер с объектами ломает направление выкидывания Grabbable-объекта по взгляду игрока
+        transform.SetParent(null);
 
         rigidbody.isKinematic = false;
+        rigidbody.linearVelocity = Vector3.zero;
         collider.enabled = true;
 
-        Vector3 throwForce = transform.parent.forward;
-        rigidbody.AddRelativeForce(throwForce * 50f, ForceMode.Impulse);
+        rigidbody.AddForce(throwDirection * 10f, ForceMode.Impulse);
     }
 }
