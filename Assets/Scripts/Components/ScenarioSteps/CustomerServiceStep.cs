@@ -15,6 +15,7 @@ namespace Components.ScenarioSteps
         [SerializeField] private MoneyView moneyPrefab;
         [SerializeField] private Transform moneySpawnPoint;
         [SerializeField] private CashTriggerZone cashTriggerZone;
+        [SerializeField] private CustomerProductsHandler customerProductsHandler;
 
         private IPlayerService _playerService;
 
@@ -37,7 +38,9 @@ namespace Components.ScenarioSteps
 
             _playerService.UnfocusPlayerFromDialogue();
 
-            await ScanItems();
+            customerProductsHandler.StartProducts();
+
+            await customerProductsHandler.WaitAllScanned();
 
             await WaitPayment();
 

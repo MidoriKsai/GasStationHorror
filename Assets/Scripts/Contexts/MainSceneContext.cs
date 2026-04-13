@@ -29,6 +29,8 @@ namespace Contexts
 
         [SerializeField]
         private PointsHandler pointsHandler;
+        
+        [SerializeField] private CashRegisterInteractable cashRegister;
 
         private DialogueSystemController dialogueSystemController;
         private CustomerController customerController;
@@ -39,6 +41,9 @@ namespace Contexts
         {
             var playerService = serviceContainer.Resolve<IPlayerService>();
             playerService.Initialize(playerDataHandler);
+            
+            var inventory = serviceContainer.Resolve<IInventoryService>();
+            cashRegister.Initialize(inventory);
 
             dialogueSystemComponent.Initialize(serviceContainer);
             dialogueSystemController = dialogueSystemComponent.CreateController();
