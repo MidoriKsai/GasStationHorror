@@ -694,6 +694,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CustomerProductsHandler
   productsHandler: {fileID: 360660929}
   pointsHandler: {fileID: 4145784394584869327}
+  grabbablesComponent: {fileID: 8559800282055990426}
 --- !u!1001 &385684423
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1899,6 +1900,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1960293703
 MeshFilter:
@@ -1920,7 +1922,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbb79aa1393145fab88f284542f704d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CashRegisterInteractable
-  customerProductsHandler: {fileID: 0}
+  customerProductsHandler: {fileID: 377306413}
 --- !u!1 &1966905534
 GameObject:
   m_ObjectHideFlags: 0

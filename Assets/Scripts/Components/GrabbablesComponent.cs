@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Player;
 using UnityEngine;
 using Controllers;
 using Services.Interfaces;
@@ -17,22 +16,24 @@ namespace Components
         private IInventoryService inventoryService;
         private InputHandler inputHandler;
 
+        private GrabbablesController grabbablesController;
+
         public void Initialize(ServiceContainer serviceContainer, InputHandler inputHandler)
         {
             playerService = serviceContainer.Resolve<IPlayerService>();
             inventoryService = serviceContainer.Resolve<IInventoryService>();
             this.inputHandler = inputHandler;
+        }
 
-            foreach (var grabbable in grabbablesList)
-            {
-                Transform holdingPoint = playerService.GetGrabbablesHoldingPoint();
-                grabbable.Initialize(holdingPoint);
-            }
+        public void RegisterNewGrabbable(Grabbable grabbable)
+        {
+            grabbablesController.RegisterNewGrabbable(grabbable);
         }
 
         public GrabbablesController CreateController()
         {
-            return new GrabbablesController(grabbablesList, inventoryService, inputHandler);
+            grabbablesController = new GrabbablesController(grabbablesList, inventoryService, playerService, inputHandler);
+            return grabbablesController;
         }
     }
 }

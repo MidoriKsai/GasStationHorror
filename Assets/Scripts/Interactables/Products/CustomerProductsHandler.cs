@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Components;
 using Cysharp.Threading.Tasks;
 using Interactables.Products;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class CustomerProductsHandler : MonoBehaviour
 {
     [SerializeField] private ProductsDataHandler productsHandler;
     [SerializeField] private PointsHandler pointsHandler;
+    [SerializeField] private GrabbablesComponent grabbablesComponent;
 
     private readonly List<Grabbable> _customerProducts = new();
     private readonly List<Grabbable> _scannedProducts = new();
@@ -28,6 +30,7 @@ public class CustomerProductsHandler : MonoBehaviour
             var point = pointsHandler.CustomerSpawnPoints[i];
 
             var product = Instantiate(prefab, point.position, point.rotation);
+            grabbablesComponent.RegisterNewGrabbable(product);
 
             _customerProducts.Add(product);
         }

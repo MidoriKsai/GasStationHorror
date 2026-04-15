@@ -13,12 +13,6 @@ public class Grabbable : MonoBehaviour, IInteractable
     private Collider collider;
 
     private bool grabbed = false;
-    private Transform holdingPoint;
-
-    public void Initialize(Transform holdingPoint)
-    {
-        this.holdingPoint = holdingPoint;
-    }
 
     public void Interact()
     {
@@ -30,7 +24,7 @@ public class Grabbable : MonoBehaviour, IInteractable
         TryGrabbedEvent?.Invoke(this);
     }
 
-    public void Grab()
+    public void Grab(Transform holdingPoint)
     {
         collider.enabled = false;
         rigidbody.isKinematic = true;
