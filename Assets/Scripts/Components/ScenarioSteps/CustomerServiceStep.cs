@@ -31,6 +31,8 @@ namespace Components.ScenarioSteps
 
         public override async UniTask PerformStepAsync(CancellationToken ct)
         {
+            _terminalController.DisableInteraction();
+            
             await _customerController.WaitForCustomerArriveAsync();
 
             await cashTriggerZone.WaitPlayerEnter();
@@ -47,12 +49,9 @@ namespace Components.ScenarioSteps
             
             _terminalController.EnableInteraction(_customerController.currentCustomerData);
 
-            bool terminalSuccess = await _terminalController.WaitForResultAsync();
+            await _terminalController.WaitForResultAsync();
 
-            if (!terminalSuccess)
-            {
-                return;
-            }
+            _terminalController.DisableInteraction();
 
             await WaitPayment();
 

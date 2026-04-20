@@ -1,12 +1,15 @@
 using Core.Interfaces;
 using Cysharp.Threading.Tasks;
 using Interactables.SmartTerminal;
+using Services.Interfaces;
 using UnityEngine;
 
-public class SmartTerminalController: IController
+public class SmartTerminalController : IController
 {
     private readonly SmartTerminalView _view;
     private readonly SmartTerminalInteractable _interactable;
+    private readonly IPlayerService _playerService;
+    private readonly Transform _focusPoint;
 
     private CustomerData _currentCustomerData;
 
@@ -22,15 +25,22 @@ public class SmartTerminalController: IController
 
     public SmartTerminalController(
         SmartTerminalView view,
-        SmartTerminalInteractable interactable)
+        SmartTerminalInteractable interactable,
+        IPlayerService playerService,
+        Transform focusPoint)
     {
         _view = view;
         _interactable = interactable;
+        _playerService = playerService;
+        _focusPoint = focusPoint;
 
         _view.NextClicked += OnNextClicked;
         _view.BackClicked += OnBackClicked;
         _view.ChoiceClicked += OnChoiceClicked;
         _view.PayClicked += OnPayClicked;
+
+        _view.HideRoot();
+        _isSessionActive = false;
     }
 
     public void InitializeInteract()
@@ -42,41 +52,56 @@ public class SmartTerminalController: IController
     public void EnableInteraction(CustomerData customerData)
     {
         _currentCustomerData = customerData;
+        _isSessionActive = false;
+
+        if (_resultTcs == null || _resultTcs.Task.Status.IsCompleted())
+        {
+            _resultTcs = new UniTaskCompletionSource<bool>();
+        }
+
         _interactable.SetAvailable(true);
     }
 
     public void DisableInteraction()
     {
+        _isSessionActive = false;
         _interactable.SetAvailable(false);
+        _view.HideRoot();
+
+        DisableCursor();
+        _playerService.UnfocusPlayerFromDialogue();
     }
 
     public UniTask<bool> WaitForResultAsync()
     {
-        _resultTcs = new UniTaskCompletionSource<bool>();
+        if (_resultTcs == null || _resultTcs.Task.Status.IsCompleted())
+        {
+            _resultTcs = new UniTaskCompletionSource<bool>();
+        }
+
         return _resultTcs.Task;
     }
 
     private void OpenByInteract()
     {
         if (_currentCustomerData == null)
-        {
             return;
-        }
 
         if (_isSessionActive)
-        {
             return;
-        }
 
         _isSessionActive = true;
+        
+        _interactable.SetAvailable(false);
 
         _enteredPumpNumber = -1;
         _enteredLiterQuantity = -1;
         _selectedButtonId = -1;
         _inputsValid = false;
         _choiceValid = false;
-        
+
         EnableCursor();
+        _playerService.FocusPlayerToDialogue(_focusPoint);
 
         _view.Clear();
         _view.ShowRoot();
@@ -106,7 +131,6 @@ public class SmartTerminalController: IController
 
         if (!_inputsValid)
         {
-
             Debug.Log($"Колонка: {_currentCustomerData.petrolPumpNumber}");
             Debug.Log($"Литры: {_currentCustomerData.literQuantity}");
             return;
@@ -148,30 +172,38 @@ public class SmartTerminalController: IController
         bool result = _inputsValid && _choiceValid;
 
         if (!result)
-        {
             return;
-        }
 
-        FinishSession(true);
+        FinishSession();
     }
 
     private void OnBackClicked()
     {
         if (!_isSessionActive)
             return;
+
+        _view.HideRoot();
+        DisableCursor();
+        _playerService.UnfocusPlayerFromDialogue();
+
+        _isSessionActive = false;
         
-        FinishSession(false);
+        _interactable.SetAvailable(true);
     }
 
-    private void FinishSession(bool result)
+    private void FinishSession()
     {
         _view.HideRoot();
         DisableCursor();
-        _interactable.SetAvailable(false);
+        _playerService.UnfocusPlayerFromDialogue();
+
         _isSessionActive = false;
-        _resultTcs?.TrySetResult(result);
+        
+        _interactable.SetAvailable(false);
+
+        _resultTcs?.TrySetResult(true);
     }
-    
+
     private void EnableCursor()
     {
         Cursor.lockState = CursorLockMode.None;

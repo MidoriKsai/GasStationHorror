@@ -1,6 +1,7 @@
 using Core;
 using Core.Interfaces;
 using Interactables.SmartTerminal;
+using Services.Interfaces;
 using UnityEngine;
 
 namespace Components
@@ -9,6 +10,7 @@ namespace Components
     {
         [SerializeField] private SmartTerminalView smartTerminalView;
         [SerializeField] private SmartTerminalInteractable smartTerminalInteractable;
+        [SerializeField] private Transform terminalFocusPoint;
 
         private ServiceContainer _container;
         private SmartTerminalController _controller;
@@ -20,9 +22,13 @@ namespace Components
 
         public SmartTerminalController CreateController()
         {
+            var playerService = _container.Resolve<IPlayerService>();
+
             _controller = new SmartTerminalController(
                 smartTerminalView,
-                smartTerminalInteractable);
+                smartTerminalInteractable,
+                playerService,
+                terminalFocusPoint);
 
             _controller.InitializeInteract();
 
