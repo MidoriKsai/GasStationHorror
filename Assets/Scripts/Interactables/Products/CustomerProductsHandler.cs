@@ -14,14 +14,14 @@ public class CustomerProductsHandler : MonoBehaviour
     private readonly List<Grabbable> _scannedProducts = new();
 
     private UniTaskCompletionSource _tcs;
+    
 
     public void StartProducts()
     {
-        ClearProducts();
 
         _tcs = new UniTaskCompletionSource();
 
-        int count = Random.Range(1, 6);
+        int count = Random.Range(2, 6);
         var prefabs = productsHandler.ProductPrefabs;
 
         for (int i = 0; i < count; i++)
@@ -60,6 +60,7 @@ public class CustomerProductsHandler : MonoBehaviour
         if (_customerProducts.Count == 0)
         {
             _tcs?.TrySetResult();
+            ClearProducts();
         }
 
         return true;
@@ -74,6 +75,10 @@ public class CustomerProductsHandler : MonoBehaviour
     {
         int index = _scannedProducts.Count - 1;
         var point = pointsHandler.ScannedProductPoints[index];
+        
+        transform.SetParent(null);
+
+        product.DisableRagdoll();
 
         product.transform.position = point.position;
         product.transform.rotation = point.rotation;

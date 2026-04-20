@@ -11,6 +11,8 @@ namespace Components.ScenarioSteps
     {
         private CustomerController _customerController;
         private DialogueSystemController _dialogue;
+        private SmartTerminalController _terminalController;
+
 
         [SerializeField] private MoneyView moneyPrefab;
         [SerializeField] private Transform moneySpawnPoint;
@@ -24,6 +26,7 @@ namespace Components.ScenarioSteps
             _customerController = container.Resolve<CustomerController>();
             _dialogue = container.Resolve<DialogueSystemController>();
             _playerService = container.Resolve<IPlayerService>();
+            _terminalController = container.Resolve<SmartTerminalController>();
         }
 
         public override async UniTask PerformStepAsync(CancellationToken ct)
@@ -41,6 +44,15 @@ namespace Components.ScenarioSteps
             customerProductsHandler.StartProducts();
 
             await customerProductsHandler.WaitAllScanned();
+            
+            _terminalController.EnableInteraction(_customerController.currentCustomerData);
+
+            bool terminalSuccess = await _terminalController.WaitForResultAsync();
+
+            if (!terminalSuccess)
+            {
+                return;
+            }
 
             await WaitPayment();
 

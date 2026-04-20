@@ -1,6 +1,7 @@
 ﻿using Components;
 using Controllers;
 using Core;
+using Cysharp.Threading.Tasks.Triggers;
 using Player;
 using Services.Interfaces;
 using UnityEngine;
@@ -26,16 +27,22 @@ namespace Contexts
 
         [SerializeField]
         private DialogueSystemComponent dialogueSystemComponent;
+        
+        [SerializeField] private SmartTerminalComponent smartTerminalComponent;
 
         [SerializeField]
         private PointsHandler pointsHandler;
         
         [SerializeField] private CashRegisterInteractable cashRegister;
+        
+
+        
 
         private DialogueSystemController dialogueSystemController;
         private CustomerController customerController;
         private ScenarioController scenarioController;
         private GrabbablesController grabbablesController;
+        private SmartTerminalController smartTerminalController;
 
         protected override void Initialize(ServiceContainer serviceContainer)
         {
@@ -51,10 +58,17 @@ namespace Contexts
 
             grabbablesComponent.Initialize(serviceContainer, inputHandler);
             grabbablesController = grabbablesComponent.CreateController();
+            
+            scenarioComponent.Initialize(serviceContainer);
+
 
             customersComponent.Initialize(pointsHandler);
             customerController = customersComponent.CreateController();
             serviceContainer.Register(customerController);
+            
+            smartTerminalComponent.Initialize(serviceContainer);
+            smartTerminalController = smartTerminalComponent.CreateController();
+            serviceContainer.Register(smartTerminalController);
 
             scenarioComponent.Initialize(serviceContainer);
             scenarioController = scenarioComponent.CreateController();
@@ -68,6 +82,7 @@ namespace Contexts
             customerController.Dispose();
             dialogueSystemController.Dispose();
             grabbablesController.Dispose();
+            smartTerminalController.Dispose();
         }
     }
 }
