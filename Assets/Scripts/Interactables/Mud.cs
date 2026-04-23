@@ -1,20 +1,28 @@
 using UnityEngine;
+using System.Collections;
 using Interactables.Interface;
 
 public class Mud : MonoBehaviour, IInteractable
 {
+    public float WipePercentage => wipeProgress / timeToWipe * 100f;
+
     [SerializeField] private GameObject ground;
     [SerializeField] private int NeededWipeCount;
-    private int wipeCount;
+    [SerializeField] private RectTransform progressBar;
+    private float timeToWipe = 3f;
+    private float wipeProgress;
 
     public void Interact()
     {
-        wipeCount++;
+        wipeProgress += Time.deltaTime;
 
-        if (wipeCount == NeededWipeCount)
+        Debug.Log($"WIPING {wipeProgress}");
+
+        if (wipeProgress >= timeToWipe)
+        {
             Destroy(gameObject);
+        }
     }
 
-    public bool CanInteract()
-        => true;
+    public bool CanInteract() => true;
 }
