@@ -20,6 +20,7 @@ public class Mud : MonoBehaviour, IInteractable
 
         if (wipeProgress >= timeToWipe)
         {
+            gameObject.SetActive(false);
             Destroy(gameObject);
         }
     }
