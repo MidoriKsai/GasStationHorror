@@ -7,7 +7,7 @@ namespace Services.Interfaces
     public interface IInventoryService
     {
         void AddItem(Grabbable grabbable);
-        void RemoveItem();
+        void RemoveItem(bool needToAddForce);
         Grabbable GetGrabbableInInventory();
         bool IsInventoryEmpty();
     }

@@ -27,7 +27,7 @@ public class CashRegisterInteractable : MonoBehaviour, IInteractable
 
         if (success)
         {
-            _inventoryService.RemoveItem();
+            _inventoryService.RemoveItem(false);
         }
     }
 

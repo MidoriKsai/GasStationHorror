@@ -43,7 +43,7 @@ namespace Controllers
 
         private void OnItemDropActionTriggered()
         {
-            inventoryService.RemoveItem();
+            inventoryService.RemoveItem(true);
         }
 
         private void OnTryGrabbedEvent(Grabbable grabbable)

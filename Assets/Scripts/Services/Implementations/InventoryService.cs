@@ -11,11 +11,11 @@ namespace Services.Implementations
             this.grabbable = grabbable;
         }
 
-        public void RemoveItem()
+        public void RemoveItem(bool needToAddForce)
         {
             if (!IsInventoryEmpty())
             {
-                grabbable.Drop();
+                grabbable.Drop(needToAddForce);
             }
 
             this.grabbable = null;

@@ -40,17 +40,20 @@ public class Grabbable : MonoBehaviour, IInteractable
     public bool CanInteract()
         => true;
 
-    public void Drop()
+    public void Drop(bool needToAddForce)
     {
         Vector3 throwDirection = Camera.main.transform.forward;
         // NOTE: Помещение в контейнер с объектами ломает направление выкидывания Grabbable-объекта по взгляду игрока
         transform.SetParent(null);
 
         rigidbody.isKinematic = false;
-        rigidbody.linearVelocity = Vector3.zero; 
+        rigidbody.linearVelocity = Vector3.zero;
         collider.enabled = true;
 
-        rigidbody.AddForce(throwDirection * 10f, ForceMode.Impulse);
+        if (needToAddForce)
+        {
+            rigidbody.AddForce(throwDirection * 10f, ForceMode.Impulse);
+        }
     }
 
     public void DropCarefully()
@@ -58,7 +61,7 @@ public class Grabbable : MonoBehaviour, IInteractable
         transform.SetParent(null);
         DisableRagdoll();
     }
-    
+
     public void DisableRagdoll()
     {
         rigidbody.linearVelocity = Vector3.zero;
