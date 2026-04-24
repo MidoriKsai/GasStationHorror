@@ -26,15 +26,11 @@ public class Grabbable : MonoBehaviour, IInteractable
 
     public void Grab(Transform holdingPoint)
     {
-        collider.enabled = false;
-        rigidbody.isKinematic = true;
-        rigidbody.angularVelocity = Vector3.zero;
-        rigidbody.linearVelocity = Vector3.zero;
+        DisablePhysics();
 
         transform.SetParent(holdingPoint);
 
-        transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
+        ResetLocalRotation();
     }
 
     public bool CanInteract()
@@ -46,9 +42,7 @@ public class Grabbable : MonoBehaviour, IInteractable
         // NOTE: Помещение в контейнер с объектами ломает направление выкидывания Grabbable-объекта по взгляду игрока
         transform.SetParent(null);
 
-        rigidbody.isKinematic = false;
-        rigidbody.linearVelocity = Vector3.zero;
-        collider.enabled = true;
+        EnablePhysics();
 
         if (needToAddForce)
         {
@@ -69,5 +63,26 @@ public class Grabbable : MonoBehaviour, IInteractable
 
         rigidbody.isKinematic = true;
         collider.enabled = true;
+    }
+
+    public void DisablePhysics()
+    {
+        collider.enabled = false;
+        rigidbody.isKinematic = true;
+        rigidbody.angularVelocity = Vector3.zero;
+        rigidbody.linearVelocity = Vector3.zero;
+    }
+
+    public void EnablePhysics()
+    {
+        rigidbody.isKinematic = false;
+        rigidbody.linearVelocity = Vector3.zero;
+        collider.enabled = true;
+    }
+
+    public void ResetLocalRotation()
+    {
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
     }
 }
