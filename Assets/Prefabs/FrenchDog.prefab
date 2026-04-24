@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9071917369842647467}
+  - component: {fileID: 4976275195967540933}
+  - component: {fileID: 39980638631641276}
   m_Layer: 0
   m_Name: FrenchDog
   m_TagString: Untagged
@@ -33,6 +35,47 @@ Transform:
   - {fileID: 3298676606214347712}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &4976275195967540933
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4624905257132741214}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &39980638631641276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4624905257132741214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5163f53fabdf32e2a09092e5dd58dd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Grabbable
+  rigidbody: {fileID: 8173855515583557017}
+  collider: {fileID: 4856046284835213475}
 --- !u!1001 &2740108424933153190
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -85,7 +128,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sausage
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4870153729206580595, guid: 1288b74c1fe9bd842bc4505c5fdbb73c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 99694d58395e62a42943b9a35e4bafbe, type: 2}
+    m_RemovedComponents:
+    - {fileID: 3369548951999251569, guid: 1288b74c1fe9bd842bc4505c5fdbb73c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -93,6 +141,16 @@ PrefabInstance:
 --- !u!4 &4308476882206599775 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2147120800117437433, guid: 1288b74c1fe9bd842bc4505c5fdbb73c, type: 3}
+  m_PrefabInstance: {fileID: 2740108424933153190}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &4856046284835213475 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 7305672327638239493, guid: 1288b74c1fe9bd842bc4505c5fdbb73c, type: 3}
+  m_PrefabInstance: {fileID: 2740108424933153190}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &8173855515583557017 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 6298719831521473599, guid: 1288b74c1fe9bd842bc4505c5fdbb73c, type: 3}
   m_PrefabInstance: {fileID: 2740108424933153190}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4491549582143163509

@@ -4,6 +4,7 @@ using Core;
 using Cysharp.Threading.Tasks.Triggers;
 using Player;
 using Services.Interfaces;
+using TipsSystem;
 using UnityEngine;
 
 namespace Contexts
@@ -28,8 +29,13 @@ namespace Contexts
         [SerializeField]
         private DialogueSystemComponent dialogueSystemComponent;
         
+        [SerializeField]
+        private CookingSystemComponent cookingSystemComponent;
+        
         [SerializeField] private SmartTerminalComponent smartTerminalComponent;
-
+    
+        [SerializeField] private TipComponent tipComponent;
+        
         [SerializeField]
         private PointsHandler pointsHandler;
         
@@ -43,6 +49,7 @@ namespace Contexts
         private ScenarioController scenarioController;
         private GrabbablesController grabbablesController;
         private SmartTerminalController smartTerminalController;
+        private TipController tipController;
 
         protected override void Initialize(ServiceContainer serviceContainer)
         {
@@ -55,6 +62,9 @@ namespace Contexts
             dialogueSystemComponent.Initialize(serviceContainer);
             dialogueSystemController = dialogueSystemComponent.CreateController();
             serviceContainer.Register(dialogueSystemController);
+            
+            tipController = tipComponent.CreateController();
+            serviceContainer.Register(tipController);
 
             grabbablesComponent.Initialize(serviceContainer, inputHandler);
             grabbablesController = grabbablesComponent.CreateController();
@@ -69,6 +79,8 @@ namespace Contexts
             smartTerminalComponent.Initialize(serviceContainer);
             smartTerminalController = smartTerminalComponent.CreateController();
             serviceContainer.Register(smartTerminalController);
+            
+            cookingSystemComponent.Initialize(serviceContainer);
 
             scenarioComponent.Initialize(serviceContainer);
             scenarioController = scenarioComponent.CreateController();
@@ -83,6 +95,7 @@ namespace Contexts
             dialogueSystemController.Dispose();
             grabbablesController.Dispose();
             smartTerminalController.Dispose();
+            tipController?.Dispose();
         }
     }
 }

@@ -1,16 +1,61 @@
-<dialogue id="boss_intro">
+<dialogue id="manager_intro">
 
-	<line>
-		<text>Привет. Ты сегодня рано.</text>
-	</line>
+    <line>
+        <text>Привет. Я твой менеджер</text>
+    </line>
 
-	<line>
-		<text>Готов начать?</text>
-		<answers>
-			<answer>Да</answer>
-			<answer>Не совсем</answer>
-			<answer>Что нужно делать?</answer>
-		</answers>
-	</line>
+    <line>
+        <text>Рассказать твои задачи?</text>
+        <answers>
+            <answer>Здравствуйте, да</answer>
+            <answer>Естественно</answer>
+        </answers>
+    </line>
+    
+    <line>
+        <text>Прежде всего — принимай покупателей.</text>
+    </line>
+
+    <line>
+        <text>В терминале выбираешь топливо и подаёшь на колонку.</text>
+    </line>
+
+    <line>
+        <text>Для готовки есть сосиски, булки и стаканы для кофе.</text>
+    </line>
+
+    <line>
+        <text>Товары нужно сканировать и класть слева от терминала.</text>
+    </line>
+
+    <line>
+        <text>После этого проводишь оплату через терминал.</text>
+    </line>
+
+    <line>
+        <text>Не забывай про уборку и пополнение полок.</text>
+    </line>
+
+    <line>
+        <text>В конце смены вынеси мусор у чёрного входа.</text>
+    </line>
+
+    <line>
+        <text>Понял?</text>
+        <answers>
+            <answer>Понял. А почему только наличные?</answer>
+        </answers>
+    </line>
+
+    <line>
+        <text>Проблемы с интернетом на терминале.</text>
+    </line>
+
+    <line>
+        <text>Ясно?</text>
+        <answers>
+            <answer>Ясно</answer>
+        </answers>
+    </line>
 
 </dialogue>

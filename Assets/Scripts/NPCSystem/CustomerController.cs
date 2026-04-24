@@ -20,6 +20,8 @@ public class CustomerController : IController
     private Transform _gasStationPoint;
 
     public CustomerData currentCustomerData => _currentCustomerData;
+    public Customer currentCustomer => _currentCustomer;
+
     
     public CustomerController(
         PointsHandler pointsHandler,

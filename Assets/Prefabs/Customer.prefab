@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1794691960816511570}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: DialogPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,8 @@ GameObject:
   - component: {fileID: 7051495170858435820}
   - component: {fileID: 3985674962573626829}
   - component: {fileID: -4475745524008829069}
-  m_Layer: 0
+  - component: {fileID: 1466592978831306676}
+  m_Layer: 3
   m_Name: Customer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,6 +154,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1466592978831306676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4850688399635303389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 724d4749aa324951a824a67385476a10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Interactables.CustomerInteractable
 --- !u!1001 &3550284597756546668
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -201,9 +214,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7029948723529949830, guid: a7f1ea9dde659284cbc40be1ecd8b95c, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a7f1ea9dde659284cbc40be1ecd8b95c, type: 3}
       propertyPath: m_Name
       value: nps man
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a7f1ea9dde659284cbc40be1ecd8b95c, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5148817236446094103, guid: a7f1ea9dde659284cbc40be1ecd8b95c, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6786894176484580696, guid: a7f1ea9dde659284cbc40be1ecd8b95c, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

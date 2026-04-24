@@ -154,10 +154,10 @@ public class SmartTerminalController : IController
         }
 
         string receiptText =
-            $"Клиент: {_currentCustomerData.customerId}\n" +
-            $"Колонка: {_currentCustomerData.petrolPumpNumber}\n" +
+
+            $"Колонка: {_currentCustomerData.petrolPumpNumber + 1}\n" +
             $"Литры: {_currentCustomerData.literQuantity}\n" +
-            $"Кнопка: {_selectedButtonId}\n";
+            $"Топливо: {_currentCustomerData.fuelType}\n";
 
         _view.SetReceiptText(receiptText);
         _view.SetPayButtonInteractable(true);
@@ -182,22 +182,14 @@ public class SmartTerminalController : IController
         if (!_isSessionActive)
             return;
 
-        _view.HideRoot();
-        DisableCursor();
-        _playerService.UnfocusPlayerFromDialogue();
-
-        _isSessionActive = false;
+        CloseSmartTerminalPanel();
         
         _interactable.SetAvailable(true);
     }
 
     private void FinishSession()
     {
-        _view.HideRoot();
-        DisableCursor();
-        _playerService.UnfocusPlayerFromDialogue();
-
-        _isSessionActive = false;
+        CloseSmartTerminalPanel();
         
         _interactable.SetAvailable(false);
 
@@ -222,5 +214,14 @@ public class SmartTerminalController : IController
         _view.BackClicked -= OnBackClicked;
         _view.ChoiceClicked -= OnChoiceClicked;
         _view.PayClicked -= OnPayClicked;
+    }
+    
+    private void CloseSmartTerminalPanel()
+    {
+        _view.HideRoot();
+        DisableCursor();
+        _playerService.UnfocusPlayerFromDialogue();
+
+        _isSessionActive = false;
     }
 }

@@ -1,0 +1,13 @@
+<tips>
+    <tip id="shift_start">
+        <text>Мне нужно осмотреть заправку.</text>
+    </tip>
+
+    <tip id="scan_products">
+        <text>Нужно взять продукт и отпикать его.</text>
+    </tip>
+
+    <tip id="terminal_payment">
+        <text>Нужно пробить топливо в терминале.</text>
+    </tip>
+</tips>

@@ -1,0 +1,10 @@
+<dialogue id="customer_intro_1">
+
+    <line>
+        <text>Здравствуйте, {fuel}, {liters} литров, {pump} колонка.{foodOrder}</text>
+        <answers>
+            <answer>Здравствуйте, сейчас сделаем</answer>
+        </answers>
+    </line>
+
+</dialogue>

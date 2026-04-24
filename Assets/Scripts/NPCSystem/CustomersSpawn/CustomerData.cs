@@ -7,4 +7,10 @@ public class CustomerData
     public int literQuantity;
 
     public int patrolId;
+
+    public string fuelType;
+    
+    public int coffeeCount;
+    
+    public int frenchDogCount;
 }
