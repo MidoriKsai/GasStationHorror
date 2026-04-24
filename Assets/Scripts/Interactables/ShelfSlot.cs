@@ -24,6 +24,7 @@ public class ShelfSlot : MonoBehaviour, IInteractable
             grabbable.DisablePhysics();
             grabbable.transform.SetParent(transform);
             grabbable.transform.position = transform.position;
+            grabbable.ResetLocalRotation();
 
         }
     }

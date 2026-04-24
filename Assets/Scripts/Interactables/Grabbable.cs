@@ -36,8 +36,7 @@ public class Grabbable : MonoBehaviour, IInteractable
 
         transform.SetParent(holdingPoint);
 
-        transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
+        ResetLocalRotation();
     }
 
     public bool CanInteract()
@@ -67,5 +66,11 @@ public class Grabbable : MonoBehaviour, IInteractable
         rigidbody.isKinematic = false;
         rigidbody.linearVelocity = Vector3.zero;
         collider.enabled = true;
+    }
+
+    public void ResetLocalRotation()
+    {
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
     }
 }
