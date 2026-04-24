@@ -32,10 +32,7 @@ public class Grabbable : MonoBehaviour, IInteractable
 
     public void Grab()
     {
-        collider.enabled = false;
-        rigidbody.isKinematic = true;
-        rigidbody.angularVelocity = Vector3.zero;
-        rigidbody.linearVelocity = Vector3.zero;
+        DisablePhysics();
 
         transform.SetParent(holdingPoint);
 
@@ -52,10 +49,23 @@ public class Grabbable : MonoBehaviour, IInteractable
         // NOTE: Помещение в контейнер с объектами ломает направление выкидывания Grabbable-объекта по взгляду игрока
         transform.SetParent(null);
 
+        EnablePhysics();
+
+        rigidbody.AddForce(throwDirection * 10f, ForceMode.Impulse);
+    }
+
+    public void DisablePhysics()
+    {
+        collider.enabled = false;
+        rigidbody.isKinematic = true;
+        rigidbody.angularVelocity = Vector3.zero;
+        rigidbody.linearVelocity = Vector3.zero;
+    }
+
+    public void EnablePhysics()
+    {
         rigidbody.isKinematic = false;
         rigidbody.linearVelocity = Vector3.zero;
         collider.enabled = true;
-
-        rigidbody.AddForce(throwDirection * 10f, ForceMode.Impulse);
     }
 }
