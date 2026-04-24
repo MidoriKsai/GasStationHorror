@@ -39,7 +39,7 @@ public class Grabbable : MonoBehaviour, IInteractable
 
     public bool CanInteract()
         => true;
-    
+
     public void Drop(bool needToAddForce)
     {
         Vector3 throwDirection = Camera.main.transform.forward;
@@ -49,7 +49,7 @@ public class Grabbable : MonoBehaviour, IInteractable
         rigidbody.isKinematic = false;
         rigidbody.linearVelocity = Vector3.zero;
         collider.enabled = true;
-        
+
         if (needToAddForce)
         {
             rigidbody.AddForce(throwDirection * 10f, ForceMode.Impulse);
@@ -61,7 +61,6 @@ public class Grabbable : MonoBehaviour, IInteractable
         transform.SetParent(null);
         DisableRagdoll();
     }
-    
 
     public void DisableRagdoll()
     {
