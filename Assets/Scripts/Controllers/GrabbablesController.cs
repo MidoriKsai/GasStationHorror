@@ -55,5 +55,10 @@ namespace Controllers
 
             inputHandler.ItemDropActionTriggered -= OnItemDropActionTriggered;
         }
+
+        public void SubscribeAtRuntime(Grabbable grabbable)
+        {
+            grabbable.TryGrabbedEvent += OnTryGrabbedEvent;
+        }
     }
 }
