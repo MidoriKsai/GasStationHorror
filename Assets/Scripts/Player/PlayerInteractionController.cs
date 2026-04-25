@@ -15,15 +15,38 @@ namespace Player
 
         public event Action InteractionEnded;
 
-
         private void Update()
         {
             HandleInteraction();
+            HandleContinuousInteraction();
         }
 
         private void HandleInteraction()
         {
             if (!Input.GetKeyDown(KeyCode.E))
+            {
+                return;
+            }
+
+
+            IInteractable interactable = interactionRaycastComponent.CurrentInteractable;
+
+            if (interactable == null)
+            {
+                return;
+            }
+
+            if (!interactable.CanInteract())
+            {
+                return;
+            }
+
+            interactable.Interact();
+        }
+
+        private void HandleContinuousInteraction()
+        {
+            if (!Input.GetKey(KeyCode.E))
             {
                 InteractionEnded?.Invoke();
                 CurrentInteractable = null;
@@ -39,7 +62,6 @@ namespace Player
                 return;
             }
 
-
             if (!interactable.CanInteract())
             {
                 CurrentInteractable = null;
@@ -48,9 +70,13 @@ namespace Player
 
             CurrentInteractable = interactable;
 
-            InteractionEvent?.Invoke(interactable);
 
-            interactable.Interact();
+            if (interactable is Mud)
+            {
+                interactable.Interact();
+
+                InteractionEvent?.Invoke(interactable);
+            }
         }
     }
 }
