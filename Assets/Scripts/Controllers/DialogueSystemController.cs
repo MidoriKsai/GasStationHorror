@@ -23,19 +23,27 @@ namespace Controllers
 
             _view.ChoiceSelected += OnChoice;
         }
+        
+        public UniTask StartDialogueAsync(string id, CancellationToken ct)
+        {
+            return StartDialogueAsync(id, null, ct);
+        }
 
         public async UniTask StartDialogueAsync(
             string id,
+            CustomerData customerData,
             CancellationToken ct)
         {
             var data = await _storage.GetDialogueAsync(id, ct);
-            
+
             EnableCursor();
             _view.Show();
 
             foreach (var line in data.Lines)
             {
-                _view.SetDialogueText(line.Text);
+                string text = ApplyData(line.Text, customerData);
+
+                _view.SetDialogueText(text);
 
                 if (line.Answers.Count == 0)
                 {
@@ -62,11 +70,48 @@ namespace Controllers
             DisableCursor();
         }
 
+        private string ApplyData(string text, CustomerData data)
+        {
+            if (data == null)
+                return text;
+
+            return text
+                .Replace("{pump}", (data.petrolPumpNumber + 1).ToString())
+                .Replace("{liters}", data.literQuantity.ToString())
+                .Replace("{fuel}", data.fuelType)
+                .Replace("{foodOrder}", BuildFoodOrderText(data));
+        }
+
+        private string BuildFoodOrderText(CustomerData data)
+        {
+            if (data.coffeeCount <= 0 && data.frenchDogCount <= 0)
+                return "";
+
+            var parts = new List<string>();
+
+            if (data.coffeeCount > 0)
+                parts.Add($"{data.coffeeCount} кофе");
+
+            if (data.frenchDogCount > 0)
+            {
+                parts.Add($"{data.frenchDogCount} {GetFrenchDogWord(data.frenchDogCount)}");
+            }
+
+            return " Ещё " + string.Join(" и ", parts) + ".";
+        }
+        
+        private string GetFrenchDogWord(int count)
+        {
+            return count == 1 ? "френчдог" : "френчдога";
+        }
+        
+        
+
         private void OnChoice(int index)
         {
             _tcs?.TrySetResult(index);
         }
-        
+
         private void EnableCursor()
         {
             Cursor.lockState = CursorLockMode.None;

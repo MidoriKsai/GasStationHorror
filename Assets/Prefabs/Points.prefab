@@ -31,6 +31,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7342506922718904047}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1854873731383709698
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2070911588462019881}
+  m_Layer: 0
+  m_Name: GasStationPoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2070911588462019881
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854873731383709698}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5156114998924342331}
+  m_Father: {fileID: 7342506922718904047}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4103342580222788465
 GameObject:
   m_ObjectHideFlags: 0
@@ -56,7 +88,7 @@ Transform:
   m_GameObject: {fileID: 4103342580222788465}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.16, y: 0, z: -8.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -91,7 +123,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7342506922718904047}
+  m_Father: {fileID: 2070911588462019881}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4879998407340714776
 GameObject:
@@ -217,10 +249,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2070911588462019881}
   - {fileID: 3282810325043009280}
   - {fileID: 9186187628598604794}
   - {fileID: 2272288438548977432}
-  - {fileID: 5156114998924342331}
   - {fileID: 45566540238982533}
   - {fileID: 5733160426352140679}
   m_Father: {fileID: 0}
@@ -241,6 +273,8 @@ MonoBehaviour:
   GasStationPoint: {fileID: 5156114998924342331}
   CashDeskPoint: {fileID: 9186187628598604794}
   CarLeavePoint: {fileID: 45566540238982533}
+  <CustomerSpawnPoints>k__BackingField: []
+  <ScannedProductPoints>k__BackingField: []
 --- !u!1 &8480947275078425227
 GameObject:
   m_ObjectHideFlags: 0
@@ -329,5 +363,4 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}

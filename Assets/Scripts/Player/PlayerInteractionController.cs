@@ -1,13 +1,16 @@
 using System;
 using Interactables.Interface;
 using Player;
+using Services.Interfaces;
 using UnityEngine;
+using Components;
 
 namespace Player
 {
     public class PlayerInteractionController: MonoBehaviour
     {
         [SerializeField] private InteractionRaycastComponent interactionRaycastComponent;
+        [SerializeField] private GrabbablesComponent grabbablesComponent;
 
         public IInteractable CurrentInteractable;
 
@@ -15,13 +18,36 @@ namespace Player
 
         public event Action InteractionEnded;
 
-
         private void Update()
         {
             HandleInteraction();
+            HandleContinuousInteraction();
         }
 
         private void HandleInteraction()
+        {
+            if (!Input.GetKeyDown(KeyCode.E))
+            {
+                return;
+            }
+
+
+            IInteractable interactable = interactionRaycastComponent.CurrentInteractable;
+
+            if (interactable == null)
+            {
+                return;
+            }
+
+            if (!interactable.CanInteract())
+            {
+                return;
+            }
+
+            interactable.Interact();
+        }
+
+        private void HandleContinuousInteraction()
         {
             if (!Input.GetKey(KeyCode.E))
             {
@@ -39,7 +65,6 @@ namespace Player
                 return;
             }
 
-
             if (!interactable.CanInteract())
             {
                 CurrentInteractable = null;
@@ -48,9 +73,17 @@ namespace Player
 
             CurrentInteractable = interactable;
 
-            InteractionEvent?.Invoke(interactable);
 
-            interactable.Interact();
+            if (interactable is Mud)
+            {
+                IInventoryService inventoryService = grabbablesComponent.GetInventoryService();
+                if (!inventoryService.IsInventoryEmpty() && inventoryService.GetGrabbableInInventory().name == "Mop")
+                {
+                    interactable.Interact();
+
+                    InteractionEvent?.Invoke(interactable);
+                }
+            }
         }
     }
 }

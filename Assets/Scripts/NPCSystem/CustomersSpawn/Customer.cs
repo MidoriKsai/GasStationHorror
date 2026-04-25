@@ -7,7 +7,7 @@ public class Customer : MonoBehaviour
     [SerializeField]
     private Transform _dialogPoint;
 
-    private CustomerData _customerData;
+    public CustomerData currentCustomerData;
     private NavMeshAgent _agent;
 
     private void Awake()
@@ -22,8 +22,8 @@ public class Customer : MonoBehaviour
 
     public void Init(CustomerData customerData)
     {
-        _customerData = customerData;
-        Debug.Log(_customerData.customerId);
+        currentCustomerData = customerData;
+        Debug.Log(currentCustomerData.customerId);
     }
 
     public Transform GetDialogPoint() => _dialogPoint;

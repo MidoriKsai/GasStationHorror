@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Core.Interfaces;
 using Cysharp.Threading.Tasks;
 using NPCSystem;
@@ -8,15 +7,22 @@ public class CustomerController : IController
 {
     private readonly CustomerSpawner _customerSpawner;
     private readonly CarSpawner _carSpawner;
+    private readonly CustomersFactory _customersFactory;
 
     private readonly PointsHandler pointsHandler;
 
     private Customer _currentCustomer;
     private Car _currentCar;
+    private CustomerData _currentCustomerData;
 
     private UniTaskCompletionSource _carTcs;
     private UniTaskCompletionSource _customerTcs;
+    private Transform _gasStationPoint;
 
+    public CustomerData currentCustomerData => _currentCustomerData;
+    public Customer currentCustomer => _currentCustomer;
+
+    
     public CustomerController(
         PointsHandler pointsHandler,
         Customer customerPrefab,
@@ -24,6 +30,7 @@ public class CustomerController : IController
     {
         _customerSpawner = new CustomerSpawner(customerPrefab);
         _carSpawner = new CarSpawner(carPrefab);
+        _customersFactory = new CustomersFactory();
 
         this.pointsHandler = pointsHandler;
     }
@@ -31,20 +38,26 @@ public class CustomerController : IController
     public Transform GetCustomerDialogPoint()
     {
         if (_currentCustomer != null)
-        {
             return _currentCustomer.GetDialogPoint();
-        }
 
         return null;
     }
 
     public async UniTask WaitForCustomerArriveAsync()
     {
+        _currentCustomerData = _customersFactory.CreateCustomer();
+
+        int petrolPumpNumber = _currentCustomerData.petrolPumpNumber;
+
+        _gasStationPoint = pointsHandler.GasStationPoints[petrolPumpNumber];
+        
+        Debug.Log("Колонка" + petrolPumpNumber);
+
         _currentCar = _carSpawner.Spawn(pointsHandler.CarSpawnPoint);
 
-        await WaitForCarPathAsync(pointsHandler.GasStationPoint);
+        await WaitForCarPathAsync(_gasStationPoint);
 
-        _currentCustomer = _customerSpawner.Spawn(_currentCar.GetCustomerSpawnPoint());
+        _currentCustomer = _customerSpawner.Spawn(_currentCar.GetCustomerSpawnPoint(), _currentCustomerData);
 
         await WaitForCustomerPathAsync(pointsHandler.CashDeskPoint);
     }
@@ -66,6 +79,8 @@ public class CustomerController : IController
             Object.Destroy(_currentCar.gameObject);
             _currentCar = null;
         }
+
+        _currentCustomerData = null;
     }
 
     private async UniTask WaitForCarPathAsync(Transform targetPoint)
@@ -100,5 +115,7 @@ public class CustomerController : IController
             Object.Destroy(_currentCar.gameObject);
             _currentCar = null;
         }
+
+        _currentCustomerData = null;
     }
 }

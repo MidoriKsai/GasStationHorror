@@ -13,12 +13,6 @@ public class Grabbable : MonoBehaviour, IInteractable
     private Collider collider;
 
     private bool grabbed = false;
-    private Transform holdingPoint;
-
-    public void Initialize(Transform holdingPoint)
-    {
-        this.holdingPoint = holdingPoint;
-    }
 
     public void Interact()
     {
@@ -30,47 +24,56 @@ public class Grabbable : MonoBehaviour, IInteractable
         TryGrabbedEvent?.Invoke(this);
     }
 
-    public void Grab()
+    public void Grab(Transform holdingPoint)
     {
-        DisablePhysics();
+        collider.enabled = false;
+
+        rigidbody.angularVelocity = Vector3.zero;
+        rigidbody.linearVelocity = Vector3.zero;
+        rigidbody.isKinematic = true;
 
         transform.SetParent(holdingPoint);
 
         ResetLocalRotation();
     }
+    
+    public void ResetLocalRotation()
+    {
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+    }
 
     public bool CanInteract()
         => true;
 
-    public void Drop()
+    public void Drop(bool needToAddForce)
     {
         Vector3 throwDirection = Camera.main.transform.forward;
         // NOTE: Помещение в контейнер с объектами ломает направление выкидывания Grabbable-объекта по взгляду игрока
         transform.SetParent(null);
 
-        EnablePhysics();
-
-        rigidbody.AddForce(throwDirection * 10f, ForceMode.Impulse);
-    }
-
-    public void DisablePhysics()
-    {
-        collider.enabled = false;
-        rigidbody.isKinematic = true;
-        rigidbody.angularVelocity = Vector3.zero;
-        rigidbody.linearVelocity = Vector3.zero;
-    }
-
-    public void EnablePhysics()
-    {
         rigidbody.isKinematic = false;
         rigidbody.linearVelocity = Vector3.zero;
         collider.enabled = true;
+
+        if (needToAddForce)
+        {
+            rigidbody.AddForce(throwDirection * 10f, ForceMode.Impulse);
+        }
     }
 
-    public void ResetLocalRotation()
+    public void DropCarefully()
     {
-        transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
+        transform.SetParent(null);
+        DisableRagdoll();
+    }
+
+    public void DisableRagdoll()
+    {
+        rigidbody.linearVelocity = Vector3.zero;
+        rigidbody.angularVelocity = Vector3.zero;
+
+        rigidbody.isKinematic = true;
+        collider.enabled = true;
     }
 }

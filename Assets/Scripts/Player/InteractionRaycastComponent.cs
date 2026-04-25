@@ -34,7 +34,6 @@ namespace Player
 
             if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance, interactableLayerMask))
             {
-                Debug.Log("Raycast hit " + hit.collider.name);
                 CurrentInteractable = hit.collider.GetComponentInParent<IInteractable>();
                 interactionHelpText.enabled = true;
             }
