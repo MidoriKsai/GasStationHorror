@@ -1,13 +1,16 @@
 using System;
 using Interactables.Interface;
 using Player;
+using Services.Interfaces;
 using UnityEngine;
+using Components;
 
 namespace Player
 {
     public class PlayerInteractionController: MonoBehaviour
     {
         [SerializeField] private InteractionRaycastComponent interactionRaycastComponent;
+        [SerializeField] private GrabbablesComponent grabbablesComponent;
 
         public IInteractable CurrentInteractable;
 
@@ -73,9 +76,13 @@ namespace Player
 
             if (interactable is Mud)
             {
-                interactable.Interact();
+                IInventoryService inventoryService = grabbablesComponent.GetInventoryService();
+                if (!inventoryService.IsInventoryEmpty() && inventoryService.GetGrabbableInInventory().name == "Mop")
+                {
+                    interactable.Interact();
 
-                InteractionEvent?.Invoke(interactable);
+                    InteractionEvent?.Invoke(interactable);
+                }
             }
         }
     }
