@@ -11,6 +11,6 @@ public class PointsHandler : MonoBehaviour
     [field: SerializeField] public Transform SausagePoint;
     
     [field: SerializeField] public List<Transform> GrillPoints { get; private set; }
-    [field: SerializeField] public List<Transform> CustomerSpawnPoints { get; private set; }
+    [field: SerializeField] public List<Transform> ProductsSpawnPoints { get; private set; }
     [field: SerializeField] public List<Transform> ScannedProductPoints { get; private set; }
 }

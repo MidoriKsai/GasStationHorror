@@ -60,7 +60,6 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
         _currentCup = cup;
 
         cup.transform.SetParent(null);
-        cup.DisableRagdoll();
 
         cup.transform.position = machinePoint.position;
         cup.transform.rotation = machinePoint.rotation;

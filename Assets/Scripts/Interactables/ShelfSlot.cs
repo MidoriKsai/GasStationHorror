@@ -20,8 +20,7 @@ public class ShelfSlot : MonoBehaviour, IInteractable
         if (!inventoryService.IsInventoryEmpty())
         {
             Grabbable grabbable = inventoryService.GetGrabbableInInventory();
-            inventoryService.RemoveItem();
-            grabbable.DisablePhysics();
+            inventoryService.RemoveItem(true);
             grabbable.transform.SetParent(transform);
             grabbable.transform.position = transform.position;
             grabbable.ResetLocalRotation();

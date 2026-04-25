@@ -39,10 +39,10 @@ namespace Interactables
             if (food.Type != FoodType.RawSausage)
                 return;
 
-            _inventoryService.RemoveItem(true);
+            _inventoryService.RemoveItem(false);
 
             item.transform.SetParent(null);
-            item.DisableRagdoll();
+
 
             item.transform.position = grillPoint.position;
             item.transform.rotation = grillPoint.rotation;

@@ -23,7 +23,7 @@ namespace Player
 
         private void HandleInteraction()
         {
-            if (!Input.GetKey(KeyCode.E))
+            if (!Input.GetKeyDown(KeyCode.E))
             {
                 InteractionEnded?.Invoke();
                 CurrentInteractable = null;

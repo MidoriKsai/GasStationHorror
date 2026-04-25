@@ -27,7 +27,7 @@ public class CustomerProductsHandler : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             var prefab = prefabs[Random.Range(0, prefabs.Count)];
-            var point = pointsHandler.CustomerSpawnPoints[i];
+            var point = pointsHandler.ProductsSpawnPoints[i];
 
             var product = Instantiate(prefab, point.position, point.rotation);
             grabbablesComponent.RegisterNewGrabbable(product);
@@ -77,8 +77,7 @@ public class CustomerProductsHandler : MonoBehaviour
         var point = pointsHandler.ScannedProductPoints[index];
         
         transform.SetParent(null);
-
-        product.DisableRagdoll();
+        
 
         product.transform.position = point.position;
         product.transform.rotation = point.rotation;

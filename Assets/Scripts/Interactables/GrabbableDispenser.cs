@@ -12,7 +12,7 @@ public class GarbageDispenserBin : MonoBehaviour, IInteractable
     {
         Grabbable dispensedGrabbable = Instantiate(dispensableGrabbable, transform.position, Quaternion.identity);
 
-        grabbablesComponent.AddGrubbableAtRuntime(dispensedGrabbable);
+        grabbablesComponent.RegisterNewGrabbable(dispensedGrabbable);
         dispensedGrabbable.Interact();
     }
 

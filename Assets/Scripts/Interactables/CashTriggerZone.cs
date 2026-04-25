@@ -5,11 +5,11 @@ using UnityEngine;
 public class CashTriggerZone : MonoBehaviour
 {
     private UniTaskCompletionSource _tcs;
-    private bool _isTriggered = false;
+    private bool _isPlayerInside;
 
     public UniTask WaitPlayerEnter()
     {
-        if (_isTriggered)
+        if (_isPlayerInside)
             return UniTask.CompletedTask;
 
         _tcs = new UniTaskCompletionSource();
@@ -23,7 +23,21 @@ public class CashTriggerZone : MonoBehaviour
 
         Debug.Log("Player enter cash trigger");
 
-        _isTriggered = true;
+        _isPlayerInside = true;
+        _tcs?.TrySetResult();
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (_isPlayerInside)
+            return;
+
+        if (!other.TryGetComponent<PlayerDataHandler>(out _))
+            return;
+
+        Debug.Log("Player already inside cash trigger");
+
+        _isPlayerInside = true;
         _tcs?.TrySetResult();
     }
 
@@ -34,6 +48,6 @@ public class CashTriggerZone : MonoBehaviour
 
         Debug.Log("Player exit cash trigger");
 
-        _isTriggered = false;
+        _isPlayerInside = false;
     }
 }
