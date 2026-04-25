@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class CameraLook : MonoBehaviour
 {
-    [Header("Configuration")]
-    [SerializeField] private float lookSensitivity = 2f;
+    private float lookSensitivity;
 
     private Transform playerTransform;
     private InputHandler _inputHandler;
@@ -37,6 +36,8 @@ public class CameraLook : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         _cameraPitch = 0f;
+        lookSensitivity = StaticSettings.Sensetivity * 100;
+        Debug.Log($"SENSETIVITY SET TO {lookSensitivity} * 100");
     }
 
     void Update()
