@@ -34,8 +34,7 @@ public class Grabbable : MonoBehaviour, IInteractable
 
         transform.SetParent(holdingPoint);
 
-        transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
+        ResetLocalRotation();
     }
     
     public void ResetLocalRotation()
