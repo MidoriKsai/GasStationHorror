@@ -529,7 +529,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ButtonsController
   mainSection: {fileID: 675154300}
   settingsSection: {fileID: 326625745}
-  sensetivitySlider: {fileID: 0}
+  sensetivitySlider: {fileID: 1489515645}
 --- !u!224 &521312419 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3641246736720204562, guid: a5e280e0f35c3e5a5b0b582b954a0f3a, type: 3}
