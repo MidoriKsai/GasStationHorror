@@ -2,12 +2,28 @@
     <tip id="shift_start">
         <text>Мне нужно осмотреть заправку.</text>
     </tip>
-
-    <tip id="scan_products">
-        <text>Нужно взять продукт и отпикать его.</text>
+    <tip id="customer_start">
+        <text>Делу время — потехе час. Нужно идти за кассу</text>
     </tip>
 
-    <tip id="terminal_payment">
-        <text>Нужно пробить топливо в терминале.</text>
+    <tip id="terminal_info_false">
+        <text>По-моему, мне нужно было залить {liters} литров {fuel} в {pump} колонку</text>
     </tip>
+
+    <tip id="terminal_false_payment">
+        <text>Я забыл пробить товары</text>
+    </tip>
+
+    <tip id="task_wash">
+        <text>Пока никого нет… может, стоит проверить чистоту в зале.</text>
+    </tip>
+
+    <tip id="task_fill_shelf">
+        <text>Хм, полка пустая. Надо бы принести товар со склада.</text>
+    </tip>
+
+    <tip id="task_trash">
+        <text>Так... пора закругляться. Осталось вынести мусор — и можно домой.</text>
+    </tip>
+
 </tips>

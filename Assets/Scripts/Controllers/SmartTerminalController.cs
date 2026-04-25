@@ -10,6 +10,7 @@ public class SmartTerminalController : IController
     private readonly SmartTerminalInteractable _interactable;
     private readonly IPlayerService _playerService;
     private readonly Transform _focusPoint;
+    private TipsSystem.TipController _tipController;
 
     private CustomerData _currentCustomerData;
 
@@ -119,10 +120,11 @@ public class SmartTerminalController : IController
 
         if (!pumpParsed || !litersParsed)
         {
-            Debug.Log($"Колонка: {_currentCustomerData.petrolPumpNumber}");
+            Debug.Log($"Колонка: {_currentCustomerData.petrolPumpNumber + 1}");
             Debug.Log($"Литры: {_currentCustomerData.literQuantity}");
             return;
         }
+        
 
         bool firstCorrect = _enteredPumpNumber == _currentCustomerData.petrolPumpNumber;
         bool secondCorrect = _enteredLiterQuantity == _currentCustomerData.literQuantity;
@@ -131,7 +133,7 @@ public class SmartTerminalController : IController
 
         if (!_inputsValid)
         {
-            Debug.Log($"Колонка: {_currentCustomerData.petrolPumpNumber}");
+            Debug.Log($"Колонка: {_currentCustomerData.petrolPumpNumber + 1}");
             Debug.Log($"Литры: {_currentCustomerData.literQuantity}");
             return;
         }

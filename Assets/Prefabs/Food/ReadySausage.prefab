@@ -150,7 +150,8 @@ PrefabInstance:
       propertyPath: <Type>k__BackingField
       value: 2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8513835956928025130, guid: d39e3e90f81ba0048bc129e561856008, type: 3}
     m_RemovedGameObjects:
     - {fileID: 414770374479566042, guid: d39e3e90f81ba0048bc129e561856008, type: 3}
     m_AddedGameObjects:

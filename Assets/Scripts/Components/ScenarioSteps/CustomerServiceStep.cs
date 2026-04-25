@@ -13,6 +13,7 @@ namespace Components.ScenarioSteps
         private CustomerController _customerController;
         private DialogueSystemController _dialogue;
         private SmartTerminalController _terminalController;
+        private TipsSystem.TipController _tipController;
 
         [SerializeField] private string dialogueID;
         [SerializeField] private MoneyView moneyPrefab;
@@ -31,6 +32,7 @@ namespace Components.ScenarioSteps
             _playerService = container.Resolve<IPlayerService>();
             _terminalController = container.Resolve<SmartTerminalController>();
             _inventoryService = container.Resolve<IInventoryService>();
+            _tipController = container.Resolve<TipsSystem.TipController>();
         }
 
         public override async UniTask PerformStepAsync(CancellationToken ct)
@@ -57,14 +59,24 @@ namespace Components.ScenarioSteps
                 ct);
 
             _playerService.UnfocusPlayerFromDialogue();
+            
 
             customerProductsHandler.StartProducts();
+            
+
+            _tipController.ShowTipDelayed("terminal_info_false", 10f, ct);
 
             await customerProductsHandler.WaitAllScanned();
+            
+            _tipController.CancelDelayedTip();
+            _tipController.HideTip();
 
+            
             _terminalController.EnableInteraction(_customerController.currentCustomerData);
 
             await _terminalController.WaitForResultAsync();
+            
+            _tipController.HideTip();
 
             _terminalController.DisableInteraction();
             

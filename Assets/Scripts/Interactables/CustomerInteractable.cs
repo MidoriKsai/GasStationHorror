@@ -83,7 +83,7 @@ namespace Interactables
 
             _remainingCoffee--;
 
-            _inventory.RemoveItem(false);
+            _inventory.RemoveItem(true);
             Destroy(item.gameObject);
 
             CheckComplete();
@@ -95,7 +95,7 @@ namespace Interactables
 
             _remainingFrenchDogs--;
 
-            _inventory.RemoveItem(false);
+            _inventory.RemoveItem(true);
             Destroy(item.gameObject);
 
             CheckComplete();

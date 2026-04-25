@@ -56,9 +56,7 @@ namespace Components.ScenarioSteps
             
             _tipController.ShowTipDelayed("shift_start", 10f, ct);
             
-
             await managerTriggerZone.WaitPlayerEnter();
-            
             
             _tipController.CancelDelayedTip();
             _tipController.HideTip();

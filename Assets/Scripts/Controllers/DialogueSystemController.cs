@@ -76,7 +76,7 @@ namespace Controllers
                 return text;
 
             return text
-                .Replace("{pump}", data.petrolPumpNumber.ToString())
+                .Replace("{pump}", data.petrolPumpNumber + 1.ToString())
                 .Replace("{liters}", data.literQuantity.ToString())
                 .Replace("{fuel}", data.fuelType)
                 .Replace("{foodOrder}", BuildFoodOrderText(data));
