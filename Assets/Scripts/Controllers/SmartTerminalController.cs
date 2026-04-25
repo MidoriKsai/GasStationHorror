@@ -10,7 +10,6 @@ public class SmartTerminalController : IController
     private readonly SmartTerminalInteractable _interactable;
     private readonly IPlayerService _playerService;
     private readonly Transform _focusPoint;
-    private TipsSystem.TipController _tipController;
 
     private CustomerData _currentCustomerData;
 
@@ -92,7 +91,6 @@ public class SmartTerminalController : IController
             return;
 
         _isSessionActive = true;
-        
         _interactable.SetAvailable(false);
 
         _enteredPumpNumber = -1;
@@ -118,22 +116,23 @@ public class SmartTerminalController : IController
         bool pumpParsed = int.TryParse(_view.InputPumpNumber, out _enteredPumpNumber);
         bool litersParsed = int.TryParse(_view.InputLitersNumber, out _enteredLiterQuantity);
 
+        int correctPumpNumber = _currentCustomerData.petrolPumpNumber + 1;
+
         if (!pumpParsed || !litersParsed)
         {
-            Debug.Log($"Колонка: {_currentCustomerData.petrolPumpNumber + 1}");
+            Debug.Log($"Колонка: {correctPumpNumber}");
             Debug.Log($"Литры: {_currentCustomerData.literQuantity}");
             return;
         }
-        
 
-        bool firstCorrect = _enteredPumpNumber == _currentCustomerData.petrolPumpNumber;
+        bool firstCorrect = _enteredPumpNumber == correctPumpNumber;
         bool secondCorrect = _enteredLiterQuantity == _currentCustomerData.literQuantity;
 
         _inputsValid = firstCorrect && secondCorrect;
 
         if (!_inputsValid)
         {
-            Debug.Log($"Колонка: {_currentCustomerData.petrolPumpNumber + 1}");
+            Debug.Log($"Колонка: {correctPumpNumber}");
             Debug.Log($"Литры: {_currentCustomerData.literQuantity}");
             return;
         }
@@ -155,9 +154,10 @@ public class SmartTerminalController : IController
             return;
         }
 
-        string receiptText =
+        int receiptPumpNumber = _currentCustomerData.petrolPumpNumber + 1;
 
-            $"Колонка: {_currentCustomerData.petrolPumpNumber + 1}\n" +
+        string receiptText =
+            $"Колонка: {receiptPumpNumber}\n" +
             $"Литры: {_currentCustomerData.literQuantity}\n" +
             $"Топливо: {_currentCustomerData.fuelType}\n";
 
@@ -185,17 +185,25 @@ public class SmartTerminalController : IController
             return;
 
         CloseSmartTerminalPanel();
-        
         _interactable.SetAvailable(true);
     }
 
     private void FinishSession()
     {
         CloseSmartTerminalPanel();
-        
+
         _interactable.SetAvailable(false);
 
         _resultTcs?.TrySetResult(true);
+    }
+
+    private void CloseSmartTerminalPanel()
+    {
+        _view.HideRoot();
+        DisableCursor();
+        _playerService.UnfocusPlayerFromDialogue();
+
+        _isSessionActive = false;
     }
 
     private void EnableCursor()
@@ -216,14 +224,5 @@ public class SmartTerminalController : IController
         _view.BackClicked -= OnBackClicked;
         _view.ChoiceClicked -= OnChoiceClicked;
         _view.PayClicked -= OnPayClicked;
-    }
-    
-    private void CloseSmartTerminalPanel()
-    {
-        _view.HideRoot();
-        DisableCursor();
-        _playerService.UnfocusPlayerFromDialogue();
-
-        _isSessionActive = false;
     }
 }
