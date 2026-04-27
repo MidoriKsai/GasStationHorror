@@ -6,9 +6,7 @@ public class Mud : MonoBehaviour, IInteractable
 {
     public float WipePercentage => wipeProgress / timeToWipe * 100f;
 
-    [SerializeField] private GameObject ground;
     [SerializeField] private int NeededWipeCount;
-    [SerializeField] private RectTransform progressBar;
     private float timeToWipe = 3f;
     private float wipeProgress;
 
