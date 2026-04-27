@@ -4478,6 +4478,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1487137933154539748, guid: 7056c58cd798eea4cb8d870bce6538fc, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 257
+      objectReference: {fileID: 0}
     - target: {fileID: 2048730325559779381, guid: 7056c58cd798eea4cb8d870bce6538fc, type: 3}
       propertyPath: m_LocalPosition.y
       value: -2.997
