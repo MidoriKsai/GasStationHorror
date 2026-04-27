@@ -16,7 +16,7 @@ class KeyboardInput : MonoBehaviour
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.G))
         {
             ItemDropActionTriggered?.Invoke();
         }
