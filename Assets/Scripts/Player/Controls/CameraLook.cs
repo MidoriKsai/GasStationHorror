@@ -36,8 +36,8 @@ public class CameraLook : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         _cameraPitch = 0f;
-        lookSensitivity = StaticSettings.Sensetivity * 100;
-        Debug.Log($"SENSETIVITY SET TO {lookSensitivity} * 100");
+        lookSensitivity = StaticSettings.Sensetivity * 200f;
+        Debug.Log($"SENSETIVITY SET TO {lookSensitivity}");
     }
 
     void Update()
