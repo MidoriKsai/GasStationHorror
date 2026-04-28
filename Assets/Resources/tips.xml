@@ -1,21 +1,53 @@
 <tips>
     <tip id="shift_start">
-        <text>Мне нужно осмотреть заправку.</text>
+        <text>Нужно поговорить с менеджером, кажется он должен быть где-то на заправке.</text>
     </tip>
     <tip id="customer_start">
-        <text>Делу время — потехе час. Нужно идти за кассу</text>
+        <text>Нужно обслужить клиента у кассы</text>
     </tip>
 
-    <tip id="terminal_info_false">
-        <text>По-моему, мне нужно было залить {liters} литров {fuel} в {pump} колонку</text>
+    <tip id="products_info">
+        <text>Нужно отбить продукты с помощью сканера под терминалом.</text>
     </tip>
 
-    <tip id="terminal_false_payment">
-        <text>Я забыл пробить товары</text>
+    <tip id="raw_sausage_info">
+        <text>Сначала нужно взять сосиску.</text>
+    </tip>
+
+    <tip id="customer_not_needed_info">
+        <text>Клиенту это не нужно.</text>
+    </tip>
+
+    <tip id="sausage_info">
+        <text>Сначала нужно пожарить сосиску.</text>
+    </tip>
+
+    <tip id="bun_info">
+        <text>Без булки собрать френчдог не получится.</text>
+    </tip>
+
+    <tip id="bun_info">
+        <text>Без булки собрать френчдог не получится.</text>
+    </tip>
+
+    <tip id="dog_info">
+        <text>Чтобы приготовить френчдог, нужно сначала взять сосиску, потом положить её на гриль, взять булочку и положить готовую сосиску. Для кофе нужно положить стаканчик в кофемашину.</text>
     </tip>
 
     <tip id="task_wash">
-        <text>Пока никого нет… может, стоит проверить чистоту в зале.</text>
+        <text>Чтобы помыть пол нужна швабра.</text>
+    </tip>
+
+    <tip id="finish_info">
+        <text>Нужно завершить обслуживание в терминале.</text>
+    </tip>
+
+    <tip id="finish_money_info">
+        <text>Нужно забрать оплату.</text>
+    </tip>
+
+    <tip id="task_wash_swiping">
+        <text>Чтобы помыть пол нужно тереть дольше.</text>
     </tip>
 
     <tip id="task_fill_shelf">
@@ -24,6 +56,10 @@
 
     <tip id="task_trash">
         <text>Так... пора закругляться. Осталось вынести мусор — и можно домой.</text>
+    </tip>
+
+    <tip id="сar arriving">
+        <text>Чтобы уехать домой мне нужна моя машина.</text>
     </tip>
 
 </tips>

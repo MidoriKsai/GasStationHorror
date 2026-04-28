@@ -17,7 +17,6 @@ public class CashRegisterInteractable : MonoBehaviour, IInteractable
     {
         if (_inventoryService.IsInventoryEmpty())
         {
-            Debug.Log("Инвентарь пуст");
             return;
         }
 

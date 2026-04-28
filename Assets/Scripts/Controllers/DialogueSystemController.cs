@@ -41,7 +41,7 @@ namespace Controllers
 
             foreach (var line in data.Lines)
             {
-                string text = ApplyData(line.Text, customerData);
+                string text = CustomerTextFormatter.ApplyData(line.Text, customerData);
 
                 _view.SetDialogueText(text);
 
@@ -69,42 +69,6 @@ namespace Controllers
             _view.Hide();
             DisableCursor();
         }
-
-        private string ApplyData(string text, CustomerData data)
-        {
-            if (data == null)
-                return text;
-
-            return text
-                .Replace("{pump}", (data.petrolPumpNumber + 1).ToString())
-                .Replace("{liters}", data.literQuantity.ToString())
-                .Replace("{fuel}", data.fuelType)
-                .Replace("{foodOrder}", BuildFoodOrderText(data));
-        }
-
-        private string BuildFoodOrderText(CustomerData data)
-        {
-            if (data.coffeeCount <= 0 && data.frenchDogCount <= 0)
-                return "";
-
-            var parts = new List<string>();
-
-            if (data.coffeeCount > 0)
-                parts.Add($"{data.coffeeCount} кофе");
-
-            if (data.frenchDogCount > 0)
-            {
-                parts.Add($"{data.frenchDogCount} {GetFrenchDogWord(data.frenchDogCount)}");
-            }
-
-            return " Ещё " + string.Join(" и ", parts) + ".";
-        }
-        
-        private string GetFrenchDogWord(int count)
-        {
-            return count == 1 ? "френчдог" : "френчдога";
-        }
-        
         
 
         private void OnChoice(int index)

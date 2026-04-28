@@ -29,6 +29,9 @@ namespace Components.ScenarioSteps
 
         public override async UniTask PerformStepAsync(CancellationToken ct)
         {
+            _tipController.ShowTip(
+                "shift_start");
+            
             if (_dialogue == null)
             {
                 return;
@@ -54,11 +57,8 @@ namespace Components.ScenarioSteps
                 return;
             }
             
-            _tipController.ShowTipDelayed("shift_start", 10f, ct);
-            
             await managerTriggerZone.WaitPlayerEnter();
             
-            _tipController.CancelDelayedTip();
             _tipController.HideTip();
 
 
