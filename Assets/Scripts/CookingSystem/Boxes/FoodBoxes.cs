@@ -1,5 +1,6 @@
 using Components;
 using Interactables.Interface;
+using Services.Interfaces;
 using UnityEngine;
 
 namespace Interactables.Cooking
@@ -9,6 +10,12 @@ namespace Interactables.Cooking
         [SerializeField] private Grabbable prefab;
         [SerializeField] private Transform spawnPoint;
         [SerializeField] private GrabbablesComponent grabbablesComponent;
+        private IInventoryService inventoryService;
+
+        void Start()
+        {
+            inventoryService = grabbablesComponent.GetInventoryService();
+        }
 
         public void Interact()
         {
@@ -28,8 +35,6 @@ namespace Interactables.Cooking
         }
 
         public bool CanInteract()
-        {
-            return true;
-        }
+        => inventoryService.IsInventoryEmpty();
     }
 }

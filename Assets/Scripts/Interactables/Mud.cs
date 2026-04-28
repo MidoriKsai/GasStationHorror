@@ -1,12 +1,13 @@
 using UnityEngine;
 using System.Collections;
 using Interactables.Interface;
+using System;
 
 public class Mud : MonoBehaviour, IInteractable
 {
     public float WipePercentage => wipeProgress / timeToWipe * 100f;
+    public event Action<Mud> WashedAction;
 
-    [SerializeField] private int NeededWipeCount;
     private float timeToWipe = 3f;
     private float wipeProgress;
 
@@ -14,13 +15,16 @@ public class Mud : MonoBehaviour, IInteractable
     {
         wipeProgress += Time.deltaTime;
 
-        Debug.Log($"WIPING {wipeProgress}");
-
         if (wipeProgress >= timeToWipe)
         {
             gameObject.SetActive(false);
-            Destroy(gameObject);
+            WashedAction?.Invoke(this);
         }
+    }
+
+    public void DestroyMud()
+    {
+        Destroy(gameObject);
     }
 
     public bool CanInteract() => true;
