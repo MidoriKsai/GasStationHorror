@@ -1,12 +1,19 @@
 using UnityEngine;
 using Interactables.Interface;
 using Components;
+using Services.Interfaces;
 
 public class GarbageDispenserBin : MonoBehaviour, IInteractable
 {
     [SerializeField] private Grabbable dispensableGrabbable;
     [SerializeField] private Transform holdingPoint;
     [SerializeField] private GrabbablesComponent grabbablesComponent;
+    private IInventoryService inventoryService;
+
+    void Start()
+    {
+        inventoryService = grabbablesComponent.GetInventoryService();
+    }
 
     public void Interact()
     {
@@ -17,5 +24,5 @@ public class GarbageDispenserBin : MonoBehaviour, IInteractable
     }
 
     public bool CanInteract()
-        => true;
+        => inventoryService.IsInventoryEmpty();
 }
