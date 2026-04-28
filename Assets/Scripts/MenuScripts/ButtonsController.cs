@@ -13,6 +13,7 @@ public class ButtonsController : MonoBehaviour
     {
         ShowMainSection();
         sensetivitySlider.value = 1f;
+        QualitySettings.vSyncCount = 1;
     }
 
     public void LoadMainScene()
