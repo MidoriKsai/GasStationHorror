@@ -58,7 +58,7 @@ public class Grabbable : MonoBehaviour, IInteractable
 
         if (needToAddForce)
         {
-            rigidbody.AddForce(throwDirection * 10f, ForceMode.Impulse);
+            rigidbody.AddForce(throwDirection * 5f, ForceMode.Impulse);
         }
     }
 
