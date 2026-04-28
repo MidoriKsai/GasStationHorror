@@ -9,19 +9,21 @@ namespace Interactables
     {
         private CustomerData _data;
         private IInventoryService _inventory;
+        private TipsSystem.TipController _tipController;
 
         private int _remainingCoffee;
         private int _remainingFrenchDogs;
 
         private UniTaskCompletionSource _tcs;
 
-        public void Initialize(CustomerData data, IInventoryService inventory)
+        public void Initialize(CustomerData data, IInventoryService inventory, TipsSystem.TipController tipController)
         {
             _data = data;
             _inventory = inventory;
 
             _remainingCoffee = data.coffeeCount;
             _remainingFrenchDogs = data.frenchDogCount;
+            _tipController = tipController;
 
             Debug.Log(data.coffeeCount);
             Debug.Log(data.frenchDogCount);
@@ -35,7 +37,6 @@ namespace Interactables
         {
             if (_data == null || _inventory == null)
             {
-                Debug.LogError("CustomerInteractable не инициализирован");
                 return;
             }
 
@@ -47,7 +48,11 @@ namespace Interactables
             var item = _inventory.GetGrabbableInInventory();
 
             if (!item.TryGetComponent<FoodItem>(out var food))
+            {
+                _tipController.ShowTip("customer_not_needed_info");
                 return;
+            }
+
 
             switch (food.Type)
             {
@@ -79,7 +84,10 @@ namespace Interactables
 
         private void GiveCoffee(Grabbable item)
         {
-            if (_remainingCoffee <= 0) return;
+            if (_remainingCoffee <= 0)
+            {
+                return;
+            }
 
             _remainingCoffee--;
 

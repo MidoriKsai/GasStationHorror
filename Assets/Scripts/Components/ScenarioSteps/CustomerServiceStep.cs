@@ -47,9 +47,14 @@ namespace Components.ScenarioSteps
 
             _customerInteractable.Initialize(
                 _customerController.currentCustomerData,
-                _inventoryService);
+                _inventoryService,
+                _tipController);
+            
+            _tipController.ShowTip("customer_start");
 
             await cashTriggerZone.WaitPlayerEnter();
+            
+            _tipController.HideTip();
 
             _playerService.FocusPlayerToDialogue(_customerController.GetCustomerDialogPoint());
 
@@ -60,26 +65,38 @@ namespace Components.ScenarioSteps
 
             _playerService.UnfocusPlayerFromDialogue();
             
-            _tipController.ShowInfo(
-                "customer_info",
-                _customerController.currentCustomerData);
+            _tipController.ShowInfo("customer_info", _customerController.currentCustomerData);
 
             customerProductsHandler.StartProducts();
+            
+            _tipController.ShowTip("products_info");
 
             await customerProductsHandler.WaitAllScanned();
             
+            _tipController.HideTip();
+            
+            _tipController.ShowTip("dog_info");
+            
+            await _customerInteractable.WaitOrderCompleted();
+            _tipController.HideTip();
+            
+            _tipController.ShowTip("finish_info");
+                        
             _terminalController.EnableInteraction(_customerController.currentCustomerData);
 
             await _terminalController.WaitForResultAsync();
             
-
-            _terminalController.DisableInteraction();
-            
-            await _customerInteractable.WaitOrderCompleted();
+            _tipController.HideTip();
             
             _tipController.HideInfo();
 
+            _terminalController.DisableInteraction();
+            
+            _tipController.ShowTip("finish_money_info");
+
             await WaitPayment();
+            
+            _tipController.HideTip();
 
             await _customerController.WaitForCustomerLeaveAsync();
         }

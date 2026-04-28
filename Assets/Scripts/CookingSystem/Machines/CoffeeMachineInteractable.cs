@@ -70,12 +70,12 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
     private async UniTaskVoid BrewCoffee()
     {
         await UniTask.Delay((int)(brewTime * 1000));
-
+        
         if (_currentCup != null)
         {
             Object.Destroy(_currentCup.gameObject);
         }
-
+        
         var coffee = Object.Instantiate(
             coffeePrefab,
             machinePoint.position,

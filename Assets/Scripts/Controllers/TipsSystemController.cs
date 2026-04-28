@@ -34,11 +34,6 @@ namespace TipsSystem
             ShowInternal(id, null, _tipsStorage, _tipsView);
         }
 
-        public void ShowTip(string id, CustomerData data)
-        {
-            ShowInternal(id, data, _tipsStorage, _tipsView);
-        }
-
         public void HideTip()
         {
             _tipsView.Hide();
@@ -46,7 +41,7 @@ namespace TipsSystem
         
         public void ShowInfo(string id)
         {
-            ShowInternal(id, null, _infoStorage, _infoView);
+            ShowInternal(id, null, _tipsStorage, _tipsView);
         }
 
         public void ShowInfo(string id, CustomerData data)
@@ -63,12 +58,7 @@ namespace TipsSystem
         {
             ShowTimedInternal(id, null, delay, duration, ct, _tipsStorage, _tipsView);
         }
-
-        public void ShowTipTimed(string id, CustomerData data, float delay, float duration, CancellationToken ct)
-        {
-            ShowTimedInternal(id, data, delay, duration, ct, _tipsStorage, _tipsView);
-        }
-
+        
         public void ShowInfoTimed(string id, float delay, float duration, CancellationToken ct)
         {
             ShowTimedInternal(id, null, delay, duration, ct, _infoStorage, _infoView);

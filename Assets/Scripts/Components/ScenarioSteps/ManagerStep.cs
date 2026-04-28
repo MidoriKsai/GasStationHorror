@@ -29,6 +29,9 @@ namespace Components.ScenarioSteps
 
         public override async UniTask PerformStepAsync(CancellationToken ct)
         {
+            _tipController.ShowTip(
+                "shift_start");
+            
             if (_dialogue == null)
             {
                 return;
