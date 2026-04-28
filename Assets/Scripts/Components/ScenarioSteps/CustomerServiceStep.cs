@@ -60,27 +60,24 @@ namespace Components.ScenarioSteps
 
             _playerService.UnfocusPlayerFromDialogue();
             
+            _tipController.ShowInfo(
+                "customer_info",
+                _customerController.currentCustomerData);
 
             customerProductsHandler.StartProducts();
-            
-
-            _tipController.ShowTipDelayed("terminal_info_false", 10f, ct);
 
             await customerProductsHandler.WaitAllScanned();
-            
-            _tipController.CancelDelayedTip();
-            _tipController.HideTip();
-
             
             _terminalController.EnableInteraction(_customerController.currentCustomerData);
 
             await _terminalController.WaitForResultAsync();
             
-            _tipController.HideTip();
 
             _terminalController.DisableInteraction();
             
             await _customerInteractable.WaitOrderCompleted();
+            
+            _tipController.HideInfo();
 
             await WaitPayment();
 

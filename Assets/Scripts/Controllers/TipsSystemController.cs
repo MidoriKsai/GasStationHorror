@@ -8,79 +8,129 @@ namespace TipsSystem
 {
     public class TipController : IController
     {
-        private readonly ITipView _view;
-        private readonly TipStorage _storage;
+        private readonly ITipView _tipsView;
+        private readonly ITipView _infoView;
+
+        private readonly TipStorage _tipsStorage;
+        private readonly TipStorage _infoStorage;
 
         private CancellationTokenSource _delayCts;
 
-        public TipController(ITipView view, TipStorage storage)
+        public TipController(
+            ITipView tipsView,
+            ITipView infoView,
+            TipStorage tipsStorage,
+            TipStorage infoStorage)
         {
-            _view = view;
-            _storage = storage;
+            _tipsView = tipsView;
+            _infoView = infoView;
+
+            _tipsStorage = tipsStorage;
+            _infoStorage = infoStorage;
         }
 
         public void ShowTip(string id)
         {
-            ShowTip(id, null);
+            ShowInternal(id, null, _tipsStorage, _tipsView);
         }
 
         public void ShowTip(string id, CustomerData data)
         {
-            if (!_storage.TryGetTip(id, out var tip))
+            ShowInternal(id, data, _tipsStorage, _tipsView);
+        }
+
+        public void HideTip()
+        {
+            _tipsView.Hide();
+        }
+        
+        public void ShowInfo(string id)
+        {
+            ShowInternal(id, null, _infoStorage, _infoView);
+        }
+
+        public void ShowInfo(string id, CustomerData data)
+        {
+            ShowInternal(id, data, _infoStorage, _infoView);
+        }
+
+        public void HideInfo()
+        {
+            _infoView.Hide();
+        }
+
+        public void ShowTipTimed(string id, float delay, float duration, CancellationToken ct)
+        {
+            ShowTimedInternal(id, null, delay, duration, ct, _tipsStorage, _tipsView);
+        }
+
+        public void ShowTipTimed(string id, CustomerData data, float delay, float duration, CancellationToken ct)
+        {
+            ShowTimedInternal(id, data, delay, duration, ct, _tipsStorage, _tipsView);
+        }
+
+        public void ShowInfoTimed(string id, float delay, float duration, CancellationToken ct)
+        {
+            ShowTimedInternal(id, null, delay, duration, ct, _infoStorage, _infoView);
+        }
+
+        public void ShowInfoTimed(string id, CustomerData data, float delay, float duration, CancellationToken ct)
+        {
+            ShowTimedInternal(id, data, delay, duration, ct, _infoStorage, _infoView);
+        }
+
+        private void ShowInternal(
+            string id,
+            CustomerData data,
+            TipStorage storage,
+            ITipView view)
+        {
+            if (!storage.TryGetTip(id, out var tip))
             {
                 Debug.LogWarning($"Tip with id '{id}' not found");
                 return;
             }
 
-            string text = ApplyData(tip.Text, data);
-            _view.Show(text);
+            string text = CustomerTextFormatter.ApplyData(tip.Text, data);
+            view.Show(text);
         }
 
-        public void HideTip()
-        {
-            _view.Hide();
-        }
-
-        public void ShowTipDelayed(string id, float delaySeconds, CancellationToken externalCt)
-        {
-            ShowTipDelayed(id, null, delaySeconds, externalCt);
-        }
-
-        public void ShowTipDelayed(
+        private void ShowTimedInternal(
             string id,
             CustomerData data,
-            float delaySeconds,
-            CancellationToken externalCt)
+            float delay,
+            float duration,
+            CancellationToken externalCt,
+            TipStorage storage,
+            ITipView view)
         {
-            CancelDelayedTip();
+            CancelDelayed();
 
             _delayCts = CancellationTokenSource.CreateLinkedTokenSource(externalCt);
-            ShowTipDelayedAsync(id, data, delaySeconds, _delayCts.Token).Forget();
+            ShowTimedAsync(id, data, delay, duration, _delayCts.Token, storage, view).Forget();
         }
 
-        public void ShowTipTimed(
-            string id,
-            float delaySeconds,
-            float durationSeconds,
-            CancellationToken externalCt)
-        {
-            ShowTipTimed(id, null, delaySeconds, durationSeconds, externalCt);
-        }
-
-        public void ShowTipTimed(
+        private async UniTaskVoid ShowTimedAsync(
             string id,
             CustomerData data,
-            float delaySeconds,
-            float durationSeconds,
-            CancellationToken externalCt)
+            float delay,
+            float duration,
+            CancellationToken ct,
+            TipStorage storage,
+            ITipView view)
         {
-            CancelDelayedTip();
+            await UniTask.Delay((int)(delay * 1000), cancellationToken: ct);
+            if (ct.IsCancellationRequested) return;
 
-            _delayCts = CancellationTokenSource.CreateLinkedTokenSource(externalCt);
-            ShowTipTimedAsync(id, data, delaySeconds, durationSeconds, _delayCts.Token).Forget();
+            ShowInternal(id, data, storage, view);
+
+            await UniTask.Delay((int)(duration * 1000), cancellationToken: ct);
+            if (ct.IsCancellationRequested) return;
+
+            view.Hide();
         }
 
-        public void CancelDelayedTip()
+        private void CancelDelayed()
         {
             if (_delayCts == null)
                 return;
@@ -89,58 +139,12 @@ namespace TipsSystem
             _delayCts.Dispose();
             _delayCts = null;
         }
-
-        private async UniTaskVoid ShowTipDelayedAsync(
-            string id,
-            CustomerData data,
-            float delaySeconds,
-            CancellationToken ct)
-        {
-            await UniTask.Delay((int)(delaySeconds * 1000), cancellationToken: ct);
-
-            if (ct.IsCancellationRequested)
-                return;
-
-            ShowTip(id, data);
-        }
-
-        private async UniTaskVoid ShowTipTimedAsync(
-            string id,
-            CustomerData data,
-            float delaySeconds,
-            float durationSeconds,
-            CancellationToken ct)
-        {
-            await UniTask.Delay((int)(delaySeconds * 1000), cancellationToken: ct);
-
-            if (ct.IsCancellationRequested)
-                return;
-
-            ShowTip(id, data);
-
-            await UniTask.Delay((int)(durationSeconds * 1000), cancellationToken: ct);
-
-            if (ct.IsCancellationRequested)
-                return;
-
-            HideTip();
-        }
-
-        private string ApplyData(string text, CustomerData data)
-        {
-            if (data == null)
-                return text;
-
-            return text
-                .Replace("{pump}", data.petrolPumpNumber.ToString())
-                .Replace("{liters}", data.literQuantity.ToString())
-                .Replace("{fuel}", data.fuelType);
-        }
-
+        
         public void Dispose()
         {
-            CancelDelayedTip();
-            HideTip();
+            CancelDelayed();
+            _tipsView.Hide();
+            _infoView.Hide();
         }
     }
 }

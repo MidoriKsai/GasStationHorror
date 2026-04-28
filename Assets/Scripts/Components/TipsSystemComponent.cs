@@ -6,15 +6,21 @@ namespace TipsSystem
 {
     public class TipComponent : MonoBehaviour, IComponent<TipController>
     {
-        [SerializeField] private TipView tipView;
+        [SerializeField] private TipView wrongActionView;
+        [SerializeField] private TipView serviceTipView;
         [SerializeField] private TextAsset tipsXml;
+        [SerializeField] private TextAsset infoXml;
 
         public TipController CreateController()
         {
-            ITipView view = tipView;
-            var storage = new TipStorage(tipsXml);
+            var tipsStorage = new TipStorage(tipsXml);
+            var infoStorage = new TipStorage(infoXml);
 
-            return new TipController(view, storage);
+            return new TipController(
+                wrongActionView,
+                serviceTipView,
+                tipsStorage,
+                infoStorage);
         }
     }
 }
