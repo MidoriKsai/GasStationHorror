@@ -7,7 +7,7 @@ using System;
 public class ShelfSlot : MonoBehaviour, IInteractable
 {
 
-    [SerializeField] private GrabbablesComponent grabbablesComponent;
+    private GrabbablesComponent grabbablesComponent;
     private IInventoryService inventoryService;
     public event Action OnFilledEvent;
     private bool canInteract = true;
@@ -31,6 +31,11 @@ public class ShelfSlot : MonoBehaviour, IInteractable
             canInteract = false;
             OnFilledEvent?.Invoke();
         }
+    }
+
+    public void SetGrabbablesComponent(GrabbablesComponent grabbablesComponent)
+    {
+        this.grabbablesComponent = grabbablesComponent;
     }
 
     // Update is called once per frame
