@@ -13,11 +13,6 @@ public class ShelfSlot : MonoBehaviour, IInteractable
     private bool canInteract = true;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    void Start()
-    {
-        inventoryService = grabbablesComponent.GetInventoryService();
-    }
-
     public void Interact()
     {
         if (!inventoryService.IsInventoryEmpty())
@@ -36,6 +31,7 @@ public class ShelfSlot : MonoBehaviour, IInteractable
     public void SetGrabbablesComponent(GrabbablesComponent grabbablesComponent)
     {
         this.grabbablesComponent = grabbablesComponent;
+        inventoryService = grabbablesComponent.GetInventoryService();
     }
 
     // Update is called once per frame
