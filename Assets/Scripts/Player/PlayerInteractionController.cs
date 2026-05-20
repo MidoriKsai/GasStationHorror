@@ -79,6 +79,10 @@ namespace Player
                 IInventoryService inventoryService = grabbablesComponent.GetInventoryService();
                 if (!inventoryService.IsInventoryEmpty() && inventoryService.GetGrabbableInInventory().name == "Mop")
                 {
+                    var mud = interactable as Mud;
+                    
+                    mud.SetMop(inventoryService.GetGrabbableInInventory().gameObject);
+
                     interactable.Interact();
 
                     InteractionEvent?.Invoke(interactable);
