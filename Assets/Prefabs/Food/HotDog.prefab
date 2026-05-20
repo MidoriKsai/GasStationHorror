@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8544d1d12d67450f87710da24b5032d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FoodItem
-  <Type>k__BackingField: 6
+  <Type>k__BackingField: 7
 --- !u!114 &2769798517688568029
 MonoBehaviour:
   m_ObjectHideFlags: 0

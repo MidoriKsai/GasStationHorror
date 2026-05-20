@@ -1305,7 +1305,7 @@ MonoBehaviour:
   moneySpawnPoint: {fileID: 2034917457}
   cashTriggerZone: {fileID: 1020444193}
   customerProductsHandler: {fileID: 441505259}
-  cashRegisterInteractable: {fileID: 0}
+  cashRegisterInteractable: {fileID: 1821467597}
 --- !u!1 &372386138
 GameObject:
   m_ObjectHideFlags: 0
@@ -1450,6 +1450,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1866306526}
     m_Modifications:
+    - target: {fileID: 381872759263485080, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 218.8101
+      objectReference: {fileID: 0}
+    - target: {fileID: 381872759263485080, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 23.326
+      objectReference: {fileID: 0}
+    - target: {fileID: 381872759263485080, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 67.943
+      objectReference: {fileID: 0}
+    - target: {fileID: 381872759263485080, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 193.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 455120412568131374, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 342
+      objectReference: {fileID: 0}
     - target: {fileID: 800274836451186280, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
       propertyPath: payButton
       value: 
@@ -2114,9 +2134,33 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6666513290775693584, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
+      propertyPath: m_fontSize
+      value: 25.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6666513290775693584, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
+      propertyPath: m_margin.x
+      value: 1.4349976
+      objectReference: {fileID: 0}
     - target: {fileID: 6937547442081209869, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738799073037338418, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -41.2605
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738799073037338418, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -93.083
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738799073037338418, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -27.013412
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738799073037338418, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 156.17752
       objectReference: {fileID: 0}
     - target: {fileID: 7821043153785265037, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
       propertyPath: m_text
@@ -2865,6 +2909,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 557919048}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!20 &558971867 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 3453395513717824436, guid: 89b81e74ff4f1e1a08e69e41db1daf07, type: 3}
+  m_PrefabInstance: {fileID: 1131458667}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &561192101 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2327025762051914211, guid: 134a020e63e8a45419c00077dc096287, type: 3}
@@ -3225,7 +3274,7 @@ MonoBehaviour:
   moneySpawnPoint: {fileID: 2034917457}
   cashTriggerZone: {fileID: 1020444193}
   customerProductsHandler: {fileID: 441505259}
-  cashRegisterInteractable: {fileID: 0}
+  cashRegisterInteractable: {fileID: 1821467597}
 --- !u!1 &704973371
 GameObject:
   m_ObjectHideFlags: 0
@@ -4653,6 +4702,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 933431967269206269, guid: 89b81e74ff4f1e1a08e69e41db1daf07, type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 558971867}
     - target: {fileID: 940018449686610914, guid: 89b81e74ff4f1e1a08e69e41db1daf07, type: 3}
       propertyPath: m_Height
       value: 2
@@ -8591,6 +8644,10 @@ PrefabInstance:
       propertyPath: customerProductsHandler
       value: 
       objectReference: {fileID: 441505259}
+    - target: {fileID: 7276356256903271701, guid: 2ca3cbbb8ac3f1142a0fa3a4ac46dee3, type: 3}
+      propertyPath: cashRegisterInteractable
+      value: 
+      objectReference: {fileID: 1821467597}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -10098,6 +10155,7 @@ PrefabInstance:
     - {fileID: 2780347535544162779, guid: 134a020e63e8a45419c00077dc096287, type: 3}
     m_RemovedGameObjects:
     - {fileID: 5718451680951528039, guid: 134a020e63e8a45419c00077dc096287, type: 3}
+    - {fileID: 3821781979168986653, guid: 134a020e63e8a45419c00077dc096287, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2327025762051914211, guid: 134a020e63e8a45419c00077dc096287, type: 3}
       insertIndex: -1
