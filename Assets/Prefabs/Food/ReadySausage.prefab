@@ -124,27 +124,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6812732469458128008, guid: d39e3e90f81ba0048bc129e561856008, type: 3}
       propertyPath: m_Size.x
-      value: 0.19239847
+      value: 0.018000672
       objectReference: {fileID: 0}
     - target: {fileID: 6812732469458128008, guid: d39e3e90f81ba0048bc129e561856008, type: 3}
       propertyPath: m_Size.y
-      value: 0.102861576
+      value: 0.017260874
       objectReference: {fileID: 0}
     - target: {fileID: 6812732469458128008, guid: d39e3e90f81ba0048bc129e561856008, type: 3}
       propertyPath: m_Size.z
-      value: 0.28655487
+      value: 0.08153904
       objectReference: {fileID: 0}
     - target: {fileID: 6812732469458128008, guid: d39e3e90f81ba0048bc129e561856008, type: 3}
       propertyPath: m_Center.x
-      value: -0.005663772
+      value: -0.00083165814
       objectReference: {fileID: 0}
     - target: {fileID: 6812732469458128008, guid: d39e3e90f81ba0048bc129e561856008, type: 3}
       propertyPath: m_Center.y
-      value: 0.04143223
+      value: 0.00031340416
       objectReference: {fileID: 0}
     - target: {fileID: 6812732469458128008, guid: d39e3e90f81ba0048bc129e561856008, type: 3}
       propertyPath: m_Center.z
-      value: -0.033318207
+      value: 0.00373661
       objectReference: {fileID: 0}
     - target: {fileID: 8475757184397637788, guid: d39e3e90f81ba0048bc129e561856008, type: 3}
       propertyPath: <Type>k__BackingField

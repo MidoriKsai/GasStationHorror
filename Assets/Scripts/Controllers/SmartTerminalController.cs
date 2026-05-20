@@ -15,10 +15,9 @@ public class SmartTerminalController : IController
 
     private int _enteredPumpNumber;
     private int _enteredLiterQuantity;
-    private int _selectedButtonId = -1;
+    private int _selectedFuelId = -1;
 
-    private bool _inputsValid;
-    private bool _choiceValid;
+    private bool _inputDataValid;
 
     private UniTaskCompletionSource<bool> _resultTcs;
     private bool _isSessionActive;
@@ -35,7 +34,6 @@ public class SmartTerminalController : IController
         _focusPoint = focusPoint;
 
         _view.NextClicked += OnNextClicked;
-        _view.BackClicked += OnBackClicked;
         _view.ChoiceClicked += OnChoiceClicked;
         _view.PayClicked += OnPayClicked;
 
@@ -95,9 +93,8 @@ public class SmartTerminalController : IController
 
         _enteredPumpNumber = -1;
         _enteredLiterQuantity = -1;
-        _selectedButtonId = -1;
-        _inputsValid = false;
-        _choiceValid = false;
+        _selectedFuelId = -1;
+        _inputDataValid = false;
 
         EnableCursor();
         _playerService.FocusPlayerToDialogue(_focusPoint);
@@ -105,7 +102,15 @@ public class SmartTerminalController : IController
         _view.Clear();
         _view.ShowRoot();
         _view.ShowInputPanel();
-        _view.SetPayButtonInteractable(false);
+    }
+
+    private void OnChoiceClicked(int buttonId)
+    {
+        if (!_isSessionActive || _currentCustomerData == null)
+            return;
+
+        _selectedFuelId = buttonId;
+        _view.SetSelectedFuelButton(_selectedFuelId);
     }
 
     private void OnNextClicked()
@@ -117,53 +122,71 @@ public class SmartTerminalController : IController
         bool litersParsed = int.TryParse(_view.InputLitersNumber, out _enteredLiterQuantity);
 
         int correctPumpNumber = _currentCustomerData.petrolPumpNumber + 1;
+        int correctLiterQuantity = _currentCustomerData.literQuantity;
+        int correctFuelId = _currentCustomerData.patrolId;
 
         if (!pumpParsed || !litersParsed)
         {
-            Debug.Log($"Колонка: {correctPumpNumber}");
-            Debug.Log($"Литры: {_currentCustomerData.literQuantity}");
+            DebugCorrectData(correctPumpNumber, correctLiterQuantity, correctFuelId);
             return;
         }
 
-        bool firstCorrect = _enteredPumpNumber == correctPumpNumber;
-        bool secondCorrect = _enteredLiterQuantity == _currentCustomerData.literQuantity;
+        bool pumpCorrect = _enteredPumpNumber == correctPumpNumber;
+        bool litersCorrect = _enteredLiterQuantity == correctLiterQuantity;
+        bool fuelCorrect = _selectedFuelId == correctFuelId;
 
-        _inputsValid = firstCorrect && secondCorrect;
+        _inputDataValid = pumpCorrect && litersCorrect && fuelCorrect;
 
-        if (!_inputsValid)
+        if (!_inputDataValid)
         {
-            Debug.Log($"Колонка: {correctPumpNumber}");
-            Debug.Log($"Литры: {_currentCustomerData.literQuantity}");
+            DebugCorrectData(correctPumpNumber, correctLiterQuantity, correctFuelId);
+
+            Debug.Log($"Введённая колонка: {_enteredPumpNumber}");
+            Debug.Log($"Введённые литры: {_enteredLiterQuantity}");
+            Debug.Log($"Выбранный ID топлива: {_selectedFuelId}");
+
             return;
         }
 
-        _view.ShowChoicePanel();
+        ShowReceipt();
     }
 
-    private void OnChoiceClicked(int buttonId)
+    private void ShowReceipt()
     {
-        if (!_isSessionActive || _currentCustomerData == null)
-            return;
+        string fuelType = _currentCustomerData.fuelType;
+        int liters = _currentCustomerData.literQuantity;
 
-        _selectedButtonId = buttonId;
-        _choiceValid = _selectedButtonId == _currentCustomerData.patrolId;
+        int pricePerLiter = GetPricePerLiter();
+        int totalPrice = liters * pricePerLiter;
 
-        if (!_choiceValid)
-        {
-            Debug.Log($"Id кнопки: {_currentCustomerData.patrolId}");
-            return;
-        }
+        _view.SetReceiptData(
+            fuelType,
+            liters,
+            pricePerLiter,
+            totalPrice);
 
-        int receiptPumpNumber = _currentCustomerData.petrolPumpNumber + 1;
-
-        string receiptText =
-            $"Колонка: {receiptPumpNumber}\n" +
-            $"Литры: {_currentCustomerData.literQuantity}\n" +
-            $"Топливо: {_currentCustomerData.fuelType}\n";
-
-        _view.SetReceiptText(receiptText);
-        _view.SetPayButtonInteractable(true);
         _view.ShowReceiptPanel();
+    }
+
+    private int GetPricePerLiter()
+    {
+        switch (_currentCustomerData.patrolId)
+        {
+            case 0:
+                return 50;
+
+            case 1:
+                return 55;
+
+            case 2:
+                return 65;
+
+            case 3:
+                return 60;
+
+            default:
+                return 0;
+        }
     }
 
     private void OnPayClicked()
@@ -171,21 +194,10 @@ public class SmartTerminalController : IController
         if (!_isSessionActive)
             return;
 
-        bool result = _inputsValid && _choiceValid;
-
-        if (!result)
+        if (!_inputDataValid)
             return;
 
         FinishSession();
-    }
-
-    private void OnBackClicked()
-    {
-        if (!_isSessionActive)
-            return;
-
-        CloseSmartTerminalPanel();
-        _interactable.SetAvailable(true);
     }
 
     private void FinishSession()
@@ -200,10 +212,21 @@ public class SmartTerminalController : IController
     private void CloseSmartTerminalPanel()
     {
         _view.HideRoot();
+
         DisableCursor();
         _playerService.UnfocusPlayerFromDialogue();
 
         _isSessionActive = false;
+    }
+
+    private void DebugCorrectData(
+        int correctPumpNumber,
+        int correctLiterQuantity,
+        int correctFuelId)
+    {
+        Debug.Log($"Правильная колонка: {correctPumpNumber}");
+        Debug.Log($"Правильные литры: {correctLiterQuantity}");
+        Debug.Log($"Правильный ID топлива: {correctFuelId}");
     }
 
     private void EnableCursor()
@@ -221,7 +244,6 @@ public class SmartTerminalController : IController
     public void Dispose()
     {
         _view.NextClicked -= OnNextClicked;
-        _view.BackClicked -= OnBackClicked;
         _view.ChoiceClicked -= OnChoiceClicked;
         _view.PayClicked -= OnPayClicked;
     }
