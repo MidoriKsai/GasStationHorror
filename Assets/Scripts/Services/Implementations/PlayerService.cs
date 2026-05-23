@@ -39,15 +39,12 @@ namespace Services.Implementations
 
         public void FocusPlayerToDialogue(Transform dialogTarget)
         {
-            playerDataHandler.PlayerMovement.SetMovementEnabled(false);
-            playerDataHandler.CameraLook.SnapToTarget(dialogTarget);
-            playerDataHandler.CameraLook.SetLookEnabled(false);
+            playerDataHandler.PlayerControls.StopControlsAndFocusToTarget(dialogTarget);
         }
 
         public void UnfocusPlayerFromDialogue()
         {
-            playerDataHandler.PlayerMovement.SetMovementEnabled(true);
-            playerDataHandler.CameraLook.SetLookEnabled(true);
+            playerDataHandler.PlayerControls.EnableControls();
         }
     }
 }
