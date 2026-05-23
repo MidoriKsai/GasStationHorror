@@ -3,21 +3,32 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private Rigidbody playerRigidbody;
-    [SerializeField] private float MovementSpeed;
-    [SerializeField] private Camera playerCamera;
+    private Rigidbody playerRigidbody;
+    private float movementSpeed;
+    private Camera playerCamera;
     private InputHandler inputHandler;
     private Vector3 moveDirection;
     private bool _isMovementEnabled = true;
     private Vector3 cameraDefaultPosition;
-    private float frequency = 15f;
-    private float amplitude = 0.05f; //0.03f;
+    private float frequency;
+    private float amplitude;
     private float localMovementTime;
 
-    void Start()
+    public void Initialize(
+        Rigidbody playerRigidbody, 
+        float movementSpeed,
+        Camera playerCamera, 
+        InputHandler inputHandler,
+        float CameraJitterFrequency,
+        float CameraJitterAmplitude)
     {
-        inputHandler = GetComponent<InputHandler>();
+        this.playerRigidbody = playerRigidbody;
+        this.movementSpeed = movementSpeed;
+        this.playerCamera = playerCamera;
+        this.inputHandler = inputHandler;
         cameraDefaultPosition = playerCamera.transform.localPosition;
+        frequency = CameraJitterFrequency;
+        amplitude = CameraJitterAmplitude;
     }
 
     void Update()
@@ -42,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
         {
             ApplySineCosineForCamera();
             localMovementTime += Time.deltaTime;
-            playerRigidbody.linearVelocity = moveDirection * MovementSpeed;
+            playerRigidbody.linearVelocity = moveDirection * movementSpeed;
         }
         else
         {
