@@ -40,9 +40,9 @@ namespace Contexts
         private PointsHandler pointsHandler;
         
         [SerializeField] private CashRegisterInteractable cashRegister;
-        
 
-        
+        [SerializeField]
+        private SoundsComponent soundsComponent;
 
         private DialogueSystemController dialogueSystemController;
         private CustomerController customerController;
@@ -58,6 +58,9 @@ namespace Contexts
             
             var inventory = serviceContainer.Resolve<IInventoryService>();
             cashRegister.Initialize(inventory);
+
+            var soundService = serviceContainer.Resolve<ISoundService>();
+            soundService.Initialize(soundsComponent.TwoDAudioSource, soundsComponent.ThreeDAudioSources);
 
             dialogueSystemComponent.Initialize(serviceContainer);
             dialogueSystemController = dialogueSystemComponent.CreateController();
