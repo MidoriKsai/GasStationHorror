@@ -19,11 +19,12 @@ namespace Services.Implementations
             twoDAudioSource.PlayOneShot(audioClip, volume);
         }
 
-        public void Play3DSound(Vector3 position, AudioClip audioClip)
+        public AudioSource Play3DSound(Vector3 position, AudioClip audioClip, float volume)
         {
             var audioSource = GetAvailableThreeDAudioSource();
             audioSource.transform.position = position;
-            audioSource.PlayOneShot(audioClip);
+            audioSource.PlayOneShot(audioClip, volume);
+            return audioSource;
         }
 
         public void PlaySound(AudioSource audioSource, AudioClip audioClip)

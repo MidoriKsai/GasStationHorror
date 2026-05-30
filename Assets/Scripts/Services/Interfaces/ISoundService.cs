@@ -8,7 +8,7 @@ namespace Services.Interfaces
 
         void Play2DSound(AudioClip audioClip, float volume = 1f);
 
-        void Play3DSound(Vector3 position, AudioClip audioClip);
+        AudioSource Play3DSound(Vector3 position, AudioClip audioClip, float volume = 1f);
 
         void PlaySound(AudioSource audioSource, AudioClip audioClip);
     }

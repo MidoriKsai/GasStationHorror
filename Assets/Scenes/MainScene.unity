@@ -932,7 +932,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6568321684541544708, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1.9999924
+      value: -1.9999695
       objectReference: {fileID: 0}
     - target: {fileID: 6568321684541544708, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1921,6 +1921,7 @@ MonoBehaviour:
   cookedSausagePrefab: {fileID: 3850119295000018041, guid: 6d0ce67d445d6a148bf6aa0383a392b3, type: 3}
   grabbablesComponent: {fileID: 8559800282055990426}
   cookTime: 5
+  cookSound: {fileID: 8300000, guid: eea44127b2b274740bf8cb65058a7ce4, type: 3}
 --- !u!4 &957955022 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5704575798034658244, guid: 3ed991b651384a14f9d37b1d14b8bfb0, type: 3}
@@ -3486,6 +3487,7 @@ MonoBehaviour:
   coffeePrefab: {fileID: 6254732595772040335, guid: 22cd0799bc50eab4e8b5426e415818ab, type: 3}
   grabbablesComponent: {fileID: 8559800282055990426}
   brewTime: 3
+  coffeePourSound: {fileID: 8300000, guid: a69000f1f0575904ca2c47f62bbdbf9d, type: 3}
 --- !u!1001 &1742820463
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3720,7 +3722,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4315221073058159656, guid: 9cdb9512a1cdfb94eb34e64d0b327a00, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 5.999878
+      value: 5.999817
       objectReference: {fileID: 0}
     - target: {fileID: 4315221073058159656, guid: 9cdb9512a1cdfb94eb34e64d0b327a00, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

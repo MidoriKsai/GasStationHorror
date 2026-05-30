@@ -18,9 +18,10 @@ namespace Components
         public void Initialize(ServiceContainer container)
         {
             var inventory = container.Resolve<IInventoryService>();
+            var soundsSystem = container.Resolve<ISoundService>();
 
-            grill.Initialize(inventory);
-            coffeeMachine.Initialize(inventory);
+            grill.Initialize(inventory, soundsSystem);
+            coffeeMachine.Initialize(inventory, soundsSystem);
         }
     }
 }
