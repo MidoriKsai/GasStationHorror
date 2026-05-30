@@ -52,8 +52,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.7802649, y: 1, z: 1.0699552}
+  m_Center: {x: 0.020660877, y: 0, z: 0.034977615}
 --- !u!114 &7950224187660994009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,6 +66,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac63ce0c03be58127bcfb9b1dddd8acd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GarbageDispenserBin
-  dispensableGrabbable: {fileID: 2029124873903049449, guid: c60f7a21d19ac23f3bb9a07daa3662c7, type: 3}
+  dispensableGrabbable: {fileID: 0}
   holdingPoint: {fileID: 0}
   grabbablesComponent: {fileID: 0}
