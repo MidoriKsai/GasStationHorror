@@ -1,6 +1,7 @@
 using Core.Interfaces;
 using System.Collections.Generic;
 using Services.Interfaces;
+using UnityEngine;
 
 namespace Controllers
 {
@@ -10,18 +11,23 @@ namespace Controllers
         private readonly IInventoryService inventoryService;
         private readonly IPlayerService playerService;
         private readonly InputHandler inputHandler;
+        private readonly ISoundService soundService;
+        private readonly AudioClip grabSound;
 
         public GrabbablesController(
             List<Grabbable> grabbables,
             IInventoryService inventoryService,
+            ISoundService soundService,
             IPlayerService playerService,
-            InputHandler inputHandler)
+            InputHandler inputHandler,
+            AudioClip grabSound)
         {
             this.grabbables = grabbables;
             this.inventoryService = inventoryService;
             this.playerService = playerService;
             this.inputHandler = inputHandler;
-
+            this.soundService = soundService;
+            this.grabSound = grabSound;
             this.inputHandler.ItemDropActionTriggered += OnItemDropActionTriggered;
 
             SubscribeOnEvents(grabbables);
@@ -50,6 +56,7 @@ namespace Controllers
         {
             if (inventoryService.IsInventoryEmpty())
             {
+                soundService.Play2DSound(grabSound, 0.2f);
                 inventoryService.AddItem(grabbable);
                 grabbable.Grab(playerService.GetGrabbablesHoldingPoint());
             }

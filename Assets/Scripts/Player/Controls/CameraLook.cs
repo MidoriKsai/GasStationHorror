@@ -14,21 +14,14 @@ public class CameraLook : MonoBehaviour
 
     private void Awake()
     {
-        _inputHandler = GetComponent<InputHandler>();
-
-        if (Camera.main != null)
-        {
-            _cameraTransform = Camera.main.transform;
-        }
-        else
-        {
-            Debug.LogError("Main camera not found. Make sure you have a camera tagged as 'MainCamera' in your scene.");
-        }
-
         if (playerTransform == null)
-        {
             playerTransform = transform;
-        }
+    }
+
+    public void Initialize(InputHandler inputHandler, Camera playerCamera)
+    {
+        _inputHandler = inputHandler;
+        _cameraTransform = playerCamera.transform;
     }
 
     void Start()

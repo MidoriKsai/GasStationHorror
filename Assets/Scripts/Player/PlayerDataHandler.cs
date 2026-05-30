@@ -17,14 +17,9 @@ namespace Player
         private Transform holdingPoint;
 
         [SerializeField]
-        private PlayerMovement playerMovement;
+        private PlayerControls playerControls;
 
-        [SerializeField]
-        private CameraLook cameraLook;
-
-        public PlayerMovement PlayerMovement => playerMovement;
-
-        public CameraLook CameraLook => cameraLook;
+        public PlayerControls PlayerControls => playerControls;
 
         public Transform PlayerTransform => playerTransform;
 

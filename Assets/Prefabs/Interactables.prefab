@@ -130,6 +130,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &2000897234674371253
 BoxCollider:
@@ -203,6 +204,7 @@ MonoBehaviour:
   - {fileID: 2690374198814039561}
   - {fileID: 1562238484499734963}
   - {fileID: 3934446125159122931}
+  grabSound: {fileID: 8300000, guid: 5ac6499642f83dc488cafe74897a9f9d, type: 3}
 --- !u!1001 &782209392841496135
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -730,6 +732,10 @@ PrefabInstance:
       propertyPath: doorCollider
       value: 
       objectReference: {fileID: 2780347535544162779}
+    - target: {fileID: 6167045526261917891, guid: d1d50707525268349bc5fc26728d206a, type: 3}
+      propertyPath: needMelodySound
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8328505717815146389, guid: d1d50707525268349bc5fc26728d206a, type: 3}
       propertyPath: m_Name
       value: MainDoor
