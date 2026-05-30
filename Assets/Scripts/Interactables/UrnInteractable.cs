@@ -1,6 +1,8 @@
 using Components;
 using Interactables.Interface;
 using Services.Interfaces;
+using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UrnInteractable : MonoBehaviour, IInteractable
@@ -17,11 +19,16 @@ public class UrnInteractable : MonoBehaviour, IInteractable
     {
         if (!inventoryService.IsInventoryEmpty())
         {
+            Grabbable grabbable = inventoryService.GetGrabbableInInventory();
             inventoryService.RemoveItem(needToAddForce: false);
+            Destroy(grabbable.gameObject);
         }
         else
         {
-            inventoryService.AddItem(garbagePrefab);
+            Grabbable garbage = Instantiate(garbagePrefab, transform.position, Quaternion.identity);
+
+            grabbablesComponent.RegisterNewGrabbable(garbage);
+            garbage.Interact();
         }
     }
 
