@@ -111,7 +111,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &3665590234832901019
 GameObject:
@@ -980,7 +979,10 @@ PrefabInstance:
       value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: -8300392993612168491, guid: 91caec16271de6e4a989be1aa718de92, type: 3}
+    - {fileID: -6437035327310173299, guid: 91caec16271de6e4a989be1aa718de92, type: 3}
+    - {fileID: -3225959511443494117, guid: 91caec16271de6e4a989be1aa718de92, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 91caec16271de6e4a989be1aa718de92, type: 3}

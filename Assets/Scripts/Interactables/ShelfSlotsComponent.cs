@@ -3,7 +3,7 @@ using Components;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ShelfSlots : MonoBehaviour
+public class ShelfSlotsComponent : MonoBehaviour
 {
     [SerializeField] private List<ShelfSlot> shelfSlotsList = new();
     [SerializeField] private GrabbablesComponent grabbablesComponent;
@@ -25,7 +25,7 @@ public class ShelfSlots : MonoBehaviour
 
     void SetGrabbablesComponentInShelfs(GrabbablesComponent grabbablesComponent)
     {
-        foreach (var slot in shelfSlotsList)
+        foreach (ShelfSlot slot in shelfSlotsList)
         {
             slot.SetGrabbablesComponent(grabbablesComponent);
         }

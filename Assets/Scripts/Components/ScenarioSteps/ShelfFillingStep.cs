@@ -6,7 +6,7 @@ using Components.ScenarioSteps;
 
 public class ShelfFillingStep : BaseStep
 {
-    [SerializeField] private ShelfSlots shelfSlots;
+    [SerializeField] private ShelfSlotsComponent shelfSlots;
     public override void Initialize(ServiceContainer serviceContainer)
     {
     }
