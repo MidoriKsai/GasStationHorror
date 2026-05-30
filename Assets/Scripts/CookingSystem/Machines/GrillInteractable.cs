@@ -12,15 +12,18 @@ namespace Interactables
         [SerializeField] private GameObject cookedSausagePrefab;
         [SerializeField] private GrabbablesComponent grabbablesComponent;
         [SerializeField] private float cookTime = 3f;
+        [SerializeField] private AudioClip cookSound;
 
         private IInventoryService _inventoryService;
+        private ISoundService _soundService;
 
         private bool _isBusy;
         private GameObject _currentCookedSausage;
 
-        public void Initialize(IInventoryService inventoryService)
+        public void Initialize(IInventoryService inventoryService, ISoundService soundService)
         {
             _inventoryService = inventoryService;
+            _soundService = soundService;
         }
 
         public void Interact()
@@ -53,6 +56,7 @@ namespace Interactables
         private async UniTaskVoid Cook(Grabbable item)
         {
             _isBusy = true;
+            var audioSource = _soundService.Play3DSound(transform.position, cookSound, 1f);
 
             await UniTask.Delay((int)(cookTime * 1000));
             
@@ -72,6 +76,8 @@ namespace Interactables
             {
                 cookedInteractable.Initialize(_inventoryService, grabbablesComponent);
             }
+
+            audioSource.Stop();
 
             _isBusy = false;
         }

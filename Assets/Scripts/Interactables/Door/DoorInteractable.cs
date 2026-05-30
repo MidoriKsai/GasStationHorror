@@ -15,6 +15,11 @@ namespace Interactables
         [SerializeField] private float rotateDuration = 0.5f;
         [SerializeField] private Ease rotateEase = Ease.InOutSine;
         [SerializeField] private Collider doorCollider;
+        [Header("Audio")]
+        [SerializeField] private bool needMelodySound = false;
+        [SerializeField] private AudioClip openDoorSound;
+        [SerializeField] private AudioClip mainDoorOpenMelodySound;
+        [SerializeField] private AudioSource doorAudioSource;
 
         private bool _isOpened;
         private bool _isAnimating;
@@ -70,10 +75,19 @@ namespace Interactables
             _isAnimating = true;
             _isOpened = true;
 
+            doorAudioSource.volume = 0.1f;
+            doorAudioSource.PlayOneShot(openDoorSound);
+
             await doorTransform
                 .DOLocalRotate(openedRotation, rotateDuration)
                 .SetEase(rotateEase)
                 .AwaitAsync(ct);
+
+            if (needMelodySound)
+            {
+                doorAudioSource.volume = 0.2f;
+                doorAudioSource.PlayOneShot(mainDoorOpenMelodySound);
+            }
 
             doorCollider.enabled = true;
             _isAnimating = false;
@@ -84,6 +98,9 @@ namespace Interactables
             doorCollider.enabled = false;
             _isAnimating = true;
             _isOpened = false;
+
+            doorAudioSource.volume = 0.1f;
+            doorAudioSource.PlayOneShot(openDoorSound);
 
             await doorTransform
                 .DOLocalRotate(closedRotation, rotateDuration)

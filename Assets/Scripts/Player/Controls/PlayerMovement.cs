@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -13,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     private float frequency;
     private float amplitude;
     private float localMovementTime;
+    private AudioSource footstepsAudioSource;
+    private CancellationTokenSource footstepsAudioCts;
 
     public void Initialize(
         Rigidbody playerRigidbody, 
@@ -20,7 +24,8 @@ public class PlayerMovement : MonoBehaviour
         Camera playerCamera, 
         InputHandler inputHandler,
         float CameraJitterFrequency,
-        float CameraJitterAmplitude)
+        float CameraJitterAmplitude,
+        AudioSource footstepsAudioSource)
     {
         this.playerRigidbody = playerRigidbody;
         this.movementSpeed = movementSpeed;
@@ -29,6 +34,10 @@ public class PlayerMovement : MonoBehaviour
         cameraDefaultPosition = playerCamera.transform.localPosition;
         frequency = CameraJitterFrequency;
         amplitude = CameraJitterAmplitude;
+        this.footstepsAudioSource = footstepsAudioSource;
+
+        footstepsAudioCts = new CancellationTokenSource();
+        PlayFootstepsAudioAsync(0.5f, footstepsAudioCts.Token).Forget();
     }
 
     void Update()
@@ -98,5 +107,34 @@ public class PlayerMovement : MonoBehaviour
             moveDirection = Vector3.zero;
             playerRigidbody.linearVelocity = new Vector3(0f, playerRigidbody.linearVelocity.y, 0f);
         }
+    }
+
+    private async UniTask PlayFootstepsAudioAsync(float delay, CancellationToken ct)
+    {
+        while (true)
+        {
+            if(ct.IsCancellationRequested)
+            {
+                return;
+            }
+
+            if (!IsMoving())
+            {
+                await UniTask.Yield(ct);
+                continue;
+            }
+
+            footstepsAudioSource.pitch = UnityEngine.Random.Range(0.8f, 1.2f);
+            footstepsAudioSource.Play();
+
+            await UniTask.Delay(TimeSpan.FromSeconds(delay));
+        }
+    }
+
+    void OnDestroy()
+    {
+        footstepsAudioCts?.Cancel();
+        footstepsAudioCts?.Dispose();
+        footstepsAudioCts = null;
     }
 }

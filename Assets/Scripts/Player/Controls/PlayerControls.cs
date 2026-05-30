@@ -11,6 +11,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private float zoomAnimationSpeed;
     [SerializeField] private float CameraJitterFrequency;
     [SerializeField] private float CameraJitterAmplitude;
+    [SerializeField] private AudioSource footstepsAudioSource;
     private Rigidbody playerRigidbody;
     private InputHandler inputHandler;
     private PlayerMovement playerMovement;
@@ -32,7 +33,8 @@ public class PlayerControls : MonoBehaviour
             mainCamera, 
             inputHandler, 
             CameraJitterFrequency, 
-            CameraJitterAmplitude
+            CameraJitterAmplitude,
+            footstepsAudioSource
         );
 
         cameraLook = gameObject.AddComponent<CameraLook>();

@@ -10,15 +10,18 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
     [SerializeField] private Grabbable coffeePrefab;
     [SerializeField] private GrabbablesComponent grabbablesComponent;
     [SerializeField] private float brewTime = 3f;
+    [SerializeField] private AudioClip coffeePourSound;
 
     private IInventoryService _inventoryService;
+    private ISoundService _soundService;
 
     private bool _isBusy;
     private Grabbable _currentCup;
 
-    public void Initialize(IInventoryService inventoryService)
+    public void Initialize(IInventoryService inventoryService, ISoundService soundService)
     {
         _inventoryService = inventoryService;
+        _soundService = soundService;
     }
 
     public void Interact()
@@ -69,6 +72,8 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
 
     private async UniTaskVoid BrewCoffee()
     {
+        var audioSource = _soundService.Play3DSound(transform.position, coffeePourSound, 0.7f);
+
         await UniTask.Delay((int)(brewTime * 1000));
         
         if (_currentCup != null)
@@ -84,6 +89,8 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
         grabbablesComponent.RegisterNewGrabbable(coffee);
 
         _isBusy = false;
+
+        audioSource.Stop();
 
         Debug.Log("Кофе готов");
     }
