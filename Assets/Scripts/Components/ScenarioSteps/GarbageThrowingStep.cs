@@ -7,18 +7,23 @@ using Services.Interfaces;
 public class GarbageThrowingStep : BaseStep
 {
     [SerializeField] GarbageContainerInteractor garbageContainerInteractor;
+    private bool finished;
 
     public override void Initialize(ServiceContainer serviceContainer)
     {
-        
+        garbageContainerInteractor.garbageThrown += CheckGarbageInContainer;
     }
 
     public override async UniTask PerformStepAsync(CancellationToken ct)
     {
         garbageContainerInteractor.EmptyContainer();
-        await UniTask.WaitUntil(CheckGarbageInContainer, cancellationToken: ct); 
+        Debug.Log("Garbage step started");
+        await UniTask.WaitUntil(() => finished == true, cancellationToken: ct); 
+        Debug.Log("Garbage step ended");
     }
 
-    private bool CheckGarbageInContainer()
-        => garbageContainerInteractor.isContainerFull;
+    private void CheckGarbageInContainer()
+    {
+        finished = true;
+    }
 }

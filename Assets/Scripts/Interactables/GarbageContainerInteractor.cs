@@ -1,16 +1,19 @@
 using UnityEngine;
 using Interactables.Interface;
 using Unity.VisualScripting;
+using System;
 
 public class GarbageContainerInteractor : MonoBehaviour, IInteractor
 {
     private GameObject garbageBag;
-    public bool isContainerFull => garbageBag != null;
+    public event Action garbageThrown;
 
     public void PerformInteraction(IInteractable interactable)
     {
         if (garbageBag == null)
             return;
+        
+        garbageThrown?.Invoke();
 
         Rigidbody rb = garbageBag.GetComponent<Rigidbody>();
 
