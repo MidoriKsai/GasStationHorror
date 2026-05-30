@@ -10,6 +10,9 @@ namespace NPCSystem
         [SerializeField]
         private Transform customerSpawnPoint;
 
+        [SerializeField]
+        private AudioSource carAudioSource;
+
         private CustomerData _customerData;
         private NavMeshAgent _agent;
         private Coroutine _moveRoutine;
@@ -31,6 +34,8 @@ namespace NPCSystem
 
         public void StartPath(AgentPath path, Action onCompleted)
         {
+            carAudioSource.Play();
+
             if (_moveRoutine != null)
                 StopCoroutine(_moveRoutine);
 
@@ -55,6 +60,7 @@ namespace NPCSystem
             }
 
             onCompleted?.Invoke();
+            carAudioSource.Stop();
         }
     }
 }
