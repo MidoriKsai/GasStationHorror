@@ -204,6 +204,7 @@ MonoBehaviour:
   - {fileID: 2690374198814039561}
   - {fileID: 1562238484499734963}
   - {fileID: 3934446125159122931}
+  grabSound: {fileID: 8300000, guid: 5ac6499642f83dc488cafe74897a9f9d, type: 3}
 --- !u!1001 &782209392841496135
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -14,9 +14,9 @@ namespace Services.Implementations
             this.threeDAudioSources = threeDAudioSources;
         }
 
-        public void Play2DSound(AudioClip audioClip)
+        public void Play2DSound(AudioClip audioClip, float volume = 1f)
         {
-            twoDAudioSource.PlayOneShot(audioClip);
+            twoDAudioSource.PlayOneShot(audioClip, volume);
         }
 
         public void Play3DSound(Vector3 position, AudioClip audioClip)
