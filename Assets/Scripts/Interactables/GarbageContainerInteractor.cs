@@ -1,13 +1,16 @@
 using UnityEngine;
 using Interactables.Interface;
+using Unity.VisualScripting;
 
 public class GarbageContainerInteractor : MonoBehaviour, IInteractor
 {
     private GameObject garbageBag;
+    public bool isContainerFull => garbageBag != null;
 
-    public void PerformInteraction(IInteractable interactableGarbageBag)
+    public void PerformInteraction(IInteractable interactable)
     {
-        Debug.Log("GarbageBag detected");
+        if (garbageBag == null)
+            return;
 
         Rigidbody rb = garbageBag.GetComponent<Rigidbody>();
 
@@ -17,10 +20,25 @@ public class GarbageContainerInteractor : MonoBehaviour, IInteractor
 
     private void OnTriggerEnter(Collider collision)
     {
+        if (!collision.gameObject.CompareTag("GarbageBag"))
+            return;
+        
         if (collision.gameObject.TryGetComponent<IInteractable>(out IInteractable interactableGarbageBag))
         {
+            Debug.Log("GarbageBag detected");
+
             garbageBag = collision.gameObject;
+
             PerformInteraction(interactableGarbageBag);
+        }
+    }
+
+    public void EmptyContainer()
+    {
+        if (garbageBag != null)
+        {
+            Destroy(garbageBag);
+            garbageBag = null;
         }
     }
 }

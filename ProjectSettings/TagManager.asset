@@ -8,6 +8,7 @@ TagManager:
   - Points
   - Interactable
   - ShelfBox
+  - GarbageBag
   layers:
   - Default
   - TransparentFX
