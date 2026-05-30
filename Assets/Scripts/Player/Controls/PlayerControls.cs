@@ -21,6 +21,7 @@ public class PlayerControls : MonoBehaviour
     {
         playerRigidbody = GetComponent<Rigidbody>();
         inputHandler = GetComponent<InputHandler>();
+        CameraJitterFrequency = 2 * movementSpeed;
     }
 
     void Start()
