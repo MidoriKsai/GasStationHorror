@@ -66,7 +66,8 @@ namespace Components.ScenarioSteps
 
             _tipController.HideTip();
 
-            _playerService.FocusPlayerToDialogue(_customerController.GetCustomerDialogPoint());
+            _playerService.FocusPlayerToDialogue(
+                _customerController.GetCustomerDialogPoint());
 
             await _dialogue.StartDialogueAsync(
                 dialogueID,
@@ -75,7 +76,9 @@ namespace Components.ScenarioSteps
 
             _playerService.UnfocusPlayerFromDialogue();
 
-            _tipController.ShowInfo("customer_info", _customerController.currentCustomerData);
+            _tipController.ShowInfo(
+                "customer_info",
+                _customerController.currentCustomerData);
 
             customerProductsHandler.StartProducts();
 
@@ -99,7 +102,8 @@ namespace Components.ScenarioSteps
 
             _tipController.ShowTip("finish_info");
 
-            _terminalController.EnableInteraction(_customerController.currentCustomerData);
+            _terminalController.EnableInteraction(
+                _customerController.currentCustomerData);
 
             await _terminalController.WaitForResultAsync();
 
@@ -110,24 +114,32 @@ namespace Components.ScenarioSteps
             _terminalController.DisableInteraction();
 
             _tipController.ShowTip("finish_money_info");
+            
+            customerProductsHandler.ClearProducts();
 
             await WaitPayment();
 
             _tipController.HideTip();
-
+            
             await _customerController.WaitForCustomerLeaveAsync();
+
+
         }
 
         private async UniTask WaitPayment()
         {
             var tcs = new UniTaskCompletionSource();
 
-            var money = Object.Instantiate(moneyPrefab, moneySpawnPoint);
+            var money = Object.Instantiate(
+                moneyPrefab,
+                moneySpawnPoint);
 
             void OnClicked()
             {
                 money.Clicked -= OnClicked;
+
                 Object.Destroy(money.gameObject);
+
                 tcs.TrySetResult();
             }
 

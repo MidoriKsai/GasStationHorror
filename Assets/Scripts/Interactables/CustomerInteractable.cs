@@ -29,9 +29,12 @@ namespace Interactables
             _remainingCoffee = data.coffeeCount;
             _remainingFrenchDogs = data.frenchDogCount;
 
-            Debug.Log($"[CustomerInteractable] Initialized. Coffee: {_remainingCoffee}, FrenchDogs: {_remainingFrenchDogs}");
+            _data.readyCoffee = 0;
+            _data.readyFrenchDogs = 0;
 
             _tcs = new UniTaskCompletionSource();
+
+            RefreshInfo();
 
             CheckComplete();
         }
@@ -39,45 +42,27 @@ namespace Interactables
         public void Interact()
         {
             if (_data == null)
-            {
-                Debug.Log("[CustomerInteractable] Interact blocked: _data == null");
                 return;
-            }
 
             if (_inventory == null)
-            {
-                Debug.Log("[CustomerInteractable] Interact blocked: _inventory == null");
                 return;
-            }
 
             if (_remainingCoffee <= 0 && _remainingFrenchDogs <= 0)
-            {
-                Debug.Log("[CustomerInteractable] Interact blocked: order already complete");
                 return;
-            }
 
             if (_inventory.IsInventoryEmpty())
-            {
-                Debug.Log("[CustomerInteractable] Interact blocked: inventory is empty");
                 return;
-            }
 
             Grabbable item = _inventory.GetGrabbableInInventory();
 
             if (item == null)
-            {
-                Debug.Log("[CustomerInteractable] Interact blocked: item == null");
                 return;
-            }
 
             if (!TryGetFoodItem(item, out FoodItem food))
             {
-                Debug.Log("[CustomerInteractable] Interact blocked: item has no FoodItem");
                 _tipController?.ShowTip("customer_not_needed_info");
                 return;
             }
-
-            Debug.Log($"[CustomerInteractable] Item in hand: {food.Type}. Coffee left: {_remainingCoffee}, FrenchDogs left: {_remainingFrenchDogs}");
 
             switch (food.Type)
             {
@@ -90,7 +75,6 @@ namespace Interactables
                     break;
 
                 default:
-                    Debug.Log($"[CustomerInteractable] Item not needed: {food.Type}");
                     _tipController?.ShowTip("customer_not_needed_info");
                     break;
             }
@@ -139,7 +123,6 @@ namespace Interactables
         {
             if (_remainingCoffee <= 0)
             {
-                Debug.Log("[CustomerInteractable] Coffee rejected: no coffee needed");
                 _tipController?.ShowTip("customer_not_needed_info");
                 return;
             }
@@ -147,8 +130,9 @@ namespace Interactables
             AcceptItem(item);
 
             _remainingCoffee--;
+            _data.readyCoffee++;
 
-            Debug.Log($"[CustomerInteractable] Coffee accepted. Remaining coffee: {_remainingCoffee}");
+            RefreshInfo();
 
             CheckComplete();
         }
@@ -157,7 +141,6 @@ namespace Interactables
         {
             if (_remainingFrenchDogs <= 0)
             {
-                Debug.Log("[CustomerInteractable] FrenchDog rejected: no french dogs needed");
                 _tipController?.ShowTip("customer_not_needed_info");
                 return;
             }
@@ -165,10 +148,16 @@ namespace Interactables
             AcceptItem(item);
 
             _remainingFrenchDogs--;
+            _data.readyFrenchDogs++;
 
-            Debug.Log($"[CustomerInteractable] FrenchDog accepted. Remaining french dogs: {_remainingFrenchDogs}");
+            RefreshInfo();
 
             CheckComplete();
+        }
+
+        private void RefreshInfo()
+        {
+            _tipController?.ShowInfo("customer_info", _data);
         }
 
         private void AcceptItem(Grabbable item)
@@ -202,11 +191,8 @@ namespace Interactables
 
         private void CheckComplete()
         {
-            Debug.Log($"[CustomerInteractable] CheckComplete. Coffee: {_remainingCoffee}, FrenchDogs: {_remainingFrenchDogs}");
-
             if (_remainingCoffee <= 0 && _remainingFrenchDogs <= 0)
             {
-                Debug.Log("[CustomerInteractable] Order completed");
                 _tcs?.TrySetResult();
             }
         }

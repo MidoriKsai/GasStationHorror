@@ -11,19 +11,22 @@ namespace Controllers
     {
         private readonly IDialogueView _view;
         private readonly IDialogueStorage _storage;
+        private readonly PlayerMovement _playerMovement;
 
         private UniTaskCompletionSource<int> _tcs;
 
         public DialogueSystemController(
             IDialogueView view,
-            IDialogueStorage storage)
+            IDialogueStorage storage,
+            PlayerMovement playerMovement)
         {
             _view = view;
             _storage = storage;
+            _playerMovement = playerMovement;
 
             _view.ChoiceSelected += OnChoice;
         }
-        
+
         public UniTask StartDialogueAsync(string id, CancellationToken ct)
         {
             return StartDialogueAsync(id, null, ct);
@@ -39,37 +42,46 @@ namespace Controllers
             EnableCursor();
             _view.Show();
 
-            foreach (var line in data.Lines)
+            _playerMovement.SetMovementEnabled(false);
+
+            try
             {
-                string text = CustomerTextFormatter.ApplyData(line.Text, customerData);
-
-                _view.SetDialogueText(text);
-
-                if (line.Answers.Count == 0)
+                foreach (var line in data.Lines)
                 {
-                    _view.SetChoices(new List<string> { "..." });
-                }
-                else
-                {
-                    var choices = new List<string>();
+                    string text = CustomerTextFormatter.ApplyData(line.Text, customerData);
 
-                    foreach (var answer in line.Answers)
+                    _view.SetDialogueText(text);
+
+                    if (line.Answers.Count == 0)
                     {
-                        choices.Add(answer.Text);
+                        _view.SetChoices(new List<string> { "..." });
+                    }
+                    else
+                    {
+                        var choices = new List<string>();
+
+                        foreach (var answer in line.Answers)
+                        {
+                            choices.Add(answer.Text);
+                        }
+
+                        _view.SetChoices(choices);
                     }
 
-                    _view.SetChoices(choices);
+                    _tcs = new UniTaskCompletionSource<int>();
+
+                    await _tcs.Task;
                 }
-
-                _tcs = new UniTaskCompletionSource<int>();
-
-                await _tcs.Task;
             }
+            finally
+            {
+                _view.Hide();
 
-            _view.Hide();
-            DisableCursor();
+                _playerMovement.SetMovementEnabled(true);
+
+                DisableCursor();
+            }
         }
-        
 
         private void OnChoice(int index)
         {

@@ -9,14 +9,13 @@ using UnityEngine;
 public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
 {
     [SerializeField] private Transform machinePoint;
-    
+
     [SerializeField] private GameObject readyCoffeeWithoutLidPrefab;
-    
+
     [SerializeField] private GrabbablesComponent grabbablesComponent;
-    [SerializeField] private Animator coffeeMachineAnimator;
-    
+
     [SerializeField] private string pouringBoolParameter = "IsPouring";
-    
+
     [SerializeField] private float brewTime = 3f;
     [SerializeField] private float readyCoffeeFreeDistance = 0.35f;
 
@@ -25,6 +24,8 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
     private bool _isBrewing;
     private Grabbable _currentCup;
     private GameObject _readyCoffeeWithoutLid;
+
+    private Animator _cupAnimator;
 
     private CancellationTokenSource _destroyCts;
 
@@ -51,6 +52,7 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
         _inventoryService.RemoveItem(false);
 
         PlaceCup(cup);
+
         BrewCoffee(cup, _destroyCts.Token).Forget();
     }
 
@@ -60,12 +62,18 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
             return;
 
         _isBrewing = true;
+
         _currentCup = cup;
+
+        _cupAnimator =
+            cup.GetComponentInChildren<Animator>();
 
         PrepareItemForMachinePoint(cup);
 
         cup.transform.SetParent(machinePoint);
+
         cup.transform.localPosition = Vector3.zero;
+
         cup.transform.localRotation = Quaternion.identity;
     }
 
@@ -96,23 +104,24 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
             }
 
             Vector3 spawnPosition = machinePoint.position;
+
             Quaternion spawnRotation = machinePoint.rotation;
 
             if (cup != null)
             {
                 spawnPosition = cup.transform.position;
+
                 spawnRotation = cup.transform.rotation;
 
                 Destroy(cup.gameObject);
             }
 
             _currentCup = null;
+
             _isBrewing = false;
 
             if (readyCoffeeWithoutLidPrefab == null)
-            {
                 return;
-            }
 
             _readyCoffeeWithoutLid = Instantiate(
                 readyCoffeeWithoutLidPrefab,
@@ -120,7 +129,8 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
                 spawnRotation);
 
             ReadyCoffeeInteractable readyCoffeeInteractable =
-                _readyCoffeeWithoutLid.GetComponent<ReadyCoffeeInteractable>();
+                _readyCoffeeWithoutLid
+                    .GetComponent<ReadyCoffeeInteractable>();
 
             if (readyCoffeeInteractable != null)
             {
@@ -128,7 +138,6 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
                     _inventoryService,
                     grabbablesComponent);
             }
-            
         }
         catch (OperationCanceledException)
         {
@@ -152,7 +161,8 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
         if (_inventoryService.IsInventoryEmpty())
             return false;
 
-        Grabbable grabbable = _inventoryService.GetGrabbableInInventory();
+        Grabbable grabbable =
+            _inventoryService.GetGrabbableInInventory();
 
         if (grabbable == null)
             return false;
@@ -181,22 +191,27 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
         }
     }
 
-    private void PrepareItemForMachinePoint(Grabbable item)
+    private void PrepareItemForMachinePoint(
+        Grabbable item)
     {
         if (item == null)
             return;
 
-        Rigidbody[] rigidbodies = item.GetComponentsInChildren<Rigidbody>(true);
+        Rigidbody[] rigidbodies =
+            item.GetComponentsInChildren<Rigidbody>(true);
 
         for (int i = 0; i < rigidbodies.Length; i++)
         {
             rigidbodies[i].linearVelocity = Vector3.zero;
             rigidbodies[i].angularVelocity = Vector3.zero;
+
             rigidbodies[i].useGravity = false;
+
             rigidbodies[i].isKinematic = true;
         }
 
-        Collider[] colliders = item.GetComponentsInChildren<Collider>(true);
+        Collider[] colliders =
+            item.GetComponentsInChildren<Collider>(true);
 
         for (int i = 0; i < colliders.Length; i++)
         {
@@ -206,13 +221,17 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
 
     private void SetPouringAnimation(bool value)
     {
-        if (coffeeMachineAnimator == null)
+        if (_cupAnimator == null)
+        {
             return;
+        }
 
         if (string.IsNullOrEmpty(pouringBoolParameter))
             return;
 
-        coffeeMachineAnimator.SetBool(pouringBoolParameter, value);
+        _cupAnimator.SetBool(
+            pouringBoolParameter,
+            value);
     }
 
     private bool IsCup(Grabbable grabbable)
@@ -223,12 +242,14 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
         if (grabbable.TryGetComponent(out FoodItem foodItem))
             return foodItem.Type == FoodType.Cup;
 
-        foodItem = grabbable.GetComponentInChildren<FoodItem>();
+        foodItem =
+            grabbable.GetComponentInChildren<FoodItem>();
 
         if (foodItem != null)
             return foodItem.Type == FoodType.Cup;
 
-        foodItem = grabbable.GetComponentInParent<FoodItem>();
+        foodItem =
+            grabbable.GetComponentInParent<FoodItem>();
 
         if (foodItem != null)
             return foodItem.Type == FoodType.Cup;
@@ -241,6 +262,7 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
         SetPouringAnimation(false);
 
         _isBrewing = false;
+
         _currentCup = null;
     }
 
@@ -251,7 +273,9 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
         if (_destroyCts != null)
         {
             _destroyCts.Cancel();
+
             _destroyCts.Dispose();
+
             _destroyCts = null;
         }
     }

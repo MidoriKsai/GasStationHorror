@@ -14,11 +14,9 @@ public class CustomerProductsHandler : MonoBehaviour
     private readonly List<Grabbable> _scannedProducts = new();
 
     private UniTaskCompletionSource _tcs;
-    
 
     public void StartProducts()
     {
-
         _tcs = new UniTaskCompletionSource();
 
         int count = Random.Range(2, 6);
@@ -30,6 +28,7 @@ public class CustomerProductsHandler : MonoBehaviour
             var point = pointsHandler.ProductsSpawnPoints[i];
 
             var product = Instantiate(prefab, point.position, point.rotation);
+
             grabbablesComponent.RegisterNewGrabbable(product);
 
             _customerProducts.Add(product);
@@ -60,7 +59,6 @@ public class CustomerProductsHandler : MonoBehaviour
         if (_customerProducts.Count == 0)
         {
             _tcs?.TrySetResult();
-            ClearProducts();
         }
 
         return true;
@@ -74,27 +72,31 @@ public class CustomerProductsHandler : MonoBehaviour
     private void MoveToScannedPoint(Grabbable product)
     {
         int index = _scannedProducts.Count - 1;
+
         var point = pointsHandler.ScannedProductPoints[index];
-        
-        transform.SetParent(null);
-        
+
+        product.transform.SetParent(null);
 
         product.transform.position = point.position;
         product.transform.rotation = point.rotation;
     }
 
-    private void ClearProducts()
+    public void ClearProducts()
     {
         foreach (var product in _customerProducts)
         {
             if (product != null)
+            {
                 Destroy(product.gameObject);
+            }
         }
 
         foreach (var product in _scannedProducts)
         {
             if (product != null)
+            {
                 Destroy(product.gameObject);
+            }
         }
 
         _customerProducts.Clear();

@@ -21,8 +21,8 @@ public class CustomersFactory
         newCustomer.literQuantity = Random.Range(20, 45);
         newCustomer.patrolId = Random.Range(0, 4);
         newCustomer.fuelType = fuels[newCustomer.patrolId];
-        newCustomer.frenchDogCount = Random.Range(0, 4);
-        newCustomer.coffeeCount = Random.Range(0, 4);
+        newCustomer.frenchDogCount = Random.Range(0, 3);
+        newCustomer.coffeeCount = Random.Range(0, 3);
         nextId++;
         return newCustomer;
     }
