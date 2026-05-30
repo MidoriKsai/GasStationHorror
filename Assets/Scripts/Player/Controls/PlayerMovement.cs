@@ -126,7 +126,6 @@ public class PlayerMovement : MonoBehaviour
 
             footstepsAudioSource.pitch = UnityEngine.Random.Range(0.8f, 1.2f);
             footstepsAudioSource.Play();
-            Debug.Log("Playing footsteps audio");
 
             await UniTask.Delay(TimeSpan.FromSeconds(delay));
         }
