@@ -762,6 +762,7 @@ MonoBehaviour:
   moneySpawnPoint: {fileID: 2034917457}
   cashTriggerZone: {fileID: 1020444193}
   customerProductsHandler: {fileID: 441505259}
+  cashRegisterInteractable: {fileID: 0}
 --- !u!1001 &440870615
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -776,7 +777,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1200790720139297300, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.7100067
+      value: 0.710022
       objectReference: {fileID: 0}
     - target: {fileID: 1536961754889527163, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -824,7 +825,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4068324954865261792, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.7100067
+      value: 0.710022
       objectReference: {fileID: 0}
     - target: {fileID: 4953445443083245861, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
       propertyPath: m_Name
@@ -932,7 +933,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6568321684541544708, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1.9999695
+      value: -1.999939
       objectReference: {fileID: 0}
     - target: {fileID: 6568321684541544708, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1619,6 +1620,7 @@ MonoBehaviour:
   moneySpawnPoint: {fileID: 2034917457}
   cashTriggerZone: {fileID: 1020444193}
   customerProductsHandler: {fileID: 441505259}
+  cashRegisterInteractable: {fileID: 0}
 --- !u!1001 &717402877
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1917,11 +1919,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20291f33da8240e9818aaedca64911d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interactables.GrillInteractable
-  grillPoint: {fileID: 1206047033}
+  grillPoints: []
   cookedSausagePrefab: {fileID: 3850119295000018041, guid: 6d0ce67d445d6a148bf6aa0383a392b3, type: 3}
   grabbablesComponent: {fileID: 8559800282055990426}
   cookTime: 5
-  cookSound: {fileID: 8300000, guid: eea44127b2b274740bf8cb65058a7ce4, type: 3}
+  rotationDuration: 1
+  rotationAxis: {x: 360, y: 0, z: 0}
+  cookedSausageFreeDistance: 0.35
+  cookSound: {fileID: 0}
 --- !u!4 &957955022 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5704575798034658244, guid: 3ed991b651384a14f9d37b1d14b8bfb0, type: 3}
@@ -2559,17 +2564,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7753065726478582772, guid: fa25c1ae23e778340a95669c8f2885d4, type: 3}
   m_PrefabInstance: {fileID: 1020444192}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1150431383 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7879668407733639122, guid: 561f83ed9539def4dbdc9091002be53c, type: 3}
-  m_PrefabInstance: {fileID: 440870615}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a3a53318964b65842e685dd8a4676b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmartTerminalView
 --- !u!1 &1206047032
 GameObject:
   m_ObjectHideFlags: 0
@@ -3484,10 +3478,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CoffeeMachineInteractable
   machinePoint: {fileID: 177260132}
-  coffeePrefab: {fileID: 6254732595772040335, guid: 22cd0799bc50eab4e8b5426e415818ab, type: 3}
+  coffeePrefab: {fileID: 0}
+  readyCoffeeWithoutLidPrefab: {fileID: 0}
   grabbablesComponent: {fileID: 8559800282055990426}
+  pouringBoolParameter: IsPouring
   brewTime: 3
-  coffeePourSound: {fileID: 8300000, guid: a69000f1f0575904ca2c47f62bbdbf9d, type: 3}
+  readyCoffeeFreeDistance: 0.35
+  coffeePourSound: {fileID: 0}
 --- !u!1001 &1742820463
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5038,7 +5035,7 @@ PrefabInstance:
     - target: {fileID: 4646802937047401775, guid: 2ca3cbbb8ac3f1142a0fa3a4ac46dee3, type: 3}
       propertyPath: smartTerminalView
       value: 
-      objectReference: {fileID: 1150431383}
+      objectReference: {fileID: 0}
     - target: {fileID: 4646802937047401775, guid: 2ca3cbbb8ac3f1142a0fa3a4ac46dee3, type: 3}
       propertyPath: terminalFocusPoint
       value: 

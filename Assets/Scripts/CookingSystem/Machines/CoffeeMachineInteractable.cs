@@ -10,6 +10,8 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
 {
     [SerializeField] private Transform machinePoint;
 
+    [SerializeField] private Grabbable coffeePrefab;
+
     [SerializeField] private GameObject readyCoffeeWithoutLidPrefab;
 
     [SerializeField] private GrabbablesComponent grabbablesComponent;
@@ -17,12 +19,19 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
     [SerializeField] private string pouringBoolParameter = "IsPouring";
 
     [SerializeField] private float brewTime = 3f;
+
     [SerializeField] private float readyCoffeeFreeDistance = 0.35f;
+
+    [SerializeField] private AudioClip coffeePourSound;
 
     private IInventoryService _inventoryService;
 
+    private ISoundService _soundService;
+
     private bool _isBrewing;
+
     private Grabbable _currentCup;
+
     private GameObject _readyCoffeeWithoutLid;
 
     private Animator _cupAnimator;
@@ -34,9 +43,13 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
         _destroyCts = new CancellationTokenSource();
     }
 
-    public void Initialize(IInventoryService inventoryService)
+    public void Initialize(
+        IInventoryService inventoryService,
+        ISoundService soundService)
     {
         _inventoryService = inventoryService;
+
+        _soundService = soundService;
     }
 
     public void Interact()
@@ -44,7 +57,8 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
         if (!CanInteract())
             return;
 
-        Grabbable cup = _inventoryService.GetGrabbableInInventory();
+        Grabbable cup =
+            _inventoryService.GetGrabbableInInventory();
 
         if (cup == null)
             return;
@@ -81,9 +95,20 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
         Grabbable cup,
         CancellationToken cancellationToken)
     {
+        AudioSource audioSource = null;
+
         try
         {
             SetPouringAnimation(true);
+
+            if (_soundService != null && coffeePourSound != null)
+            {
+                audioSource =
+                    _soundService.Play3DSound(
+                        transform.position,
+                        coffeePourSound,
+                        0.7f);
+            }
 
             await UniTask.Delay(
                 (int)(brewTime * 1000),
@@ -120,28 +145,47 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
 
             _isBrewing = false;
 
-            if (readyCoffeeWithoutLidPrefab == null)
-                return;
-
-            _readyCoffeeWithoutLid = Instantiate(
-                readyCoffeeWithoutLidPrefab,
-                spawnPosition,
-                spawnRotation);
-
-            ReadyCoffeeInteractable readyCoffeeInteractable =
-                _readyCoffeeWithoutLid
-                    .GetComponent<ReadyCoffeeInteractable>();
-
-            if (readyCoffeeInteractable != null)
+            if (readyCoffeeWithoutLidPrefab != null)
             {
-                readyCoffeeInteractable.Initialize(
-                    _inventoryService,
-                    grabbablesComponent);
+                _readyCoffeeWithoutLid = Instantiate(
+                    readyCoffeeWithoutLidPrefab,
+                    spawnPosition,
+                    spawnRotation);
+
+                ReadyCoffeeInteractable readyCoffeeInteractable =
+                    _readyCoffeeWithoutLid
+                        .GetComponent<ReadyCoffeeInteractable>();
+
+                if (readyCoffeeInteractable != null)
+                {
+                    readyCoffeeInteractable.Initialize(
+                        _inventoryService,
+                        grabbablesComponent);
+                }
+            }
+            else if (coffeePrefab != null)
+            {
+                Grabbable coffee = Instantiate(
+                    coffeePrefab,
+                    spawnPosition,
+                    spawnRotation);
+
+                grabbablesComponent.RegisterNewGrabbable(coffee);
+            }
+
+            if (audioSource != null)
+            {
+                audioSource.Stop();
             }
         }
         catch (OperationCanceledException)
         {
             SetPouringAnimation(false);
+
+            if (audioSource != null)
+            {
+                audioSource.Stop();
+            }
         }
     }
 
@@ -222,9 +266,7 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
     private void SetPouringAnimation(bool value)
     {
         if (_cupAnimator == null)
-        {
             return;
-        }
 
         if (string.IsNullOrEmpty(pouringBoolParameter))
             return;
