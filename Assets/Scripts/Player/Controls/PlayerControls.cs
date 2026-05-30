@@ -57,4 +57,9 @@ public class PlayerControls : MonoBehaviour
         playerMovement.SetMovementEnabled(true);
         cameraLook.SetLookEnabled(true);
     }
+
+    public void SetMovementEnabled(bool t)
+    {
+        playerMovement.SetMovementEnabled(t);
+    }
 }

@@ -14,7 +14,7 @@ namespace Components
         private DialogueView _dialogueView;
 
         [SerializeField]
-        private PlayerMovement _playerMovement;
+        private PlayerControls _playerMovement;
 
         private ServiceContainer _serviceContainer;
 

@@ -11,14 +11,14 @@ namespace Controllers
     {
         private readonly IDialogueView _view;
         private readonly IDialogueStorage _storage;
-        private readonly PlayerMovement _playerMovement;
+        private readonly PlayerControls _playerMovement;
 
         private UniTaskCompletionSource<int> _tcs;
 
         public DialogueSystemController(
             IDialogueView view,
             IDialogueStorage storage,
-            PlayerMovement playerMovement)
+            PlayerControls playerMovement)
         {
             _view = view;
             _storage = storage;
