@@ -3,17 +3,31 @@ using UnityEngine;
 
 public class CarSpawner
 {
-    private readonly Car _carPrefab;
+    private readonly CarRandomizatorManager _randomizatorManager;
 
-    public CarSpawner(Car carPrefab)
+    public CarSpawner(CarRandomizatorManager randomizatorManager)
     {
-        _carPrefab = carPrefab;
+        _randomizatorManager = randomizatorManager;
     }
 
     public Car Spawn(Transform spawnPoint)
     {
-        var car = Object.Instantiate(_carPrefab, spawnPoint.position, spawnPoint.rotation);
-        Debug.Log("Spawn Car");
+        CarRandomData randomCarData =
+            _randomizatorManager.GetRandomCarData();
+
+        if (randomCarData == null)
+            return null;
+
+        var car = Object.Instantiate(
+            randomCarData.carPrefab,
+            spawnPoint.position,
+            spawnPoint.rotation);
+
+        _randomizatorManager.ApplyRandomMaterial(
+            car,
+            randomCarData);
+        
+
         return car;
     }
 }

@@ -1,12 +1,12 @@
+using Components;
 using Interactables.Interface;
 using Services.Interfaces;
 using UnityEngine;
-using Components;
 
 public class CookedSausageInteractable : MonoBehaviour, IInteractable
 {
     [SerializeField] private Grabbable frenchDogPrefab;
-    
+
     private IInventoryService _inventoryService;
     private GrabbablesComponent _grabbablesComponent;
 
@@ -20,57 +20,20 @@ public class CookedSausageInteractable : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        Debug.Log("CookedSausage Interact");
-
-        if (_inventoryService == null)
-        {
-            Debug.LogError("InventoryService is null");
+        if (!CanInteract())
             return;
-        }
 
-        if (_grabbablesComponent == null)
-        {
-            Debug.LogError("GrabbablesComponent is null");
-            return;
-        }
-
-        if (_inventoryService.IsInventoryEmpty())
-        {
-            Debug.Log("Нужна булка");
-            return;
-        }
-
-        var item = _inventoryService.GetGrabbableInInventory();
-
-        if (item == null)
-        {
-            Debug.LogError("Item in hand is null");
-            return;
-        }
-
-        if (!item.TryGetComponent<FoodItem>(out var food))
-        {
-            Debug.Log("В руке предмет без FoodItem");
-            return;
-        }
-
-        Debug.Log($"В руке: {food.Type}");
-
-        if (food.Type != FoodType.Bun)
-        {
-            Debug.Log("Нужна булка");
-            return;
-        }
+        Grabbable item = _inventoryService.GetGrabbableInInventory();
 
         _inventoryService.RemoveItem(false);
 
         Vector3 spawnPosition = transform.position;
         Quaternion spawnRotation = transform.rotation;
 
-        Object.Destroy(item.gameObject);
-        Object.Destroy(gameObject);
+        Destroy(item.gameObject);
+        Destroy(gameObject);
 
-        var frenchDog = Object.Instantiate(
+        Grabbable frenchDog = Instantiate(
             frenchDogPrefab,
             spawnPosition,
             spawnRotation);
@@ -81,5 +44,40 @@ public class CookedSausageInteractable : MonoBehaviour, IInteractable
         Debug.Log("Френчдог собран");
     }
 
-    public bool CanInteract() => true;
+    public bool CanInteract()
+    {
+        if (_inventoryService == null)
+            return false;
+
+        if (_grabbablesComponent == null)
+            return false;
+
+        if (_inventoryService.IsInventoryEmpty())
+            return false;
+
+        Grabbable item = _inventoryService.GetGrabbableInInventory();
+
+        if (item == null)
+            return false;
+
+        return IsBun(item);
+    }
+
+    private bool IsBun(Grabbable grabbable)
+    {
+        if (grabbable.TryGetComponent(out FoodItem foodItem))
+            return foodItem.Type == FoodType.Bun;
+
+        foodItem = grabbable.GetComponentInChildren<FoodItem>();
+
+        if (foodItem != null)
+            return foodItem.Type == FoodType.Bun;
+
+        foodItem = grabbable.GetComponentInParent<FoodItem>();
+
+        if (foodItem != null)
+            return foodItem.Type == FoodType.Bun;
+
+        return false;
+    }
 }

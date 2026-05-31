@@ -13,6 +13,9 @@ namespace Components
         [SerializeField]
         private DialogueView _dialogueView;
 
+        [SerializeField]
+        private PlayerControls _playerMovement;
+
         private ServiceContainer _serviceContainer;
 
         public void Initialize(ServiceContainer serviceContainer)
@@ -27,11 +30,13 @@ namespace Components
             var xmlParser = _serviceContainer.Resolve<IXMLParserService>();
 
             var parser = new Parser(xmlParser);
-            Debug.Log("Parser created");
-            var storage = new DialogueStorage(parser);
-            Debug.Log("Storage created");
 
-            return new DialogueSystemController(view, storage);
+            var storage = new DialogueStorage(parser);
+
+            return new DialogueSystemController(
+                view,
+                storage,
+                _playerMovement);
         }
     }
 }

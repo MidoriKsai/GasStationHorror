@@ -20,6 +20,7 @@ namespace Components.ScenarioSteps
         [SerializeField] private Transform moneySpawnPoint;
         [SerializeField] private CashTriggerZone cashTriggerZone;
         [SerializeField] private CustomerProductsHandler customerProductsHandler;
+        [SerializeField] private CashRegisterInteractable cashRegisterInteractable;
 
         private IPlayerService _playerService;
         private IInventoryService _inventoryService;
@@ -33,11 +34,20 @@ namespace Components.ScenarioSteps
             _terminalController = container.Resolve<SmartTerminalController>();
             _inventoryService = container.Resolve<IInventoryService>();
             _tipController = container.Resolve<TipsSystem.TipController>();
+
+            if (cashRegisterInteractable != null)
+            {
+                cashRegisterInteractable.Initialize(_inventoryService);
+                cashRegisterInteractable.SetAvailable(false);
+            }
         }
 
         public override async UniTask PerformStepAsync(CancellationToken ct)
         {
             _terminalController.DisableInteraction();
+
+            if (cashRegisterInteractable != null)
+                cashRegisterInteractable.SetAvailable(false);
 
             await _customerController.WaitForCustomerArriveAsync();
 
@@ -49,14 +59,15 @@ namespace Components.ScenarioSteps
                 _customerController.currentCustomerData,
                 _inventoryService,
                 _tipController);
-            
+
             _tipController.ShowTip("customer_start");
 
             await cashTriggerZone.WaitPlayerEnter();
-            
+
             _tipController.HideTip();
 
-            _playerService.FocusPlayerToDialogue(_customerController.GetCustomerDialogPoint());
+            _playerService.FocusPlayerToDialogue(
+                _customerController.GetCustomerDialogPoint());
 
             await _dialogue.StartDialogueAsync(
                 dialogueID,
@@ -64,53 +75,71 @@ namespace Components.ScenarioSteps
                 ct);
 
             _playerService.UnfocusPlayerFromDialogue();
-            
-            _tipController.ShowInfo("customer_info", _customerController.currentCustomerData);
+
+            _tipController.ShowInfo(
+                "customer_info",
+                _customerController.currentCustomerData);
 
             customerProductsHandler.StartProducts();
-            
+
             _tipController.ShowTip("products_info");
 
+            if (cashRegisterInteractable != null)
+                cashRegisterInteractable.SetAvailable(true);
+
             await customerProductsHandler.WaitAllScanned();
-            
+
+            if (cashRegisterInteractable != null)
+                cashRegisterInteractable.SetAvailable(false);
+
             _tipController.HideTip();
-            
+
             _tipController.ShowTip("dog_info");
-            
+
             await _customerInteractable.WaitOrderCompleted();
+
             _tipController.HideTip();
-            
+
             _tipController.ShowTip("finish_info");
-                        
-            _terminalController.EnableInteraction(_customerController.currentCustomerData);
+
+            _terminalController.EnableInteraction(
+                _customerController.currentCustomerData);
 
             await _terminalController.WaitForResultAsync();
-            
+
             _tipController.HideTip();
-            
+
             _tipController.HideInfo();
 
             _terminalController.DisableInteraction();
-            
+
             _tipController.ShowTip("finish_money_info");
+            
+            customerProductsHandler.ClearProducts();
 
             await WaitPayment();
-            
-            _tipController.HideTip();
 
+            _tipController.HideTip();
+            
             await _customerController.WaitForCustomerLeaveAsync();
+
+
         }
 
         private async UniTask WaitPayment()
         {
             var tcs = new UniTaskCompletionSource();
 
-            var money = Object.Instantiate(moneyPrefab, moneySpawnPoint);
+            var money = Object.Instantiate(
+                moneyPrefab,
+                moneySpawnPoint);
 
             void OnClicked()
             {
                 money.Clicked -= OnClicked;
+
                 Object.Destroy(money.gameObject);
+
                 tcs.TrySetResult();
             }
 

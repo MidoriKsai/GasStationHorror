@@ -1,16 +1,14 @@
-﻿using System.Collections.Generic;
-using Core.Interfaces;
+﻿using Core.Interfaces;
 using UnityEngine;
 
 namespace Components
 {
     public class CustomersComponent : MonoBehaviour, IComponent<CustomerController>
     {
-        [Header("Prefabs")]
-        [SerializeField] private Customer customerPrefab;
-        [SerializeField] private NPCSystem.Car carPrefab;
+        [Header("Randomizers")]
+        [SerializeField] private CarRandomizatorManager carRandomizator;
+        [SerializeField] private CustomerRandomizatorManager customerRandomizator;
 
-        private CustomerController _controller;
         private PointsHandler pointsHandler;
 
         public void Initialize(PointsHandler pointsHandler)
@@ -22,8 +20,8 @@ namespace Components
         {
             return new CustomerController(
                 pointsHandler,
-                customerPrefab,
-                carPrefab
+                customerRandomizator,
+                carRandomizator
             );
         }
     }

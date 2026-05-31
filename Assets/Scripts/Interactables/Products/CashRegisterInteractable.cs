@@ -7,18 +7,23 @@ public class CashRegisterInteractable : MonoBehaviour, IInteractable
     [SerializeField] private CustomerProductsHandler customerProductsHandler;
 
     private IInventoryService _inventoryService;
+    private bool _isAvailable;
 
     public void Initialize(IInventoryService inventoryService)
     {
         _inventoryService = inventoryService;
+        _isAvailable = false;
+    }
+
+    public void SetAvailable(bool isAvailable)
+    {
+        _isAvailable = isAvailable;
     }
 
     public void Interact()
     {
-        if (_inventoryService.IsInventoryEmpty())
-        {
+        if (!CanInteract())
             return;
-        }
 
         var grabbable = _inventoryService.GetGrabbableInInventory();
 
@@ -32,6 +37,12 @@ public class CashRegisterInteractable : MonoBehaviour, IInteractable
 
     public bool CanInteract()
     {
-        return true;
+        if (!_isAvailable)
+            return false;
+
+        if (_inventoryService == null)
+            return false;
+
+        return !_inventoryService.IsInventoryEmpty();
     }
 }

@@ -52,8 +52,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.47551727, y: 0.44773483, z: 0.3548422}
+  m_Center: {x: 0.10112572, y: -0.029971838, z: -0.055107594}
 --- !u!114 &6899873144450347416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,4 +66,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd3789b07986b330b61d79fdacca464, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShelfSlot
-  grabbablesComponent: {fileID: 0}

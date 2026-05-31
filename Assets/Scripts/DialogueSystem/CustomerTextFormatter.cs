@@ -12,7 +12,11 @@ public static class CustomerTextFormatter
             .Replace("{liters}", data.literQuantity.ToString())
             .Replace("{fuel}", data.fuelType)
             .Replace("{foodOrder}", BuildFoodOrderText(data))
-            .Replace("{food}", BuildFoodText(data));
+            .Replace("{food}", BuildFoodText(data))
+            .Replace("{coffeeCount}", data.coffeeCount.ToString())
+            .Replace("{frenchDogCount}", data.frenchDogCount.ToString())
+            .Replace("{readyCoffee}", data.readyCoffee.ToString())
+            .Replace("{readyFrenchDogs}", data.readyFrenchDogs.ToString());
     }
 
     public static string BuildFoodOrderText(CustomerData data)
@@ -22,7 +26,7 @@ public static class CustomerTextFormatter
         if (string.IsNullOrEmpty(food))
             return "";
 
-        return " Ещё " + food + ".";
+        return $" Ещё {food}.";
     }
 
     public static string BuildFoodText(CustomerData data)

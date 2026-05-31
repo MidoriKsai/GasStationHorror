@@ -1,6 +1,7 @@
 using Interactables.Interface;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Player
 {
@@ -9,7 +10,7 @@ namespace Player
         [SerializeField] private PlayerDataHandler playerDataHandler;
         [SerializeField] private float interactionDistance = 3f;
         [SerializeField] private LayerMask interactableLayerMask;
-        [SerializeField] private TMP_Text interactionHelpText;
+        [SerializeField] private Image handPointer;
 
         private Camera _camera;
 
@@ -28,15 +29,30 @@ namespace Player
         private void UpdateCurrentInteractable()
         {
             CurrentInteractable = null;
-            interactionHelpText.enabled = false;
+
+            if (handPointer != null)
+                handPointer.enabled = false;
+
+            if (_camera == null)
+                return;
 
             Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
 
-            if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance, interactableLayerMask))
-            {
-                CurrentInteractable = hit.collider.GetComponentInParent<IInteractable>();
-                interactionHelpText.enabled = true;
-            }
+            if (!Physics.Raycast(ray, out RaycastHit hit, interactionDistance, interactableLayerMask))
+                return;
+
+            IInteractable interactable = hit.collider.GetComponentInParent<IInteractable>();
+
+            if (interactable == null)
+                return;
+
+            if (!interactable.CanInteract())
+                return;
+
+            CurrentInteractable = interactable;
+
+            if (handPointer != null)
+                handPointer.enabled = true;
         }
     }
 }

@@ -5,6 +5,7 @@ public enum FoodType
     CookedSausage,
     Bun,
     Cup,
+    Lid,
     Coffee,
     FrenchDog
 }

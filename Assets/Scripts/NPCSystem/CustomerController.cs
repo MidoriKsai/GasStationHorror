@@ -22,14 +22,17 @@ public class CustomerController : IController
     public CustomerData currentCustomerData => _currentCustomerData;
     public Customer currentCustomer => _currentCustomer;
 
-    
     public CustomerController(
         PointsHandler pointsHandler,
-        Customer customerPrefab,
-        Car carPrefab)
+        CustomerRandomizatorManager customerRandomizatorManager,
+        CarRandomizatorManager carRandomizatorManager)
     {
-        _customerSpawner = new CustomerSpawner(customerPrefab);
-        _carSpawner = new CarSpawner(carPrefab);
+        _customerSpawner =
+            new CustomerSpawner(customerRandomizatorManager);
+
+        _carSpawner =
+            new CarSpawner(carRandomizatorManager);
+
         _customersFactory = new CustomersFactory();
 
         this.pointsHandler = pointsHandler;
@@ -47,24 +50,31 @@ public class CustomerController : IController
     {
         _currentCustomerData = _customersFactory.CreateCustomer();
 
-        int petrolPumpNumber = _currentCustomerData.petrolPumpNumber;
+        int petrolPumpNumber =
+            _currentCustomerData.petrolPumpNumber;
 
-        _gasStationPoint = pointsHandler.GasStationPoints[petrolPumpNumber];
+        _gasStationPoint =
+            pointsHandler.GasStationPoints[petrolPumpNumber];
         
-        Debug.Log("Колонка" + petrolPumpNumber);
 
-        _currentCar = _carSpawner.Spawn(pointsHandler.CarSpawnPoint);
+        _currentCar =
+            _carSpawner.Spawn(pointsHandler.CarSpawnPoint);
 
         await WaitForCarPathAsync(_gasStationPoint);
 
-        _currentCustomer = _customerSpawner.Spawn(_currentCar.GetCustomerSpawnPoint(), _currentCustomerData);
+        _currentCustomer =
+            _customerSpawner.Spawn(
+                _currentCar.GetCustomerSpawnPoint(),
+                _currentCustomerData);
 
-        await WaitForCustomerPathAsync(pointsHandler.CashDeskPoint);
+        await WaitForCustomerPathAsync(
+            pointsHandler.CashDeskPoint);
     }
 
     public async UniTask WaitForCustomerLeaveAsync()
     {
-        await WaitForCustomerPathAsync(_currentCar.GetCustomerSpawnPoint());
+        await WaitForCustomerPathAsync(
+            _currentCar.GetCustomerSpawnPoint());
 
         if (_currentCustomer != null)
         {
@@ -72,7 +82,8 @@ public class CustomerController : IController
             _currentCustomer = null;
         }
 
-        await WaitForCarPathAsync(pointsHandler.CarLeavePoint);
+        await WaitForCarPathAsync(
+            pointsHandler.CarLeavePoint);
 
         if (_currentCar != null)
         {
@@ -83,21 +94,32 @@ public class CustomerController : IController
         _currentCustomerData = null;
     }
 
-    private async UniTask WaitForCarPathAsync(Transform targetPoint)
+    private async UniTask WaitForCarPathAsync(
+        Transform targetPoint)
     {
         _carTcs = new UniTaskCompletionSource();
-        _currentCar.StartPath(new AgentPath(targetPoint), () => OnPathFinished(_carTcs));
+
+        _currentCar.StartPath(
+            new AgentPath(targetPoint),
+            () => OnPathFinished(_carTcs));
+
         await _carTcs.Task;
     }
 
-    private async UniTask WaitForCustomerPathAsync(Transform targetPoint)
+    private async UniTask WaitForCustomerPathAsync(
+        Transform targetPoint)
     {
         _customerTcs = new UniTaskCompletionSource();
-        _currentCustomer.StartPath(new AgentPath(targetPoint), () => OnPathFinished(_customerTcs));
+
+        _currentCustomer.StartPath(
+            new AgentPath(targetPoint),
+            () => OnPathFinished(_customerTcs));
+
         await _customerTcs.Task;
     }
 
-    private void OnPathFinished(UniTaskCompletionSource tcs)
+    private void OnPathFinished(
+        UniTaskCompletionSource tcs)
     {
         tcs?.TrySetResult();
     }

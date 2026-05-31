@@ -1,5 +1,11 @@
 <tips>
     <tip id="customer_info">
-        <text>Литры: {liters}, колонка: {pump}, топливо {fuel}. {food}</text>
+        <text>
+            Литры: {liters}
+            Колонка: {pump}
+            Топливо: {fuel}
+            Френчдоги: {readyFrenchDogs}/{frenchDogCount}
+            Кофе: {readyCoffee}/{coffeeCount}
+        </text>
     </tip>
 </tips>

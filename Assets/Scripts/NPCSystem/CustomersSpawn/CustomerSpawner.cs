@@ -2,25 +2,46 @@ using UnityEngine;
 
 public class CustomerSpawner
 {
-    private Customer _customerPrefab;
+    private readonly CustomerRandomizatorManager _randomizatorManager;
 
-    public CustomerSpawner(Customer customerPrefab)
+    public CustomerSpawner(
+        CustomerRandomizatorManager randomizatorManager)
     {
-        _customerPrefab = customerPrefab;
+        _randomizatorManager = randomizatorManager;
     }
 
-    public Customer Spawn(Transform spawnPoint, CustomerData customerData)
+    public Customer Spawn(
+        Transform spawnPoint,
+        CustomerData customerData)
     {
-        var customer = Object.Instantiate(_customerPrefab, spawnPoint.position, spawnPoint.rotation);
+        CustomerRandomData randomData =
+            _randomizatorManager.GetRandomCustomerData();
+
+        if (randomData == null)
+            return null;
+
+        var customer = Object.Instantiate(
+            randomData.customerPrefab,
+            spawnPoint.position,
+            spawnPoint.rotation);
+
+        _randomizatorManager.ApplyRandomMaterial(
+            customer,
+            randomData);
+
         customer.Init(customerData);
-        Debug.Log("Spawn Customer");
+
         return customer;
     }
 
-    public Customer SpawnOnRandom(Transform[] spawnPoints, CustomerData customerData)
+    public Customer SpawnOnRandom(
+        Transform[] spawnPoints,
+        CustomerData customerData)
     {
-        var random = Random.Range(0, spawnPoints.Length);
-        var spawnPoint = spawnPoints[random];
+        int random = Random.Range(0, spawnPoints.Length);
+
+        Transform spawnPoint = spawnPoints[random];
+
         return Spawn(spawnPoint, customerData);
     }
 }
