@@ -853,7 +853,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.2777778}
   m_AnchorMax: {x: 0.014, y: 0.5777778}
-  m_AnchoredPosition: {x: 0, y: 0.10000229}
+  m_AnchoredPosition: {x: 0, y: 0.1000061}
   m_SizeDelta: {x: 0, y: 0.10079956}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &221519214
@@ -7949,7 +7949,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8796301195546121212, guid: 9cdb9512a1cdfb94eb34e64d0b327a00, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0000076293945
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8796301195546121212, guid: 9cdb9512a1cdfb94eb34e64d0b327a00, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -8306,12 +8306,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -9230,6 +9230,14 @@ PrefabInstance:
       value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 5988033707665710620, guid: 801653d469541c846aafaf1d4710298b, type: 3}
+      propertyPath: m_margin.w
+      value: 56.039185
+      objectReference: {fileID: 0}
+    - target: {fileID: 5988033707665710620, guid: 801653d469541c846aafaf1d4710298b, type: 3}
+      propertyPath: m_margin.z
+      value: 452.02188
+      objectReference: {fileID: 0}
+    - target: {fileID: 5988033707665710620, guid: 801653d469541c846aafaf1d4710298b, type: 3}
       propertyPath: m_fontAsset
       value: 
       objectReference: {fileID: 11400000, guid: ebc76776264a71d4d901070d9931b497, type: 2}
@@ -9267,7 +9275,7 @@ PrefabInstance:
       objectReference: {fileID: -6346969357411097316, guid: ebc76776264a71d4d901070d9931b497, type: 2}
     - target: {fileID: 5988033707665710620, guid: 801653d469541c846aafaf1d4710298b, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 2520243450
+      value: 4287819519
       objectReference: {fileID: 0}
     - target: {fileID: 5988033707665710620, guid: 801653d469541c846aafaf1d4710298b, type: 3}
       propertyPath: m_VerticalAlignment
