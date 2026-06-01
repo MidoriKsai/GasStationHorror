@@ -128,16 +128,14 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
                 return;
             }
 
-            Vector3 spawnPosition = machinePoint.position;
+            Vector3 spawnPosition =
+                machinePoint.position;
 
-            Quaternion spawnRotation = machinePoint.rotation;
+            Quaternion spawnRotation =
+                machinePoint.rotation;
 
             if (cup != null)
             {
-                spawnPosition = cup.transform.position;
-
-                spawnRotation = cup.transform.rotation;
-
                 Destroy(cup.gameObject);
             }
 
@@ -246,8 +244,11 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
 
         for (int i = 0; i < rigidbodies.Length; i++)
         {
-            rigidbodies[i].linearVelocity = Vector3.zero;
-            rigidbodies[i].angularVelocity = Vector3.zero;
+            rigidbodies[i].linearVelocity =
+                Vector3.zero;
+
+            rigidbodies[i].angularVelocity =
+                Vector3.zero;
 
             rigidbodies[i].useGravity = false;
 
