@@ -4,6 +4,7 @@ using UnityEngine;
 public class InputHandler : MonoBehaviour
 {
     public event Action ItemDropActionTriggered;
+    public event Action PauseEnterActionTriggered;
 
     private KeyboardInput keyboardInput;
     private MouseInput mouseInput;
@@ -20,11 +21,17 @@ public class InputHandler : MonoBehaviour
         mouseInput = gameObject.AddComponent<MouseInput>();
 
         keyboardInput.ItemDropActionTriggered += OnItemDropActionTriggered;
+        keyboardInput.PauseEnterActionTriggered += OnPauseEnterActionTriggered;
     }
 
     private void OnItemDropActionTriggered()
     {
         ItemDropActionTriggered?.Invoke();
+    }
+
+    private void OnPauseEnterActionTriggered()
+    {
+        PauseEnterActionTriggered?.Invoke();
     }
 
     private void OnDestroy()
