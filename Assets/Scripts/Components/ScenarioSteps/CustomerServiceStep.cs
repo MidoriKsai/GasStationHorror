@@ -60,11 +60,12 @@ namespace Components.ScenarioSteps
                 _inventoryService,
                 _tipController);
 
-            _tipController.ShowTip("customer_start");
+            _tipController.ShowObjective(
+                "customer_start");
 
             await cashTriggerZone.WaitPlayerEnter();
 
-            _tipController.HideTip();
+            _tipController.HideObjective();
 
             _playerService.FocusPlayerToDialogue(
                 _customerController.GetCustomerDialogPoint());
@@ -75,14 +76,16 @@ namespace Components.ScenarioSteps
                 ct);
 
             _playerService.UnfocusPlayerFromDialogue();
+            
 
+            customerProductsHandler.StartProducts();
+            
             _tipController.ShowInfo(
                 "customer_info",
                 _customerController.currentCustomerData);
 
-            customerProductsHandler.StartProducts();
-
-            _tipController.ShowTip("products_info");
+            _tipController.ShowObjective(
+                "products_info");
 
             if (cashRegisterInteractable != null)
                 cashRegisterInteractable.SetAvailable(true);
@@ -92,38 +95,35 @@ namespace Components.ScenarioSteps
             if (cashRegisterInteractable != null)
                 cashRegisterInteractable.SetAvailable(false);
 
-            _tipController.HideTip();
-
-            _tipController.ShowTip("dog_info");
+            _tipController.ShowObjective(
+                "dog_info");
 
             await _customerInteractable.WaitOrderCompleted();
 
-            _tipController.HideTip();
-
-            _tipController.ShowTip("finish_info");
+            _tipController.ShowObjective(
+                "finish_info");
 
             _terminalController.EnableInteraction(
                 _customerController.currentCustomerData);
 
             await _terminalController.WaitForResultAsync();
 
-            _tipController.HideTip();
+            _tipController.HideObjective();
 
             _tipController.HideInfo();
 
             _terminalController.DisableInteraction();
 
-            _tipController.ShowTip("finish_money_info");
-            
+            _tipController.ShowObjective(
+                "finish_money_info");
+
             customerProductsHandler.ClearProducts();
 
             await WaitPayment();
 
-            _tipController.HideTip();
-            
+            _tipController.HideObjective();
+
             await _customerController.WaitForCustomerLeaveAsync();
-
-
         }
 
         private async UniTask WaitPayment()

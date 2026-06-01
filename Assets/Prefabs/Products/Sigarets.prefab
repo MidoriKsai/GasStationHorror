@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 68868131291553858}
   - component: {fileID: 3441908250732651604}
   - component: {fileID: 5759953396774860503}
+  - component: {fileID: 6423026030462701975}
   m_Layer: 3
   m_Name: Sigarets
   m_TagString: Untagged
@@ -97,6 +98,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.034675784, y: 0.10758607, z: 0.06777085}
   m_Center: {x: 0.0032186555, y: 0.0010611787, z: 0.00024621934}
+--- !u!114 &6423026030462701975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8061550686071453807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b73f17946e345ca8b31df0d13c5e403, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Trashable
+  canBeThrownAway: 0
 --- !u!1001 &6489190164322351637
 PrefabInstance:
   m_ObjectHideFlags: 0

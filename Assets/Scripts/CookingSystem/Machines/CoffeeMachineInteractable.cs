@@ -28,6 +28,8 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
 
     private ISoundService _soundService;
 
+    private TipsSystem.TipController _tipController;
+
     private bool _isBrewing;
 
     private Grabbable _currentCup;
@@ -45,23 +47,65 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
 
     public void Initialize(
         IInventoryService inventoryService,
-        ISoundService soundService)
+        ISoundService soundService,
+        TipsSystem.TipController tipController)
     {
         _inventoryService = inventoryService;
 
         _soundService = soundService;
+
+        _tipController = tipController;
     }
 
     public void Interact()
     {
-        if (!CanInteract())
+        if (_inventoryService == null)
             return;
+
+        RefreshReadyCoffeeState();
+
+        if (_isBrewing)
+        {
+            _tipController?.ShowPopup(
+                "coffee_not_ready");
+
+            return;
+        }
+
+        if (_readyCoffeeWithoutLid != null)
+        {
+            _tipController?.ShowPopup(
+                "coffee_need_lid");
+
+            return;
+        }
+
+        if (_inventoryService.IsInventoryEmpty())
+        {
+            _tipController?.ShowPopup(
+                "coffee_need_cup");
+
+            return;
+        }
 
         Grabbable cup =
             _inventoryService.GetGrabbableInInventory();
 
         if (cup == null)
+        {
+            _tipController?.ShowPopup(
+                "coffee_need_cup");
+
             return;
+        }
+
+        if (!IsCup(cup))
+        {
+            _tipController?.ShowPopup(
+                "coffee_need_cup");
+
+            return;
+        }
 
         _inventoryService.RemoveItem(false);
 
@@ -101,7 +145,8 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
         {
             SetPouringAnimation(true);
 
-            if (_soundService != null && coffeePourSound != null)
+            if (_soundService != null &&
+                coffeePourSound != null)
             {
                 audioSource =
                     _soundService.Play3DSound(
@@ -128,16 +173,14 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
                 return;
             }
 
-            Vector3 spawnPosition = machinePoint.position;
+            Vector3 spawnPosition =
+                machinePoint.position;
 
-            Quaternion spawnRotation = machinePoint.rotation;
+            Quaternion spawnRotation =
+                machinePoint.rotation;
 
             if (cup != null)
             {
-                spawnPosition = cup.transform.position;
-
-                spawnRotation = cup.transform.rotation;
-
                 Destroy(cup.gameObject);
             }
 
@@ -170,7 +213,8 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
                     spawnPosition,
                     spawnRotation);
 
-                grabbablesComponent.RegisterNewGrabbable(coffee);
+                grabbablesComponent.RegisterNewGrabbable(
+                    coffee);
             }
 
             if (audioSource != null)
@@ -191,27 +235,7 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
 
     public bool CanInteract()
     {
-        RefreshReadyCoffeeState();
-
-        if (_isBrewing)
-            return false;
-
-        if (_readyCoffeeWithoutLid != null)
-            return false;
-
-        if (_inventoryService == null)
-            return false;
-
-        if (_inventoryService.IsInventoryEmpty())
-            return false;
-
-        Grabbable grabbable =
-            _inventoryService.GetGrabbableInInventory();
-
-        if (grabbable == null)
-            return false;
-
-        return IsCup(grabbable);
+        return true;
     }
 
     private void RefreshReadyCoffeeState()
@@ -246,8 +270,11 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
 
         for (int i = 0; i < rigidbodies.Length; i++)
         {
-            rigidbodies[i].linearVelocity = Vector3.zero;
-            rigidbodies[i].angularVelocity = Vector3.zero;
+            rigidbodies[i].linearVelocity =
+                Vector3.zero;
+
+            rigidbodies[i].angularVelocity =
+                Vector3.zero;
 
             rigidbodies[i].useGravity = false;
 
@@ -268,7 +295,8 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
         if (_cupAnimator == null)
             return;
 
-        if (string.IsNullOrEmpty(pouringBoolParameter))
+        if (string.IsNullOrEmpty(
+                pouringBoolParameter))
             return;
 
         _cupAnimator.SetBool(
@@ -281,20 +309,30 @@ public class CoffeeMachineInteractable : MonoBehaviour, IInteractable
         if (grabbable == null)
             return false;
 
-        if (grabbable.TryGetComponent(out FoodItem foodItem))
-            return foodItem.Type == FoodType.Cup;
+        if (grabbable.TryGetComponent(
+                out FoodItem foodItem))
+        {
+            return foodItem.Type ==
+                   FoodType.Cup;
+        }
 
         foodItem =
             grabbable.GetComponentInChildren<FoodItem>();
 
         if (foodItem != null)
-            return foodItem.Type == FoodType.Cup;
+        {
+            return foodItem.Type ==
+                   FoodType.Cup;
+        }
 
         foodItem =
             grabbable.GetComponentInParent<FoodItem>();
 
         if (foodItem != null)
-            return foodItem.Type == FoodType.Cup;
+        {
+            return foodItem.Type ==
+                   FoodType.Cup;
+        }
 
         return false;
     }

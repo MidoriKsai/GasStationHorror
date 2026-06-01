@@ -1,41 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <tips>
+
+    <!-- SHIFT -->
+
     <tip id="shift_start">
-        <text>Нужно поговорить с менеджером, кажется он должен быть где-то на заправке.</text>
+        <text>Нужно найти менеджера. Кажется, он где-то на заправке.</text>
     </tip>
+
+    <tip id="shift_after_manager">
+        <text>Что ж, пора за работу.</text>
+    </tip>
+
+    <tip id="shift_not_finished">
+        <text>Смена ещё не окончена.</text>
+    </tip>
+
+
+
+    <!-- CUSTOMER -->
+
     <tip id="customer_start">
-        <text>Нужно обслужить клиента у кассы</text>
-    </tip>
-
-    <tip id="products_info">
-        <text>Нужно отбить продукты с помощью сканера под терминалом.</text>
-    </tip>
-
-    <tip id="raw_sausage_info">
-        <text>Сначала нужно взять сосиску.</text>
+        <text>Нужно обслужить клиента у кассы.</text>
     </tip>
 
     <tip id="customer_not_needed_info">
         <text>Клиенту это не нужно.</text>
     </tip>
 
-    <tip id="sausage_info">
-        <text>Сначала нужно пожарить сосиску.</text>
+    <tip id="customer_extra_food">
+        <text>Кажется, это лишнее.</text>
     </tip>
 
-    <tip id="bun_info">
-        <text>Без булки собрать френчдог не получится.</text>
+
+
+    <!-- HANDS -->
+
+    <tip id="hands_busy">
+        <text>Мои руки заняты.</text>
     </tip>
 
-    <tip id="bun_info">
-        <text>Без булки собрать френчдог не получится.</text>
+
+
+    <!-- PRODUCTS -->
+
+    <tip id="products_info">
+        <text>Чтобы отбить товары нужно воспользоваться сканером под терминалом.</text>
     </tip>
 
-    <tip id="dog_info">
-        <text>Чтобы приготовить френчдог, нужно сначала взять сосиску, потом положить её на гриль, взять булочку и положить готовую сосиску. Для кофе нужно положить стаканчик в кофемашину.</text>
+    <tip id="terminal_need_scanner">
+        <text>Сначала нужно отсканировать товар.</text>
     </tip>
 
-    <tip id="task_wash">
-        <text>Чтобы помыть пол нужна швабра.</text>
+    <tip id="scanner_no_barcode">
+        <text>Кажется, здесь нет штрихкода.</text>
+    </tip>
+
+    <tip id="terminal_food_for_customer">
+        <text>Это нужно отдать клиенту.</text>
+    </tip>
+
+    <tip id="terminal_need_cooking">
+        <text>Сначала нужно приготовить заказ.</text>
+    </tip>
+
+    <tip id="terminal_need_scan">
+        <text>Нужно пробить товары.</text>
+    </tip>
+
+    <tip id="terminal_need_more_food">
+        <text>Нужно закончить заказ.</text>
+    </tip>
+
+    <tip id="terminal_fuel_available">
+        <text>Теперь можно пробить топливо.</text>
+    </tip>
+
+    <tip id="terminal_wrong_data">
+        <text>Где-то я ошибся.</text>
     </tip>
 
     <tip id="finish_info">
@@ -46,20 +88,139 @@
         <text>Нужно забрать оплату.</text>
     </tip>
 
-    <tip id="task_wash_swiping">
-        <text>Чтобы помыть пол нужно тереть дольше.</text>
+
+
+    <!-- GRILL -->
+
+    <tip id="grill_need_sausage">
+        <text>Для начала нужно положить сосиску на гриль.</text>
     </tip>
 
-    <tip id="task_fill_shelf">
-        <text>Хм, полка пустая. Надо бы принести товар со склада.</text>
+    <tip id="grill_wait_cooking">
+        <text>Жду приготовления.</text>
     </tip>
+
+    <tip id="grill_need_bun">
+        <text>Сосиска горячая. Лучше сначала взять булочку.</text>
+    </tip>
+
+    <tip id="raw_sausage_info">
+        <text>Сначала нужно взять сосиску.</text>
+    </tip>
+
+    <tip id="sausage_info">
+        <text>Сначала нужно пожарить сосиску.</text>
+    </tip>
+
+    <tip id="bun_info">
+        <text>Без булочки не получится собрать хот-дог.</text>
+    </tip>
+
+    <tip id="dog_info">
+        <text>
+            Чтобы приготовить хот-дог, нужно пожарить сосиску и положить её в булочку.
+            Для кофе сначала нужен стаканчик.
+        </text>
+    </tip>
+
+
+
+    <!-- COFFEE -->
+
+    <tip id="coffee_need_cup">
+        <text>Для начала нужен стаканчик.</text>
+    </tip>
+
+    <tip id="coffee_not_ready">
+        <text>Ещё не готово.</text>
+    </tip>
+
+    <tip id="coffee_need_lid">
+        <text>Теперь нужно закрыть стакан крышкой.</text>
+    </tip>
+
+
+
+    <!-- TRASH -->
+
+    <tip id="trash_empty_hands">
+        <text>Сюда можно выбросить мусор.</text>
+    </tip>
+
+    <tip id="trash_customer_item">
+        <text>Не стоит этого делать.</text>
+    </tip>
+
+    <tip id="trash_mop">
+        <text>Это ещё пригодится.</text>
+    </tip>
+
+    <tip id="trash_bag_full">
+        <text>Мешок уже полон.</text>
+    </tip>
+
+    <tip id="trash_shift_end_mop">
+        <text>Мне это понадобится на следующей смене.</text>
+    </tip>
+
+    <tip id="trash_not_taken_out">
+        <text>Кажется, я забыл выбросить мусор.</text>
+    </tip>
+
+
+
+    <!-- CLEANING -->
+
+    <tip id="task_wash_start">
+        <text>Нужно прибраться. Кажется, на складе была швабра.</text>
+    </tip>
+
+    <tip id="task_wash">
+        <text>Чтобы помыть пол, нужна швабра.</text>
+    </tip>
+
+    <tip id="task_wash_swiping">
+        <text>Нужно тереть дольше.</text>
+    </tip>
+
+    <tip id="task_wash_complete">
+        <text>Кажется, всё.</text>
+    </tip>
+
+
+
+    <!-- SHELVES -->
+
+    <tip id="task_fill_shelf_start">
+        <text>Нужно пополнить товары на полках.</text>
+    </tip>
+
+    <tip id="task_fill_shelf_box">
+        <text>Нужно взять коробку с товаром на складе.</text>
+    </tip>
+
+    <tip id="shelf_need_box">
+        <text>Нужно принести коробку с товарами.</text>
+    </tip>
+
+    <tip id="shelf_wrong_item">
+        <text>Я не могу положить это на полку.</text>
+    </tip>
+
+    <tip id="shelf_complete">
+        <text>Вроде закончил.</text>
+    </tip>
+
+
+
+    <!-- END SHIFT -->
 
     <tip id="task_trash">
-        <text>Так... пора закругляться. Осталось вынести мусор — и можно домой.</text>
+        <text>Фух... Осталось только вынести мусор — и можно домой.</text>
     </tip>
 
-    <tip id="сar arriving">
-        <text>Чтобы уехать домой мне нужна моя машина.</text>
+    <tip id="car_arriving">
+        <text>Чтобы уехать домой, мне нужна машина.</text>
     </tip>
 
 </tips>
