@@ -1,6 +1,9 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 
 public class Customer : MonoBehaviour
 {
@@ -10,11 +13,17 @@ public class Customer : MonoBehaviour
     [SerializeField]
     private Animator _animator;
 
+    [SerializeField] private AudioSource footstepsAudioSource;
+
     public CustomerData currentCustomerData;
 
     private NavMeshAgent _agent;
 
     private bool _isInteracting;
+
+    private bool isWalking;
+
+    private CancellationTokenSource footstepsAudioCts;
 
     private static readonly int IsWalking =
         Animator.StringToHash("IsWalking");
@@ -40,8 +49,15 @@ public class Customer : MonoBehaviour
         {
             Debug.LogError("No Animator found");
         }
-        
+
         _animator.applyRootMotion = false;
+
+        footstepsAudioCts =
+            new CancellationTokenSource();
+
+        PlayFootstepsAudioAsync(
+            0.75f,
+            footstepsAudioCts.Token).Forget();
     }
 
     private void Update()
@@ -76,6 +92,8 @@ public class Customer : MonoBehaviour
     {
         _agent.isStopped = false;
 
+        isWalking = true;
+
         while (path.HasNext())
         {
             Vector3 nextPoint =
@@ -99,7 +117,8 @@ public class Customer : MonoBehaviour
         _agent.ResetPath();
 
         _agent.velocity = Vector3.zero;
-        
+
+        isWalking = false;
 
         onCompleted?.Invoke();
     }
@@ -137,5 +156,34 @@ public class Customer : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         _isInteracting = false;
+    }
+
+    private async UniTaskVoid PlayFootstepsAudioAsync(
+        float delay,
+        CancellationToken ct)
+    {
+        while (true)
+        {
+            if (ct.IsCancellationRequested)
+                return;
+
+            if (!isWalking)
+            {
+                await UniTask.Yield(ct);
+                continue;
+            }
+
+            if (footstepsAudioSource != null)
+            {
+                footstepsAudioSource.pitch =
+                    UnityEngine.Random.Range(0.9f, 1.1f);
+
+                footstepsAudioSource.Play();
+            }
+
+            await UniTask.Delay(
+                TimeSpan.FromSeconds(delay),
+                cancellationToken: ct);
+        }
     }
 }

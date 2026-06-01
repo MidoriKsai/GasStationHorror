@@ -6,6 +6,10 @@ public class CashRegisterInteractable : MonoBehaviour, IInteractable
 {
     [SerializeField] private CustomerProductsHandler customerProductsHandler;
 
+
+    [SerializeField]
+    private AudioSource audioSource;
+
     private IInventoryService _inventoryService;
     private bool _isAvailable;
 
@@ -31,6 +35,7 @@ public class CashRegisterInteractable : MonoBehaviour, IInteractable
 
         if (success)
         {
+            audioSource.Play();
             _inventoryService.RemoveItem(false);
         }
     }
