@@ -38,13 +38,16 @@ namespace Player
 
             Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
 
-            if (!Physics.Raycast(ray, out RaycastHit hit, interactionDistance, interactableLayerMask))
+            if (!Physics.Raycast(ray, out RaycastHit hit, interactionDistance))
                 return;
 
-            IInteractable interactable = hit.collider.GetComponentInParent<IInteractable>();
+            if (!hit.collider.TryGetComponent(out IInteractable interactable))
+            {
+                interactable = hit.collider.GetComponentInParent<IInteractable>();
 
-            if (interactable == null)
-                return;
+                if (interactable == null)
+                    return;
+            }
 
             if (!interactable.CanInteract())
                 return;

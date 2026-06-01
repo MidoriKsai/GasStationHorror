@@ -38,6 +38,8 @@ namespace Interactables
 
         private ISoundService _soundService;
 
+        private TipsSystem.TipController _tipController;
+
         private GrillSlot[] _slots;
 
         private CancellationTokenSource _destroyCts;
@@ -51,11 +53,14 @@ namespace Interactables
 
         public void Initialize(
             IInventoryService inventoryService,
-            ISoundService soundService)
+            ISoundService soundService,
+            TipsSystem.TipController tipController)
         {
             _inventoryService = inventoryService;
 
             _soundService = soundService;
+
+            _tipController = tipController;
 
             InitializeSlots();
         }
@@ -86,19 +91,55 @@ namespace Interactables
 
         public void Interact()
         {
-            if (!CanInteract())
+            RefreshCookedSausageSlots();
+
+            if (_inventoryService == null)
                 return;
 
-            GrillSlot freeSlot = GetFreeSlot();
+            if (!HasFreeSlot())
+            {
+                _tipController?.ShowPopup(
+                    "grill_busy");
 
-            if (freeSlot == null)
                 return;
+            }
+
+            if (_inventoryService.IsInventoryEmpty())
+            {
+                _tipController?.ShowPopup(
+                    "grill_need_sausage");
+
+                return;
+            }
 
             Grabbable item =
                 _inventoryService.GetGrabbableInInventory();
 
             if (item == null)
+            {
+                _tipController?.ShowPopup(
+                    "grill_need_sausage");
+
                 return;
+            }
+
+            if (!IsRawSausage(item))
+            {
+                _tipController?.ShowPopup(
+                    "grill_need_sausage");
+
+                return;
+            }
+
+            GrillSlot freeSlot = GetFreeSlot();
+
+            if (freeSlot == null)
+            {
+                _tipController?.ShowPopup(
+                    "grill_busy");
+
+                return;
+            }
 
             _inventoryService.RemoveItem(false);
 
@@ -215,8 +256,12 @@ namespace Interactables
                 {
                     cookedInteractable.Initialize(
                         _inventoryService,
-                        grabbablesComponent);
+                        grabbablesComponent,
+                        _tipController);
                 }
+
+                _tipController?.ShowPopup(
+                    "grill_ready");
 
                 if (audioSource != null)
                 {
@@ -234,24 +279,7 @@ namespace Interactables
 
         public bool CanInteract()
         {
-            RefreshCookedSausageSlots();
-
-            if (_inventoryService == null)
-                return false;
-
-            if (_inventoryService.IsInventoryEmpty())
-                return false;
-
-            if (!HasFreeSlot())
-                return false;
-
-            Grabbable item =
-                _inventoryService.GetGrabbableInInventory();
-
-            if (item == null)
-                return false;
-
-            return IsRawSausage(item);
+            return true;
         }
 
         private void PrepareItemForStaticPoint(

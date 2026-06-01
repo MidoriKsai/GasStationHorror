@@ -1,47 +1,87 @@
+using System;
 using UnityEngine;
 using Interactables.Interface;
-using Unity.VisualScripting;
-using System;
 
 public class GarbageContainerInteractor : MonoBehaviour, IInteractor
 {
-    private GameObject garbageBag;
+    [SerializeField] private string garbageTag = "GarbageBag";
+
+    private GameObject garbageObject;
+    private TipsSystem.TipController _tipController;
+
     public event Action garbageThrown;
 
     public void PerformInteraction(IInteractable interactable)
     {
-        if (garbageBag == null)
+        if (garbageObject == null)
             return;
-        
+
         garbageThrown?.Invoke();
 
-        Rigidbody rb = garbageBag.GetComponent<Rigidbody>();
+        Rigidbody rb = garbageObject.GetComponent<Rigidbody>();
 
-        if (rb != null) 
+        if (rb != null)
             rb.isKinematic = true;
     }
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (!collision.gameObject.CompareTag("GarbageBag"))
+        GameObject rootObject = collision.transform.root.gameObject;
+
+        if (!rootObject.CompareTag(garbageTag))
             return;
-        
-        if (collision.gameObject.TryGetComponent<IInteractable>(out IInteractable interactableGarbageBag))
+
+        if (!CanThrow(rootObject))
+            return;
+
+        if (rootObject.TryGetComponent(out IInteractable interactable))
         {
-            Debug.Log("GarbageBag detected");
+            garbageObject = rootObject;
 
-            garbageBag = collision.gameObject;
-
-            PerformInteraction(interactableGarbageBag);
+            PerformInteraction(interactable);
         }
+    }
+
+    private bool CanThrow(GameObject obj)
+    {
+        Debug.Log($"Checking object: {obj.name}");
+
+        Trashable trashable = obj.GetComponent<Trashable>();
+
+        if (trashable == null)
+            trashable = obj.GetComponentInChildren<Trashable>();
+
+        if (trashable == null)
+            trashable = obj.GetComponentInParent<Trashable>();
+
+        if (trashable == null)
+        {
+            Debug.Log("Trashable NOT FOUND");
+            return false;
+        }
+
+        Debug.Log($"CanBeThrownAway = {trashable.CanBeThrownAway}");
+
+        if (!trashable.CanBeThrownAway)
+        {
+            Debug.Log("ITEM CANNOT BE THROWN");
+
+            _tipController?.ShowPopup("trash_customer_item");
+
+            return false;
+        }
+
+        Debug.Log("ITEM CAN BE THROWN");
+
+        return true;
     }
 
     public void EmptyContainer()
     {
-        if (garbageBag != null)
+        if (garbageObject != null)
         {
-            Destroy(garbageBag);
-            garbageBag = null;
+            Destroy(garbageObject);
+            garbageObject = null;
         }
     }
 }

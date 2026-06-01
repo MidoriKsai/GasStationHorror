@@ -17,11 +17,30 @@ namespace Components
 
         public void Initialize(ServiceContainer container)
         {
-            var inventory = container.Resolve<IInventoryService>();
-            var soundsSystem = container.Resolve<ISoundService>();
+            var inventory =
+                container.Resolve<IInventoryService>();
 
-            grill.Initialize(inventory, soundsSystem);
-            coffeeMachine.Initialize(inventory, soundsSystem);
+            var soundsSystem =
+                container.Resolve<ISoundService>();
+
+            var tips =
+                container.Resolve<TipsSystem.TipController>();
+
+            if (grill != null)
+            {
+                grill.Initialize(
+                    inventory,
+                    soundsSystem,
+                    tips);
+            }
+
+            if (coffeeMachine != null)
+            {
+                coffeeMachine.Initialize(
+                    inventory,
+                    soundsSystem,
+                    tips);
+            }
         }
     }
 }

@@ -29,9 +29,9 @@ namespace Components.ScenarioSteps
 
         public override async UniTask PerformStepAsync(CancellationToken ct)
         {
-            _tipController.ShowTip(
+            _tipController.ShowObjective(
                 "shift_start");
-            
+
             if (_dialogue == null)
             {
                 return;
@@ -56,17 +56,22 @@ namespace Components.ScenarioSteps
             {
                 return;
             }
-            
+
             await managerTriggerZone.WaitPlayerEnter();
-            
-            _tipController.HideTip();
 
+            _tipController.HideObjective();
 
-            _playerService.FocusPlayerToDialogue(dialoguePoint);
+            _playerService.FocusPlayerToDialogue(
+                dialoguePoint);
 
-            await _dialogue.StartDialogueAsync(dialogueID, ct);
+            await _dialogue.StartDialogueAsync(
+                dialogueID,
+                ct);
 
             _playerService.UnfocusPlayerFromDialogue();
+
+            _tipController.ShowPopup(
+                "shift_after_manager");
         }
     }
 }

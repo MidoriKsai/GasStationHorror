@@ -9,10 +9,13 @@ namespace Interactables
     public class CustomerInteractable : MonoBehaviour, IInteractable
     {
         private CustomerData _data;
+
         private IInventoryService _inventory;
+
         private TipsSystem.TipController _tipController;
 
         private int _remainingCoffee;
+
         private int _remainingFrenchDogs;
 
         private UniTaskCompletionSource _tcs;
@@ -23,16 +26,23 @@ namespace Interactables
             TipsSystem.TipController tipController)
         {
             _data = data;
+
             _inventory = inventory;
+
             _tipController = tipController;
 
-            _remainingCoffee = data.coffeeCount;
-            _remainingFrenchDogs = data.frenchDogCount;
+            _remainingCoffee =
+                data.coffeeCount;
+
+            _remainingFrenchDogs =
+                data.frenchDogCount;
 
             _data.readyCoffee = 0;
+
             _data.readyFrenchDogs = 0;
 
-            _tcs = new UniTaskCompletionSource();
+            _tcs =
+                new UniTaskCompletionSource();
 
             RefreshInfo();
 
@@ -47,20 +57,20 @@ namespace Interactables
             if (_inventory == null)
                 return;
 
-            if (_remainingCoffee <= 0 && _remainingFrenchDogs <= 0)
-                return;
-
             if (_inventory.IsInventoryEmpty())
                 return;
 
-            Grabbable item = _inventory.GetGrabbableInInventory();
+            Grabbable item =
+                _inventory.GetGrabbableInInventory();
 
             if (item == null)
                 return;
 
             if (!TryGetFoodItem(item, out FoodItem food))
             {
-                _tipController?.ShowTip("customer_not_needed_info");
+                _tipController?.ShowPopup(
+                    "customer_not_needed_info");
+
                 return;
             }
 
@@ -75,7 +85,8 @@ namespace Interactables
                     break;
 
                 default:
-                    _tipController?.ShowTip("customer_not_needed_info");
+                    _tipController?.ShowPopup(
+                        "customer_not_needed_info");
                     break;
             }
         }
@@ -88,13 +99,11 @@ namespace Interactables
             if (_inventory == null)
                 return false;
 
-            if (_remainingCoffee <= 0 && _remainingFrenchDogs <= 0)
-                return false;
-
             if (_inventory.IsInventoryEmpty())
                 return false;
 
-            Grabbable item = _inventory.GetGrabbableInInventory();
+            Grabbable item =
+                _inventory.GetGrabbableInInventory();
 
             if (item == null)
                 return false;
@@ -103,10 +112,10 @@ namespace Interactables
                 return false;
 
             if (food.Type == FoodType.Coffee)
-                return _remainingCoffee > 0;
+                return true;
 
             if (food.Type == FoodType.FrenchDog)
-                return _remainingFrenchDogs > 0;
+                return true;
 
             return false;
         }
@@ -123,13 +132,16 @@ namespace Interactables
         {
             if (_remainingCoffee <= 0)
             {
-                _tipController?.ShowTip("customer_not_needed_info");
+                _tipController?.ShowPopup(
+                    "customer_extra_food");
+
                 return;
             }
 
             AcceptItem(item);
 
             _remainingCoffee--;
+
             _data.readyCoffee++;
 
             RefreshInfo();
@@ -141,13 +153,16 @@ namespace Interactables
         {
             if (_remainingFrenchDogs <= 0)
             {
-                _tipController?.ShowTip("customer_not_needed_info");
+                _tipController?.ShowPopup(
+                    "customer_extra_food");
+
                 return;
             }
 
             AcceptItem(item);
 
             _remainingFrenchDogs--;
+
             _data.readyFrenchDogs++;
 
             RefreshInfo();
@@ -157,19 +172,22 @@ namespace Interactables
 
         private void RefreshInfo()
         {
-            _tipController?.ShowInfo("customer_info", _data);
+            _tipController?.ShowInfo(
+                "customer_info",
+                _data);
         }
 
         private void AcceptItem(Grabbable item)
         {
-            if (_inventory != null)
-                _inventory.RemoveItem(true);
+            _inventory?.RemoveItem(true);
 
             if (item != null)
                 Destroy(item.gameObject);
         }
 
-        private bool TryGetFoodItem(Grabbable grabbable, out FoodItem foodItem)
+        private bool TryGetFoodItem(
+            Grabbable grabbable,
+            out FoodItem foodItem)
         {
             foodItem = null;
 
@@ -179,19 +197,22 @@ namespace Interactables
             if (grabbable.TryGetComponent(out foodItem))
                 return true;
 
-            foodItem = grabbable.GetComponentInChildren<FoodItem>();
+            foodItem =
+                grabbable.GetComponentInChildren<FoodItem>();
 
             if (foodItem != null)
                 return true;
 
-            foodItem = grabbable.GetComponentInParent<FoodItem>();
+            foodItem =
+                grabbable.GetComponentInParent<FoodItem>();
 
             return foodItem != null;
         }
 
         private void CheckComplete()
         {
-            if (_remainingCoffee <= 0 && _remainingFrenchDogs <= 0)
+            if (_remainingCoffee <= 0 &&
+                _remainingFrenchDogs <= 0)
             {
                 _tcs?.TrySetResult();
             }
