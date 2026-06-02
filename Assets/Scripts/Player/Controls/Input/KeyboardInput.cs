@@ -4,6 +4,7 @@ using UnityEngine;
 class KeyboardInput : MonoBehaviour
 {
     public event Action ItemDropActionTriggered;
+    public event Action PauseEnterActionTriggered;
 
     private float horizontalInput;
     private float verticalInput;
@@ -19,6 +20,11 @@ class KeyboardInput : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.G))
         {
             ItemDropActionTriggered?.Invoke();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PauseEnterActionTriggered?.Invoke();
         }
     }
 }
