@@ -19,6 +19,7 @@ public class ButtonsController : MonoBehaviour
     public void LoadMainScene()
     {
         StaticSettings.Sensetivity = sensetivitySlider.value;
+        Time.timeScale = 1f;
         SceneManager.LoadScene("MainScene");
     }
 
