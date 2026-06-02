@@ -60,8 +60,8 @@ namespace Components.ScenarioSteps
                 _inventoryService,
                 _tipController);
 
-            _tipController.ShowObjective(
-                "customer_start");
+            //_tipController.ShowObjective(
+            //    "customer_start");
 
             await cashTriggerZone.WaitPlayerEnter();
 
@@ -114,8 +114,8 @@ namespace Components.ScenarioSteps
 
             _terminalController.DisableInteraction();
 
-            _tipController.ShowObjective(
-                "finish_money_info");
+            //_tipController.ShowObjective(
+            //    "finish_money_info");
 
             customerProductsHandler.ClearProducts();
 

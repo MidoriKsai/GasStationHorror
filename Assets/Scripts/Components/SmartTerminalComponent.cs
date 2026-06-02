@@ -14,6 +14,7 @@ namespace Components
 
         private ServiceContainer _container;
         private SmartTerminalController _controller;
+        private TipsSystem.TipController _tipController;
 
         public void Initialize(ServiceContainer container)
         {
@@ -28,7 +29,8 @@ namespace Components
                 smartTerminalView,
                 smartTerminalInteractable,
                 playerService,
-                terminalFocusPoint);
+                terminalFocusPoint,
+                _tipController);
 
             _controller.InitializeInteract();
 

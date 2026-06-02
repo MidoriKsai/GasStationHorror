@@ -4,6 +4,7 @@ using Services.Interfaces;
 using UnityEngine;
 using Interactables;
 using System.Threading;
+using TipsSystem;
 
 public class ShelfContainerComponent : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class ShelfContainerComponent : MonoBehaviour
         }
     }
 
-    public void InitializeShelfs(IPlayerService playerService, IInventoryService inventoryService)
+    public void InitializeShelfs(IPlayerService playerService, IInventoryService inventoryService, TipController tipController)
     {
         RemainingShelfs = shelfsContainer.Count;
 
@@ -27,7 +28,8 @@ public class ShelfContainerComponent : MonoBehaviour
         {
             shelf.Initialize(
                 inventoryService,
-                playerService
+                playerService,
+                tipController
             );
             shelf.shelfFilledEvent += OnShelfFilled;
         }

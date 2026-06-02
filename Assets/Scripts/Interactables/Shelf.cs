@@ -1,74 +1,10 @@
-//using UnityEngine;
-//using Interactables.Interface;
-//using Components;
-//using Services.Interfaces;
-//using System;
-//using Services.Implementations;
-//using UnityEngine.Playables;
-//using System.Threading;
-//
-//public class Shelf : MonoBehaviour, IInteractable
-//{
-//    public event Action shelfFilledEvent;
-//    [SerializeField] private GameObject filledShelf;
-//    [SerializeField] private GameObject emptyShelf;
-//    private IPlayerService playerService;
-//    private bool isShelfFilled;
-//    private IInventoryService inventoryService;
-//    private CancellationToken ct;
-//    public bool CanInteract()
-//        => !inventoryService.IsInventoryEmpty()
-//            && inventoryService.GetGrabbableInInventory().CompareTag("ShelfBox");
-//
-//    public void Interact()
-//    {
-//        if (!isShelfFilled)
-//        {
-//            FillShelf();
-//            Grabbable shelfBox = inventoryService.GetGrabbableInInventory();
-//            inventoryService.RemoveItem(needToAddForce: false);
-//            Destroy(shelfBox.gameObject);
-//        }
-//    }
-//
-//    private void FillShelf()
-//    {
-//        playerService.FadeInAsync(ct);
-//        filledShelf.SetActive(true);
-//        emptyShelf.SetActive(false);
-//        playerService.FadeOutAsync(ct);
-//        isShelfFilled = true;
-//        shelfFilledEvent?.Invoke();
-//    }
-//
-//    public void EmptyShelf()
-//    {
-//        filledShelf.SetActive(false);
-//        emptyShelf.SetActive(true);
-//        isShelfFilled = false;
-//    }
-//
-//    public void Initialize(IInventoryService inventoryService, IPlayerService playerService)
-//    {
-//        this.inventoryService = inventoryService;
-//        this.playerService = playerService;
-//    }
-//
-//    public void SetCancellationToken(CancellationToken ct)
-//    {
-//        this.ct = ct;
-//    }
-//
-//
-//}
-//
-//
 using UnityEngine;
 using Interactables.Interface;
 using Services.Interfaces;
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using TipsSystem;
 
 public class Shelf : MonoBehaviour, IInteractable
 {
@@ -79,34 +15,63 @@ public class Shelf : MonoBehaviour, IInteractable
     [SerializeField] private AudioSource audioSource;
 
     private IPlayerService playerService;
-    private bool isShelfFilled;
     private IInventoryService inventoryService;
+    private TipController tipController;
     private CancellationToken ct;
 
+    private bool isShelfFilled;
+
+    public void Initialize(IInventoryService inventoryService, IPlayerService playerService, TipController tipController)
+    {
+        this.inventoryService = inventoryService;
+        this.playerService = playerService;
+        this.tipController = tipController;
+    }
+
+    public void SetCancellationToken(CancellationToken ct)
+    {
+        this.ct = ct;
+    }
+
     public bool CanInteract()
-        => !inventoryService.IsInventoryEmpty() &&
-            inventoryService.GetGrabbableInInventory().CompareTag("ShelfBox");
+    {
+        return !isShelfFilled;
+    }
 
     public void Interact()
     {
-        if (!isShelfFilled)
+        var grabbable = inventoryService.GetGrabbableInInventory();
+
+        if (inventoryService.IsInventoryEmpty())
         {
-            FillShelf().Forget();
-            Grabbable shelfBox = inventoryService.GetGrabbableInInventory();
-            inventoryService.RemoveItem(needToAddForce: false);
-            Destroy(shelfBox.gameObject);
+            tipController?.ShowPopup("shelf_need_box");
+            return;
         }
+
+        if (!grabbable.CompareTag("ShelfBox"))
+        {
+            tipController?.ShowPopup("shelf_wrong_item");
+            return;
+        }
+
+        FillShelf().Forget();
+
+        inventoryService.RemoveItem(false);
+        Destroy(grabbable.gameObject);
     }
 
     private async UniTask FillShelf()
     {
         await playerService.FadeInAsync(ct);
+
         audioSource.Play();
         filledShelf.SetActive(true);
         emptyShelf.SetActive(false);
         await UniTask.Delay(TimeSpan.FromSeconds(3f));
         audioSource.Stop();
+
         await playerService.FadeOutAsync(ct);
+
         isShelfFilled = true;
         shelfFilledEvent?.Invoke();
     }
@@ -116,16 +81,5 @@ public class Shelf : MonoBehaviour, IInteractable
         filledShelf.SetActive(false);
         emptyShelf.SetActive(true);
         isShelfFilled = false;
-    }
-
-    public void Initialize(IInventoryService inventoryService, IPlayerService playerService)
-    {
-        this.inventoryService = inventoryService;
-        this.playerService = playerService;
-    }
-
-    public void SetCancellationToken(CancellationToken ct)
-    {
-        this.ct = ct;
     }
 }

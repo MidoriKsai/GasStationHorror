@@ -155,8 +155,8 @@
         <text>Это ещё пригодится.</text>
     </tip>
 
-    <tip id="trash_bag_full">
-        <text>Мешок уже полон.</text>
+    <tip id="trash_bag_street">
+        <text>Нужно выкинуть это в мусорный бак на улице.</text>
     </tip>
 
     <tip id="trash_shift_end_mop">
@@ -200,11 +200,11 @@
     </tip>
 
     <tip id="shelf_need_box">
-        <text>Нужно принести коробку с товарами.</text>
+        <text>Нужно принести коробку с товарами со склада.</text>
     </tip>
 
     <tip id="shelf_wrong_item">
-        <text>Я не могу положить это на полку.</text>
+        <text>Я не могу положить это на полку, нужна коробка.</text>
     </tip>
 
     <tip id="shelf_complete">
@@ -216,7 +216,7 @@
     <!-- END SHIFT -->
 
     <tip id="task_trash">
-        <text>Фух... Осталось только вынести мусор — и можно домой.</text>
+        <text>Фух... Осталось только вынести мусор на улицу, и я свободен.</text>
     </tip>
 
     <tip id="car_arriving">

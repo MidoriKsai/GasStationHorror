@@ -21,8 +21,6 @@ public class CashTriggerZone : MonoBehaviour
         if (!other.TryGetComponent<PlayerDataHandler>(out _))
             return;
 
-        Debug.Log("Player enter cash trigger");
-
         _isPlayerInside = true;
         _tcs?.TrySetResult();
     }
@@ -35,8 +33,6 @@ public class CashTriggerZone : MonoBehaviour
         if (!other.TryGetComponent<PlayerDataHandler>(out _))
             return;
 
-        Debug.Log("Player already inside cash trigger");
-
         _isPlayerInside = true;
         _tcs?.TrySetResult();
     }
@@ -45,8 +41,6 @@ public class CashTriggerZone : MonoBehaviour
     {
         if (!other.TryGetComponent<PlayerDataHandler>(out _))
             return;
-
-        Debug.Log("Player exit cash trigger");
 
         _isPlayerInside = false;
     }

@@ -39,17 +39,13 @@ public class CustomerProductsHandler : MonoBehaviour
     {
         if (grabbable == null)
         {
-            Debug.Log("В инвентаре нет товара");
             return false;
         }
 
         if (!_customerProducts.Contains(grabbable))
         {
-            Debug.Log("Такого товара нет у покупателя");
             return false;
         }
-
-        Debug.Log("Пробит товар: " + grabbable.name);
 
         _customerProducts.Remove(grabbable);
         _scannedProducts.Add(grabbable);

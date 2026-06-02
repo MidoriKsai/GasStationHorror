@@ -3,25 +3,34 @@ using Core;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using UnityEngine;
+using TipsSystem;
 
 public class MudWashingStep : BaseStep
 {
-    [SerializeField] private MudContainerComponent mudContainer;
-    public override void Initialize(ServiceContainer serviceContainer)
+    [SerializeField]
+    private MudContainerComponent mudContainer;
+
+    private TipController _tipController;
+
+    public override void Initialize(
+        ServiceContainer serviceContainer)
     {
-        Debug.Log("1. INITIALIZE DONE");
+        _tipController =
+            serviceContainer.Resolve<TipController>();
     }
 
-    public override async UniTask PerformStepAsync(CancellationToken ct)
+    public override async UniTask PerformStepAsync(
+        CancellationToken ct)
     {
-        // await UniTask.SwitchToMainThread(ct);
+        _tipController.ShowObjective(
+            "task_wash_start");
 
-        Debug.Log("2. STEP EXECUTION STARTED");
+        await UniTask.WaitUntil(
+            CheckContainerEmpty,
+            cancellationToken: ct);
 
-        await UniTask.WaitUntil(CheckContainerEmpty, cancellationToken: ct); 
-
-        Debug.Log("3. STEP FINISHED");
-
+        _tipController.ShowPopup(
+            "mud_washing_complete");
     }
 
     private bool CheckContainerEmpty()

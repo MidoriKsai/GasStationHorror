@@ -36,10 +36,10 @@ namespace Contexts
     
         [SerializeField] private TipComponent tipComponent;
         
+        [SerializeField] private InteractablesTipsComponent interactablesTipsComponent;
+        
         [SerializeField]
         private PointsHandler pointsHandler;
-        
-        [SerializeField] private CashRegisterInteractable cashRegister;
 
         [SerializeField]
         private SoundsComponent soundsComponent;
@@ -57,7 +57,6 @@ namespace Contexts
             playerService.Initialize(playerDataHandler);
             
             var inventory = serviceContainer.Resolve<IInventoryService>();
-            cashRegister.Initialize(inventory);
 
             var soundService = serviceContainer.Resolve<ISoundService>();
             soundService.Initialize(soundsComponent.TwoDAudioSource, soundsComponent.ThreeDAudioSources);
@@ -73,7 +72,8 @@ namespace Contexts
             grabbablesController = grabbablesComponent.CreateController();
             
             scenarioComponent.Initialize(serviceContainer);
-
+            
+            interactablesTipsComponent.Initialize(serviceContainer, tipController);
 
             customersComponent.Initialize(pointsHandler);
             customerController = customersComponent.CreateController();

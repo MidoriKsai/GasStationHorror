@@ -3,23 +3,52 @@ using Cysharp.Threading.Tasks;
 using System.Threading;
 using UnityEngine;
 using Components.ScenarioSteps;
-using Services.Interfaces;
+using TipsSystem;
+
 public class GarbageThrowingStep : BaseStep
 {
-    [SerializeField] GarbageContainerInteractor garbageContainerInteractor;
+    [SerializeField]
+    private GarbageContainerInteractor garbageContainerInteractor;
+
+    [SerializeField]
+    private UrnInteractable urnInteractable;
+
     private bool finished;
 
-    public override void Initialize(ServiceContainer serviceContainer)
+    private TipController _tipController;
+
+    public override void Initialize(
+        ServiceContainer serviceContainer)
     {
-        garbageContainerInteractor.garbageThrown += CheckGarbageInContainer;
+        garbageContainerInteractor.garbageThrown +=
+            CheckGarbageInContainer;
+
+        _tipController =
+            serviceContainer.Resolve<TipController>();
+
+        if (urnInteractable != null)
+            urnInteractable.SetCanTakeGarbage(false);
     }
 
-    public override async UniTask PerformStepAsync(CancellationToken ct)
+    public override async UniTask PerformStepAsync(
+        CancellationToken ct)
     {
+        finished = false;
+
         garbageContainerInteractor.EmptyContainer();
-        Debug.Log("Garbage step started");
-        await UniTask.WaitUntil(() => finished == true, cancellationToken: ct); 
-        Debug.Log("Garbage step ended");
+
+        if (urnInteractable != null)
+            urnInteractable.SetCanTakeGarbage(true);
+
+        _tipController.ShowObjective(
+            "task_trash");
+
+        await UniTask.WaitUntil(
+            () => finished,
+            cancellationToken: ct);
+
+        if (urnInteractable != null)
+            urnInteractable.SetCanTakeGarbage(false);
     }
 
     private void CheckGarbageInContainer()

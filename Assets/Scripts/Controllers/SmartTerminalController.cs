@@ -11,6 +11,8 @@ public class SmartTerminalController : IController
     private readonly IPlayerService _playerService;
     private readonly Transform _focusPoint;
 
+    private TipsSystem.TipController _tipController;
+
     private CustomerData _currentCustomerData;
 
     private int _enteredPumpNumber;
@@ -26,18 +28,22 @@ public class SmartTerminalController : IController
         SmartTerminalView view,
         SmartTerminalInteractable interactable,
         IPlayerService playerService,
-        Transform focusPoint)
+        Transform focusPoint,
+        TipsSystem.TipController tipController)
     {
         _view = view;
         _interactable = interactable;
         _playerService = playerService;
         _focusPoint = focusPoint;
 
+        _tipController = tipController;
+
         _view.NextClicked += OnNextClicked;
         _view.ChoiceClicked += OnChoiceClicked;
         _view.PayClicked += OnPayClicked;
 
         _view.HideRoot();
+
         _isSessionActive = false;
     }
 
@@ -50,6 +56,7 @@ public class SmartTerminalController : IController
     public void EnableInteraction(CustomerData customerData)
     {
         _currentCustomerData = customerData;
+
         _isSessionActive = false;
 
         if (_resultTcs == null || _resultTcs.Task.Status.IsCompleted())
@@ -63,10 +70,13 @@ public class SmartTerminalController : IController
     public void DisableInteraction()
     {
         _isSessionActive = false;
+
         _interactable.SetAvailable(false);
+
         _view.HideRoot();
 
         DisableCursor();
+
         _playerService.UnfocusPlayerFromDialogue();
     }
 
@@ -89,18 +99,23 @@ public class SmartTerminalController : IController
             return;
 
         _isSessionActive = true;
+
         _interactable.SetAvailable(false);
 
         _enteredPumpNumber = -1;
         _enteredLiterQuantity = -1;
         _selectedFuelId = -1;
+
         _inputDataValid = false;
 
         EnableCursor();
+
         _playerService.FocusPlayerToDialogue(_focusPoint);
 
         _view.Clear();
+
         _view.ShowRoot();
+
         _view.ShowInputPanel();
     }
 
@@ -110,6 +125,7 @@ public class SmartTerminalController : IController
             return;
 
         _selectedFuelId = buttonId;
+
         _view.SetSelectedFuelButton(_selectedFuelId);
     }
 
@@ -118,32 +134,51 @@ public class SmartTerminalController : IController
         if (!_isSessionActive || _currentCustomerData == null)
             return;
 
-        bool pumpParsed = int.TryParse(_view.InputPumpNumber, out _enteredPumpNumber);
-        bool litersParsed = int.TryParse(_view.InputLitersNumber, out _enteredLiterQuantity);
+        bool pumpParsed =
+            int.TryParse(
+                _view.InputPumpNumber,
+                out _enteredPumpNumber);
 
-        int correctPumpNumber = _currentCustomerData.petrolPumpNumber + 1;
-        int correctLiterQuantity = _currentCustomerData.literQuantity;
-        int correctFuelId = _currentCustomerData.patrolId;
+        bool litersParsed =
+            int.TryParse(
+                _view.InputLitersNumber,
+                out _enteredLiterQuantity);
+
+        int correctPumpNumber =
+            _currentCustomerData.petrolPumpNumber + 1;
+
+        int correctLiterQuantity =
+            _currentCustomerData.literQuantity;
+
+        int correctFuelId =
+            _currentCustomerData.patrolId;
 
         if (!pumpParsed || !litersParsed)
         {
-            DebugCorrectData(correctPumpNumber, correctLiterQuantity, correctFuelId);
+            _tipController?.ShowPopup(
+                "terminal_wrong_data");
+
             return;
         }
 
-        bool pumpCorrect = _enteredPumpNumber == correctPumpNumber;
-        bool litersCorrect = _enteredLiterQuantity == correctLiterQuantity;
-        bool fuelCorrect = _selectedFuelId == correctFuelId;
+        bool pumpCorrect =
+            _enteredPumpNumber == correctPumpNumber;
 
-        _inputDataValid = pumpCorrect && litersCorrect && fuelCorrect;
+        bool litersCorrect =
+            _enteredLiterQuantity == correctLiterQuantity;
+
+        bool fuelCorrect =
+            _selectedFuelId == correctFuelId;
+
+        _inputDataValid =
+            pumpCorrect &&
+            litersCorrect &&
+            fuelCorrect;
 
         if (!_inputDataValid)
         {
-            DebugCorrectData(correctPumpNumber, correctLiterQuantity, correctFuelId);
-
-            Debug.Log($"Введённая колонка: {_enteredPumpNumber}");
-            Debug.Log($"Введённые литры: {_enteredLiterQuantity}");
-            Debug.Log($"Выбранный ID топлива: {_selectedFuelId}");
+            _tipController?.ShowPopup(
+                "terminal_wrong_data");
 
             return;
         }
@@ -153,11 +188,17 @@ public class SmartTerminalController : IController
 
     private void ShowReceipt()
     {
-        string fuelType = _currentCustomerData.fuelType;
-        int liters = _currentCustomerData.literQuantity;
+        string fuelType =
+            _currentCustomerData.fuelType;
 
-        int pricePerLiter = GetPricePerLiter();
-        int totalPrice = liters * pricePerLiter;
+        int liters =
+            _currentCustomerData.literQuantity;
+
+        int pricePerLiter =
+            GetPricePerLiter();
+
+        int totalPrice =
+            liters * pricePerLiter;
 
         _view.SetReceiptData(
             fuelType,
@@ -195,7 +236,12 @@ public class SmartTerminalController : IController
             return;
 
         if (!_inputDataValid)
+        {
+            _tipController?.ShowPopup(
+                "terminal_need_scan");
+
             return;
+        }
 
         FinishSession();
     }
@@ -214,30 +260,23 @@ public class SmartTerminalController : IController
         _view.HideRoot();
 
         DisableCursor();
+
         _playerService.UnfocusPlayerFromDialogue();
 
         _isSessionActive = false;
     }
 
-    private void DebugCorrectData(
-        int correctPumpNumber,
-        int correctLiterQuantity,
-        int correctFuelId)
-    {
-        Debug.Log($"Правильная колонка: {correctPumpNumber}");
-        Debug.Log($"Правильные литры: {correctLiterQuantity}");
-        Debug.Log($"Правильный ID топлива: {correctFuelId}");
-    }
-
     private void EnableCursor()
     {
         Cursor.lockState = CursorLockMode.None;
+
         Cursor.visible = true;
     }
 
     private void DisableCursor()
     {
         Cursor.lockState = CursorLockMode.Locked;
+
         Cursor.visible = false;
     }
 
