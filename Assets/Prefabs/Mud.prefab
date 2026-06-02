@@ -46,7 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e017338769178d512818fa0b8568a7bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Mud
-  NeededWipeCount: 5
+  timeToWipe: 3
+  scrubDistance: 0.15
+  scrubSpeed: 5
 --- !u!65 &6342892835356917890
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -112,9 +114,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.DecalProjector
-  m_Material: {fileID: 2100000, guid: 8b7910461c6230455b3797f1bd7a0bb3, type: 2}
-  m_DrawDistance: 1000
-  m_FadeScale: 0.9
+  m_Material: {fileID: 2100000, guid: 188c8e28012f36e1da991ded667f4b82, type: 2}
+  m_DrawDistance: 2000
+  m_FadeScale: 1
   m_StartAngleFade: 180
   m_EndAngleFade: 180
   m_UVScale: {x: 1, y: 1}
