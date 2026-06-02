@@ -114,8 +114,8 @@ namespace Components.ScenarioSteps
 
             _terminalController.DisableInteraction();
 
-            //_tipController.ShowObjective(
-            //    "finish_money_info");
+            _tipController.ShowObjective(
+                "finish_money_info");
 
             customerProductsHandler.ClearProducts();
 

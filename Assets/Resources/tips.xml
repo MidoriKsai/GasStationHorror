@@ -96,7 +96,7 @@
         <text>Для начала нужно положить сосиску на гриль.</text>
     </tip>
 
-    <tip id="grill_wait_cooking">
+    <tip id="grill_busy">
         <text>Жду приготовления.</text>
     </tip>
 

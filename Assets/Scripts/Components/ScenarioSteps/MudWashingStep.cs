@@ -28,9 +28,8 @@ public class MudWashingStep : BaseStep
         await UniTask.WaitUntil(
             CheckContainerEmpty,
             cancellationToken: ct);
-
-        _tipController.ShowPopup(
-            "mud_washing_complete");
+        
+        _tipController?.HideObjective();
     }
 
     private bool CheckContainerEmpty()

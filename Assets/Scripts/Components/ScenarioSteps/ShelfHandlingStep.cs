@@ -37,9 +37,8 @@ public class ShelfHandlingStep : BaseStep
         await UniTask.WaitUntil(
             CheckShelfsDone,
             cancellationToken: ct);
-
-        _tipController?.ShowPopup(
-            "shelf_complete");
+        
+        _tipController?.HideObjective();
 
         Debug.Log("SHELF HANDLING STEP FINISHED");
     }

@@ -238,7 +238,7 @@ public class SmartTerminalController : IController
         if (!_inputDataValid)
         {
             _tipController?.ShowPopup(
-                "terminal_need_scan");
+                "terminal_wrong_data");
 
             return;
         }

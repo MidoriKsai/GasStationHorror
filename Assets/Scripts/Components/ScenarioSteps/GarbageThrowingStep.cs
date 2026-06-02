@@ -46,6 +46,8 @@ public class GarbageThrowingStep : BaseStep
         await UniTask.WaitUntil(
             () => finished,
             cancellationToken: ct);
+        
+        _tipController?.HideObjective();
 
         if (urnInteractable != null)
             urnInteractable.SetCanTakeGarbage(false);
